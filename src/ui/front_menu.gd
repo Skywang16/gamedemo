@@ -11,10 +11,14 @@ var avatar: TextureRect
 var appearance_buttons: Dictionary = {}
 var error_label: Label
 var preview_direction: int = 0
+var settings: GameSettings
 
 
-func initialize(content: ContentCatalog, saved: FarmState, message: String) -> void:
+func initialize(
+	content: ContentCatalog, saved: FarmState, message: String, current: GameSettings
+) -> void:
 	catalog = content
+	settings = current
 	cached_state = saved
 	load_message = message
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -47,7 +51,7 @@ func show_title() -> void:
 	)
 	resume.disabled = cached_state == null
 	_button("开始新生活", Rect2(460, 496, 360, 58), show_creator)
-	_button("操作", Rect2(460, 574, 170, 48), show_help)
+	_button("设置", Rect2(460, 574, 170, 48), show_settings)
 	_button("退出", Rect2(650, 574, 170, 48), func(): action_requested.emit("front_quit", {}))
 	if cached_state != null:
 		var saved = _label(
@@ -64,24 +68,16 @@ func show_title() -> void:
 		_label(load_message, Rect2(394, 660, 492, 48), 17, INK, true)
 
 
-func show_help() -> void:
-	screen = "help"
+func show_settings(first_tab: String = "audio") -> void:
+	screen = "settings"
 	clear_screen()
-	_frame(Rect2(250, 110, 780, 580))
-	_label("操作", Rect2(296, 145, 680, 55), 34)
-	var controls = [
-		["WASD / 方向键", "移动"],
-		["Shift", "跑步"],
-		["E", "交谈 / 互动"],
-		["鼠标左键 / 空格", "使用工具"],
-		["1 – 7 / Q", "工具 / 种子"],
-		["J / M / B", "手记 / 地图 / 背包"],
-		["Esc", "菜单 / 返回"]
-	]
-	for i in range(controls.size()):
-		_label(controls[i][0], Rect2(300, 218 + i * 45, 330, 35), 21)
-		_label(controls[i][1], Rect2(650, 218 + i * 45, 320, 35), 21, MUTED)
-	_button("返回", Rect2(470, 605, 340, 48), show_title)
+	_frame(Rect2(190, 50, 900, 700))
+	var panel = SettingsPanel.new()
+	panel.position = Vector2(190, 50)
+	add_child(panel)
+	panel.open(settings, Vector2(900, 700), first_tab)
+	panel.finished.connect(show_title)
+	panel.preview_sound.connect(func(): action_requested.emit("preview_sound", {}))
 
 
 func show_creator() -> void:

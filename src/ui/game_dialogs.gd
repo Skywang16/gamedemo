@@ -120,14 +120,23 @@ func show_shipping(quote: Dictionary) -> void:
 	modal_button("返回", 510, "close")
 
 
-func show_pause(sound_on: bool) -> void:
+func show_pause() -> void:
 	open_modal("pause", "菜单", "")
 	modal_button("继续生活", 134, "close")
 	modal_button("手动保存", 190, "save")
-	modal_button("音效：" + ("开启" if sound_on else "关闭"), 246, "sound")
-	modal_button("保存并返回标题", 302, "title")
-	modal_button("回家休息", 358, "ask_sleep")
+	modal_button("设置", 246, "settings")
+	modal_button("回家休息", 302, "ask_sleep")
+	modal_button("保存并返回标题", 414, "title")
 	modal_button("保存并退出", 470, "quit")
+
+
+func show_settings(current: GameSettings) -> void:
+	open_modal("settings", "", "", Rect2(190, 50, 900, 700))
+	var panel = SettingsPanel.new()
+	modal_panel.add_child(panel)
+	panel.open(current, Vector2(900, 700))
+	panel.finished.connect(func(): action_requested.emit("settings_closed", {}))
+	panel.preview_sound.connect(func(): action_requested.emit("preview_sound", {}))
 
 
 func show_journal() -> void:

@@ -5,6 +5,7 @@ var time: float = 0
 var ripples: Array[Vector2] = []
 var smoke_sources: Array[Vector2] = []
 var outdoors: bool = false
+var calm: bool = false
 
 
 func configure(region: Dictionary) -> void:
@@ -51,7 +52,7 @@ func _draw() -> void:
 			draw_rect(
 				Rect2(at.round(), Vector2(size, size)), Color(.88, .86, .73, (1 - phase) * .3)
 			)
-	if outdoors:
+	if outdoors and not calm:
 		for i in range(8):
 			var phase = fmod(time * .035 + i * .127, 1.0)
 			var at = (

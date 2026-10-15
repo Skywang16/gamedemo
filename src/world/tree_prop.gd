@@ -9,6 +9,7 @@ var collider: CollisionShape2D
 var stump: Texture2D
 var time: float = 0
 var shake: float = 0
+var calm: bool = false
 var fall_time: float = -1
 var fall_direction: float = 1
 
@@ -62,7 +63,8 @@ func _process(delta: float) -> void:
 			trunk.hide()
 			landed.emit(position + Vector2(fall_direction * 80, -8))
 	elif hits < 3:
-		pivot.rotation = sin(time * 1.6) * 0.009 + sin(shake * 60) * shake * 0.28
+		var sway = 0.0 if calm else sin(time * 1.6) * 0.009
+		pivot.rotation = sway + sin(shake * 60) * shake * 0.28
 	queue_redraw()
 
 

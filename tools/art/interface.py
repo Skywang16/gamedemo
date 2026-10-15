@@ -173,6 +173,49 @@ def glyph(name):
     return im
 
 
+def control(name):
+    """Slider and switch parts for the settings page."""
+    edge = "#57301d"
+    if name in ("track", "fill"):
+        im = Image.new("RGBA", (24, 12))
+        d = ImageDraw.Draw(im)
+        if name == "track":
+            d.rectangle((0, 2, 23, 9), fill=edge)
+            d.rectangle((1, 3, 22, 8), fill="#3d2417")
+            d.line((1, 8, 22, 8), fill="#8d673f")
+            d.line((1, 3, 22, 3), fill="#2b190f")
+        else:
+            d.rectangle((0, 2, 23, 9), fill="#7d481e")
+            d.rectangle((1, 3, 22, 8), fill="#dca553")
+            d.line((1, 3, 22, 3), fill="#f8d479")
+            d.line((1, 7, 22, 7), fill="#b97d36")
+        return im
+    if name == "knob":
+        im = Image.new("RGBA", (20, 26))
+        d = ImageDraw.Draw(im)
+        d.ellipse((1, 4, 19, 24), fill="#34271d99")
+        d.rounded_rectangle((2, 1, 17, 20), radius=4, fill=edge)
+        d.rounded_rectangle((3, 2, 16, 19), radius=3, fill="#dca553")
+        d.rounded_rectangle((4, 3, 13, 12), radius=2, fill="#f8d479")
+        d.line((5, 16, 14, 16), fill="#b97d36")
+        d.line((6, 5, 9, 5), fill="#fff0c3")
+        return im
+    on = name == "toggle_on"
+    im = Image.new("RGBA", (52, 28))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 2, 51, 25), radius=7, fill=edge)
+    d.rounded_rectangle((2, 4, 49, 23), radius=5, fill="#c98a3a" if on else "#3d2417")
+    if on:
+        d.line((5, 6, 46, 6), fill="#f8d479")
+    else:
+        d.line((5, 21, 46, 21), fill="#8d673f")
+    kx = 29 if on else 4
+    d.rounded_rectangle((kx, 5, kx + 18, 22), radius=4, fill=edge)
+    d.rounded_rectangle((kx + 1, 6, kx + 17, 21), radius=3, fill="#f4dfaa" if on else "#b9a583")
+    d.line((kx + 3, 8, kx + 10, 8), fill="#fff8db" if on else "#d8c9a6")
+    return im
+
+
 def title_scene():
     rng = random.Random(762)
     im = Image.new("RGB", (640, 400))
@@ -353,6 +396,8 @@ def build_interface(output):
         "heart_empty",
     ]:
         glyph(name).save(ui / (name + ".png"))
+    for name in ["track", "fill", "knob", "toggle_on", "toggle_off"]:
+        control(name).save(ui / (name + ".png"))
     title_scene().save(output / "title_landscape.png")
     title_clouds().save(output / "title_clouds.png")
     for kind in ("turnip", "carrot"):

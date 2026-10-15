@@ -16,6 +16,7 @@ func run() -> void:
 		not FileAccess.file_exists(folder + "/farm.json"), "title does not create or overwrite save"
 	)
 	await capture("title")
+	await test_settings_from_title()
 	await press("开始新生活")
 	check(game.front.screen == "creator", "new game opens creator")
 	await press("返回")
@@ -38,6 +39,7 @@ func run() -> void:
 		"creator enters playable world without tutorial"
 	)
 	check(game.world_display.size == Vector2(1280, 800), "world fills viewport")
+	await test_settings_from_pause()
 	await capture("farm-wild")
 	place_cell(Vector2i(34, 20))
 	await key(KEY_6)
@@ -350,3 +352,91 @@ func run() -> void:
 	)
 	print("UI_SMOKE: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
+
+
+func nodes_of(node: Node, type: String, found: Array = []) -> Array:
+	if node.is_class(type) and node.is_visible_in_tree():
+		found.append(node)
+	for child in node.get_children():
+		nodes_of(child, type, found)
+	return found
+
+
+func test_settings_from_title() -> void:
+	await press("设置")
+	check(game.front.screen == "settings", "title opens settings")
+	await capture("settings-audio")
+	var sliders = nodes_of(game.front, "HSlider")
+	check(sliders.size() == 2, "audio tab has master and effects sliders")
+	sliders[0].value = 40
+	sliders[0].drag_ended.emit(true)
+	check(game.settings.get_value("master") == 40, "slider updates master volume")
+	var bus = AudioServer.get_bus_index("Master")
+	check(
+		absf(AudioServer.get_bus_volume_db(bus) - linear_to_db(0.4)) < 0.01,
+		"master volume reaches the audio bus"
+	)
+	check(FileAccess.file_exists(folder + "/settings.json"), "settings are written to disk")
+	sliders[1].value = 0
+	sliders[1].drag_ended.emit(true)
+	check(
+		AudioServer.is_bus_mute(AudioServer.get_bus_index(GameSettings.SFX_BUS)),
+		"zero effects volume mutes the effects bus"
+	)
+	await press("画面")
+	await capture("settings-display")
+	var toggles = nodes_of(game.front, "TextureButton")
+	check(toggles.size() == 3, "display tab has three switches")
+	await click(toggles[2].get_global_rect().get_center())
+	check(game.settings.get_value("reduce_motion") == true, "switch flips the setting")
+	await press("操作")
+	await capture("settings-controls")
+	await press("E")
+	await key(KEY_G)
+	check(game.settings.key_for("interact") == KEY_G, "key can be rebound")
+	check(
+		InputMap.action_get_events("interact")[0].physical_keycode == KEY_G,
+		"rebinding reaches the input map"
+	)
+	await press("G")
+	await key(KEY_ESCAPE)
+	check(game.settings.key_for("interact") == KEY_G, "escape cancels a rebind")
+	check(game.front.screen == "settings", "escape during rebind does not leave the page")
+	await press("G")
+	await key(KEY_3)
+	check(game.settings.key_for("interact") == KEY_G, "reserved keys are refused")
+	await press("G")
+	await key(KEY_Q)
+	check(
+		game.settings.key_for("interact") == KEY_Q and game.settings.key_for("cycle_seed") == KEY_G,
+		"taking a used key swaps the two actions"
+	)
+	await press("恢复默认")
+	check(
+		game.settings.key_for("interact") == KEY_E and game.settings.key_for("cycle_seed") == KEY_Q,
+		"restore defaults resets key bindings"
+	)
+	await press("游戏")
+	await capture("settings-game")
+	await press("返回")
+	check(game.front.screen == "title", "back returns to the title")
+	var reloaded = GameSettings.new(folder)
+	check(reloaded.load_file().is_empty(), "saved settings load back")
+	check(
+		reloaded.get_value("master") == 40 and reloaded.get_value("reduce_motion") == true,
+		"settings persist across sessions"
+	)
+
+
+func test_settings_from_pause() -> void:
+	await key(KEY_ESCAPE)
+	check(game.hud.modal_kind == "pause", "escape opens the pause menu")
+	await capture("pause")
+	await press("设置")
+	check(game.hud.modal_kind == "settings", "pause menu opens settings")
+	await capture("settings-pause")
+	await press("返回")
+	check(game.hud.modal_kind == "pause", "closing settings returns to the pause menu")
+	check(game.world.reduce_motion == true, "world follows the reduce-motion setting")
+	await press("继续生活")
+	check(not game.hud.is_modal(), "resume closes the menu")

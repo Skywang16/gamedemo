@@ -18,6 +18,8 @@ var action_duration: float = 0.0
 var action_tool: String = ""
 var action_target: Vector2i
 var contacted: bool = false
+var sprint_toggle: bool = false
+var sprint_latched: bool = false
 
 
 func _ready() -> void:
@@ -40,11 +42,12 @@ func _physics_process(delta: float) -> void:
 		if can_move and action_remaining == 0
 		else Vector2.ZERO
 	)
-	velocity = movement * (RUN_SPEED if Input.is_action_pressed("sprint") else WALK_SPEED)
+	var running = is_running(movement)
+	velocity = movement * (RUN_SPEED if running else WALK_SPEED)
 	if movement != Vector2.ZERO:
 		face(movement)
 		elapsed += delta
-		frame = int(elapsed * (12 if Input.is_action_pressed("sprint") else 8)) % 4
+		frame = int(elapsed * (12 if running else 8)) % 4
 	else:
 		frame = 0
 	move_and_slide()
@@ -54,6 +57,17 @@ func _physics_process(delta: float) -> void:
 			contacted = true
 			action_contact.emit(action_tool, action_target)
 	queue_redraw()
+
+
+func is_running(movement: Vector2) -> bool:
+	if not sprint_toggle:
+		sprint_latched = false
+		return Input.is_action_pressed("sprint")
+	if Input.is_action_just_pressed("sprint"):
+		sprint_latched = not sprint_latched
+	if movement == Vector2.ZERO:
+		sprint_latched = false
+	return sprint_latched
 
 
 func face(direction: Vector2) -> void:

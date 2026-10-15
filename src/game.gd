@@ -18,7 +18,7 @@ var action_crop: String = "turnip"
 var mouse_aim: bool = false
 var clock_accumulator: float = 0.0
 var autosave_accumulator: float = 0.0
-var sound_on: bool = true
+var settings: GameSettings
 var audio: Dictionary = {}
 var initialized: bool = false
 var pages: Array = []
@@ -28,7 +28,6 @@ var scene_index: int = 0
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false
-	_setup_input()
 	catalog = ContentCatalog.new()
 	var error = catalog.load_content()
 	if not error.is_empty():
@@ -43,46 +42,17 @@ func _ready() -> void:
 			directory = argument.trim_prefix("--save-dir=")
 	store = SaveStore.new(catalog, directory)
 	loaded = store.load_game()
+	settings = GameSettings.new(directory)
+	settings.load_file()
+	settings.apply()
 	for kind in ["action", "harvest", "day"]:
 		var player = AudioStreamPlayer.new()
 		player.stream = load("res://assets/audio/%s.wav" % kind)
 		player.volume_db = -8
+		player.bus = GameSettings.SFX_BUS
 		add_child(player)
 		audio[kind] = player
 	_show_front()
-
-
-func _setup_input() -> void:
-	var bindings = {
-		"move_up": [KEY_W, KEY_UP],
-		"move_down": [KEY_S, KEY_DOWN],
-		"move_left": [KEY_A, KEY_LEFT],
-		"move_right": [KEY_D, KEY_RIGHT],
-		"use_tool": [KEY_SPACE],
-		"interact": [KEY_E],
-		"cycle_seed": [KEY_Q],
-		"menu": [KEY_ESCAPE],
-		"tool_1": [KEY_1],
-		"tool_2": [KEY_2],
-		"tool_3": [KEY_3],
-		"tool_4": [KEY_4],
-		"tool_5": [KEY_5],
-		"tool_6": [KEY_6],
-		"tool_7": [KEY_7],
-		"sprint": [KEY_SHIFT],
-		"journal": [KEY_J],
-		"map": [KEY_M],
-		"bag": [KEY_B],
-	}
-	for action in bindings:
-		if not InputMap.has_action(action):
-			InputMap.add_action(action)
-		if not InputMap.action_get_events(action).is_empty():
-			continue
-		for code in bindings[action]:
-			var event = InputEventKey.new()
-			event.physical_keycode = code
-			InputMap.action_add_event(action, event)
 
 
 func _show_front() -> void:
@@ -97,7 +67,7 @@ func _show_front() -> void:
 	hud = null
 	front = FrontMenu.new()
 	add_child(front)
-	front.initialize(catalog, loaded.state, loaded.message)
+	front.initialize(catalog, loaded.state, loaded.message, settings)
 	front.action_requested.connect(_on_front)
 
 
@@ -114,6 +84,8 @@ func _on_front(action: String, payload: Dictionary) -> void:
 				front.error_label.text = invalid
 				return
 			_start_game(candidate)
+		"preview_sound":
+			_sound("action")
 		"front_quit":
 			get_tree().quit()
 
@@ -135,7 +107,7 @@ func _start_game(initial_state: FarmState) -> void:
 	selected_tool = "hoe"
 	selected_crop = catalog.crops.keys()[0]
 	_refresh()
-	_save(false)
+	_save(false, true)
 	if not state.narrative.active_scene.is_empty():
 		_start_scene(state.narrative.active_scene)
 
@@ -155,6 +127,7 @@ func _build_world() -> void:
 	world.configure(catalog, state)
 	world.player.action_contact.connect(_tool_contact)
 	world.player.can_move = false
+	_apply_settings()
 	world_display = TextureRect.new()
 	world_display.position = WORLD_RECT.position
 	world_display.size = WORLD_RECT.size
@@ -177,7 +150,8 @@ func _process(delta: float) -> void:
 		mouse_aim = false
 	world.update_target(mouse_aim, _pointer_in_world())
 	var station = world.nearby_station()
-	hud.set_target(station.get("name", ""), world.world_to_screen(world.player.position))
+	var hint: String = station.get("name", "") if settings.get_value("show_hints") else ""
+	hud.set_target(hint, world.world_to_screen(world.player.position))
 	if hud.is_modal():
 		return
 	clock_accumulator += delta
@@ -190,7 +164,7 @@ func _process(delta: float) -> void:
 		else:
 			_refresh()
 	autosave_accumulator += delta
-	if autosave_accumulator >= 30:
+	if autosave_accumulator >= 30 and settings.get_value("autosave"):
 		autosave_accumulator = 0
 		_save(false)
 	var dusk = clampf(float(state.minute - 17 * 60) / 180.0, 0.0, 1.0)
@@ -220,7 +194,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		if hud.is_modal():
 			hud.close_modal()
 		else:
-			hud.dialogs.show_pause(sound_on)
+			hud.dialogs.show_pause()
 		get_viewport().set_input_as_handled()
 		return
 	if hud.is_modal():
@@ -414,14 +388,18 @@ func _on_action(action: String, payload: Dictionary) -> void:
 		"sleep":
 			_next_day()
 		"pause":
-			hud.dialogs.show_pause(sound_on)
+			hud.dialogs.show_pause()
 		"close":
 			hud.close_modal()
 		"save":
 			_save(true)
-		"sound":
-			sound_on = not sound_on
-			hud.dialogs.show_pause(sound_on)
+		"settings":
+			hud.dialogs.show_settings(settings)
+		"settings_closed":
+			_apply_settings()
+			hud.dialogs.show_pause()
+		"preview_sound":
+			_sound("action")
 		"buy":
 			var response = rules.buy_seeds(state, payload.crop, int(payload.quantity))
 			hud.dialogs.show_shop()
@@ -473,11 +451,11 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			if scene_index == pages.size() - 1:
 				_finish_scene(payload.get("choice", ""))
 		"title":
-			if _save(false).is_empty():
+			if _save(false, true).is_empty():
 				loaded = store.load_game()
 				_show_front()
 		"quit":
-			if _save(false).is_empty():
+			if _save(false, true).is_empty():
 				get_tree().quit()
 
 
@@ -515,7 +493,16 @@ func _feedback(response: Dictionary, play_sound: bool = true) -> void:
 			_sound("action")
 
 
-func _save(show_toast: bool) -> String:
+func _apply_settings() -> void:
+	world.player.sprint_toggle = settings.get_value("sprint_toggle")
+	world.reduce_motion = settings.get_value("reduce_motion")
+
+
+## Autosaves are skipped when the player turned them off; manual saves, returning to
+## the title and quitting always write (`force`).
+func _save(show_toast: bool, force: bool = false) -> String:
+	if not force and not show_toast and not settings.get_value("autosave"):
+		return ""
 	state.player_position = world.player.position
 	var error = store.save_game(state)
 	hud.notify_saved(error)
@@ -530,8 +517,7 @@ func _refresh() -> void:
 
 
 func _sound(kind: String) -> void:
-	if sound_on:
-		audio[kind].play()
+	audio[kind].play()
 
 
 func _notification(what: int) -> void:

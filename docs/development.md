@@ -42,7 +42,9 @@ make test-ui
 | --- | --- |
 | `tests/test_runner.gd` | 内容校验、地图可达性、开垦、种植、买卖、树木状态和存档 |
 | `tests/chapter_tests.gd` | 第一章完整流程、人物关系、养成与交付奖励 |
-| `tests/ui_smoke.gd` | 标题、角色创建、键鼠输入、菜单、地图、室内与尾声 |
+| `tests/calendar_tests.gd` | 日历换算、节日与生日、确定性天气、雨雪浇灌、换季枯萎、存档 schema 5 |
+| `tests/settings_tests.gd` | 设置修复与持久化、改键冲突与保留键、音频总线与输入映射 |
+| `tests/ui_smoke.gd` | 标题、设置页（滑块、开关、改键、持久化）、角色创建、键鼠输入、暂停菜单、地图、室内与尾声 |
 | `tests/animation_smoke.gd` | 动作接触帧、菜单暂停、粒子、倒树与树桩碰撞 |
 
 窗口测试串行运行，每次自动使用唯一的 `user://ui-test-<UUID>` 存档目录，截图写入 `build/test-results/<测试目录名>/`，不修改正常游戏档。诊断失败时可单独执行：

@@ -12,6 +12,13 @@ var effects: WorldEffects
 var ambient: WorldAmbient
 var tree_nodes: Dictionary = {}
 var ambient_time: float = 0.0
+var reduce_motion: bool = false:
+	set(value):
+		reduce_motion = value
+		if ambient != null:
+			ambient.calm = value
+		for id in tree_nodes:
+			tree_nodes[id].calm = value
 var background: Texture2D
 var region: Dictionary
 var npc_nodes: Dictionary = {}
@@ -216,7 +223,9 @@ func _process(delta: float) -> void:
 		if anchor.position.distance_squared_to(player.position) < 500000:
 			var sprite: Sprite2D = anchor.get_child(0)
 			if catalog.debris_ids[id].kind == "weeds":
-				sprite.skew = sin(ambient_time * 2 + anchor.position.x * .05) * .045
+				sprite.skew = (
+					0.0 if reduce_motion else sin(ambient_time * 2 + anchor.position.x * .05) * .045
+				)
 	queue_redraw()
 
 
