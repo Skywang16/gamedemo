@@ -34,8 +34,6 @@ func can_complete(s: FarmState, event: String) -> String:
 	}
 	if not expected.has(event) or int(s.narrative.stage) != expected[event]:
 		return "这段故事已经完成，或还没到时候。"
-	if event == "first_meal" and not (s.progress.planted and s.progress.watered):
-		return "阿禾希望你亲手播种并浇水一次，再来分享收成。"
 	return missing(s, quest(s).needs)
 
 
@@ -45,7 +43,7 @@ func complete(s: FarmState, event: String, choice: String = "") -> Dictionary:
 			return result(false, "这封信已经读过了。")
 		s.narrative.intro_seen = true
 		s.narrative.intent = choice
-		return result(true, "欢迎来到你的新生活。")
+		return result(true, "")
 	var error = can_complete(s, event)
 	if not error.is_empty():
 		return result(false, error)
@@ -59,7 +57,9 @@ func complete(s: FarmState, event: String, choice: String = "") -> Dictionary:
 	if event == "festival":
 		s.gold += 50
 		s.narrative.wish = choice
-	return result(true, "第一章完成 · 获得 50 金币" if event == "festival" else "故事已推进 · " + quest(s).title)
+	return result(
+		true, "+50 G" if event == "festival" else ("+20 G" if event == "first_meal" else "")
+	)
 
 
 func talk(s: FarmState, id: String) -> String:
@@ -104,15 +104,15 @@ func gather(s: FarmState, node_id: String) -> Dictionary:
 		if entry.id == node_id:
 			node = entry
 	if node.is_empty() or s.daily.gathered.has(node_id):
-		return result(false, "这里今天已经采集过了，明天会有新的收获。")
+		return result(false, "")
 	if s.stamina < 2:
-		return result(false, "体力不足，回家做饭或休息吧。")
+		return result(false, "体力不足")
 	var amount = 2 if level(int(s.development.foraging_xp)) >= 3 else 1
 	s.inventory[node.item] += amount
 	s.stamina -= 2
 	s.development.foraging_xp += 3
 	s.daily.gathered.append(node_id)
-	return result(true, "%s +%d · 采集经验 +3" % [catalog.items[node.item].name, amount])
+	return result(true, "%s +%d" % [catalog.items[node.item].name, amount])
 
 
 func enter(s: FarmState, destination: String, arrival: Vector2) -> Dictionary:
@@ -120,19 +120,21 @@ func enter(s: FarmState, destination: String, arrival: Vector2) -> Dictionary:
 		not catalog.regions.has(destination)
 		or (destination == "lake" and int(s.narrative.stage) < 3)
 	):
-		return result(false, "木桥还没修好。先帮沈砚收集材料吧。")
-	if catalog.blocked(Vector2i(int(arrival.x / 32), int(arrival.y / 32)), destination):
+		return result(false, "木桥还没修好。")
+	if catalog.blocked(
+		Vector2i(int(arrival.x / 32), int(arrival.y / 32)), destination, s.tree_damage
+	):
 		return result(false, "入口不可通行。")
 	s.current_map = destination
 	s.player_position = arrival
-	return result(true, "来到" + catalog.region(destination).name)
+	return result(true, "")
 
 
 func upgrade(s: FarmState) -> Dictionary:
 	if int(s.development.watering_level) > 0:
 		return result(false, "水壶已经升级过了。")
 	if level(int(s.development.farming_xp)) < 2:
-		return result(false, "需要种植等级 2：收获作物可获得经验。")
+		return result(false, "需要种植 Lv.2")
 	var error = missing(s, {"wood": 3, "stone": 2})
 	if not error.is_empty():
 		return result(false, error)
@@ -142,7 +144,7 @@ func upgrade(s: FarmState) -> Dictionary:
 	s.inventory.wood -= 3
 	s.inventory.stone -= 2
 	s.development.watering_level = 1
-	return result(true, "铜水壶完成！一次浇灌目标和左右两格，消耗 1 体力。")
+	return result(true, "获得铜水壶")
 
 
 func cook(s: FarmState) -> Dictionary:
@@ -164,4 +166,4 @@ func transfer(s: FarmState, id: String, deposit: bool) -> Dictionary:
 		return result(false, "这里没有这个物品。")
 	source[id] -= 1
 	destination[id] += 1
-	return result(true, ("存入" if deposit else "取出") + catalog.items[id].name + " ×1")
+	return result(true, "")

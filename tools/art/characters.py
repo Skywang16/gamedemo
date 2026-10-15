@@ -20,7 +20,7 @@ SHIRTS = [
 ]
 
 
-def actor(skin, hair, outfit, hat, row, frame):
+def actor(skin, hair, outfit, hat, row, frame, arms=True):
     im = Image.new("RGBA", (32, 48))
     d = ImageDraw.Draw(im)
     sk = SKINS[skin]
@@ -78,7 +78,7 @@ def actor(skin, hair, outfit, hat, row, frame):
     else:
         d.line((12, 28 + bob, 21, 28 + bob), fill=cl[2])
         d.line((11, 34 + bob, 21, 34 + bob), fill=cl[0])
-    for x, dy in [(7, step // 2), (23, -step // 2)]:
+    for x, dy in [(7, step // 2), (23, -step // 2)] if arms else []:
         d.polygon(
             [
                 (x, 28 + bob),

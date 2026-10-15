@@ -6,8 +6,10 @@ from art.crops import crop, soil, watering_can
 from art.props import carrot, stall, crate, tool, build_misc
 from art.environment import house, tree, debris, utility, well
 from art.characters import build_characters
+from art.actions import build_actions
 from art.terrain import landscape
-from art.interiors import build_interiors, build_title
+from art.interiors import build_interiors
+from art.interface import build_interface
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "assets/art"
@@ -46,8 +48,9 @@ def main():
         save(name + "_item", fn("harvest"))
     build_misc(OUTPUT)
     build_characters(OUTPUT)
+    build_actions(OUTPUT)
     build_interiors(OUTPUT)
-    build_title(OUTPUT)
+    build_interface(OUTPUT)
     for name in ["home_farm", "town", "forest", "lake"]:
         region = json.loads((ROOT / "data/maps" / f"{name}.json").read_text())
         save(region["background"], landscape(region))

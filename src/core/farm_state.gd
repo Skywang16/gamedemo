@@ -1,7 +1,7 @@
 class_name FarmState
 extends RefCounted
 
-const SCHEMA_VERSION = 3
+const SCHEMA_VERSION = 4
 const MAX_STAMINA = 100
 const MORNING = 8 * 60
 const NIGHT = 20 * 60
@@ -29,6 +29,7 @@ var development: Dictionary = {
 }
 var storage: Dictionary = {}
 var cleared: Array = []
+var tree_damage: Dictionary = {}
 
 
 static func cell_key(cell: Vector2i) -> String:
@@ -67,6 +68,7 @@ func snapshot(catalog: ContentCatalog) -> Dictionary:
 		"development": development.duplicate(true),
 		"storage": storage.duplicate(true),
 		"cleared": cleared.duplicate(),
+		"tree_damage": tree_damage.duplicate(),
 		"day": day,
 		"minute": minute,
 		"stamina": stamina,
@@ -82,6 +84,9 @@ static func from_validated(data: Dictionary) -> FarmState:
 	var s = FarmState.new()
 	s.current_map = data.map_id
 	s.cleared = data.cleared.duplicate()
+	s.tree_damage = data.tree_damage.duplicate()
+	for id in s.tree_damage:
+		s.tree_damage[id] = int(s.tree_damage[id])
 	for field in ["profile", "narrative", "relationships", "daily", "development", "storage"]:
 		s.set(field, data[field].duplicate(true))
 	for key in ["skin", "hair", "outfit", "hat"]:

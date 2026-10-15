@@ -21,6 +21,8 @@ func run() -> void:
 	catalog = ContentCatalog.new()
 	check(catalog.load_content().is_empty(), "content loads")
 	rules = FarmRules.new(catalog)
+	test_quiet_feedback()
+	test_trees()
 	test_clearing()
 	test_crops()
 	test_transactions()
@@ -28,6 +30,114 @@ func run() -> void:
 	test_reachability()
 	print("DOMAIN_TESTS: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
+
+
+func test_quiet_feedback() -> void:
+	var s = FarmState.new_game(catalog)
+	var cell = Vector2i(34, 20)
+	for tool in ["hoe", "seed", "water", "harvest", "axe", "pickaxe"]:
+		var before = s.snapshot(catalog)
+		var response = rules.apply_tool(s, tool, cell, cell, "turnip")
+		check(
+			not response.ok and response.message.is_empty() and before == s.snapshot(catalog),
+			"wrong tool stays silent and atomic: " + tool
+		)
+	rules.apply_tool(s, "scythe", cell, cell, "turnip")
+	check(
+		rules.apply_tool(s, "seed", cell, cell, "turnip").message.is_empty(),
+		"unprepared ground does not teach sequence"
+	)
+	for tool in ["hoe", "seed", "water"]:
+		var response = rules.apply_tool(s, tool, cell, cell, "turnip")
+		check(
+			response.ok and response.message.is_empty(),
+			"routine action uses world feedback: " + tool
+		)
+	check(
+		rules.apply_tool(s, "water", cell, cell, "turnip").message.is_empty(),
+		"wet soil stays silent"
+	)
+	check(
+		rules.apply_tool(s, "harvest", cell, cell, "turnip").message.is_empty(),
+		"immature crops stay silent"
+	)
+
+
+func test_trees() -> void:
+	var s = FarmState.new_game(catalog)
+	var cell = Vector2i(32, 14)
+	var id = catalog.tree_at(cell, s)
+	check(not id.is_empty(), "tree indexed independently from static obstacles")
+	var before = s.snapshot(catalog)
+	check(
+		not rules.apply_tool(s, "hoe", cell, cell, "turnip").ok and s.snapshot(catalog) == before,
+		"wrong tool cannot damage tree"
+	)
+	check(
+		not rules.apply_tool(s, "axe", cell, cell + Vector2i(3, 0), "turnip").ok,
+		"tree chopping respects reach"
+	)
+	for hit in range(1, 6):
+		var response = rules.apply_tool(s, "axe", cell, cell + Vector2i.DOWN, "turnip")
+		check(
+			response.ok and response.tree_hits == hit and s.tree_damage[id] == hit,
+			"tree hit commits exactly once"
+		)
+		check(
+			catalog.blocked(cell, s.current_map, s.tree_damage) == (hit < 5),
+			"standing tree and stump block until cleared"
+		)
+		check(
+			s.inventory.wood == (0 if hit < 3 else (4 if hit < 5 else 5)),
+			"wood only awarded at fell and uproot"
+		)
+	check(s.stamina == 85, "five axe hits cost fifteen stamina")
+	before = s.snapshot(catalog)
+	check(
+		not rules.apply_tool(s, "axe", cell, cell, "turnip").ok and before == s.snapshot(catalog),
+		"cleared tree cannot pay again"
+	)
+	var restored = FarmState.from_validated(s.snapshot(catalog))
+	check(
+		(
+			restored.tree_damage[id] == 5
+			and not catalog.blocked(cell, s.current_map, restored.tree_damage)
+		),
+		"tree clearance persists"
+	)
+	s.player_position = Vector2(cell) * 32 + Vector2(16, 16)
+	check(
+		SaveStore.new(catalog).validate(s.snapshot(catalog)).is_empty(),
+		"player can save on cleared tree tile"
+	)
+	for tree_id in catalog.tree_ids:
+		var entry = catalog.tree_ids[tree_id]
+		if entry.map == "home_farm" and catalog.plantable(entry.cell, {tree_id: 5}):
+			s.tree_damage[tree_id] = 5
+			check(
+				rules.apply_tool(s, "hoe", entry.cell, entry.cell, "turnip").ok,
+				"cleared tree ground can be farmed"
+			)
+			check(
+				SaveStore.new(catalog).validate(s.snapshot(catalog)).is_empty(),
+				"farming reclaimed tree tile validates"
+			)
+			break
+	s.tree_damage[id] = 1
+	s.stamina = 0
+	before = s.snapshot(catalog)
+	check(
+		not rules.apply_tool(s, "axe", cell, cell, "turnip").ok and before == s.snapshot(catalog),
+		"exhaustion cannot damage trees"
+	)
+	var invalid = before.duplicate(true)
+	invalid.tree_damage[id] = 7
+	check(not SaveStore.new(catalog).validate(invalid).is_empty(), "invalid tree stage rejected")
+	s.current_map = "forest"
+	var p = catalog.regions.forest.trees[0]
+	cell = Vector2i(p[0], p[1])
+	s.stamina = 100
+	check(rules.apply_tool(s, "axe", cell, cell, "turnip").ok, "forest trees support chopping")
 
 
 func test_clearing() -> void:

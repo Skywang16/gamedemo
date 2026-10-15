@@ -22,6 +22,7 @@ func validate(data: Variant) -> String:
 			"gold",
 			"inventory",
 			"plots",
+			"tree_damage",
 			"progress",
 			"player_position"
 		]
@@ -45,6 +46,15 @@ func validate(data: Variant) -> String:
 	for id in data.inventory:
 		if not catalog.items.has(id) or not whole(data.inventory[id], 0, 1000000):
 			return "物品数量无效"
+	if not data.tree_damage is Dictionary:
+		return "树木记录无效"
+	for id in data.tree_damage:
+		if (
+			not id is String
+			or not catalog.tree_ids.has(id)
+			or not whole(data.tree_damage[id], 1, 5)
+		):
+			return "树木记录无效"
 	if (
 		not data.plots is Dictionary
 		or data.plots.size() > int(catalog.map.width) * int(catalog.map.height)
@@ -57,7 +67,7 @@ func validate(data: Variant) -> String:
 		if coords.size() != 2 or not coords[0].is_valid_int() or not coords[1].is_valid_int():
 			return "地块坐标无效"
 		var cell = FarmState.key_cell(key)
-		if FarmState.cell_key(cell) != key or not catalog.plantable(cell):
+		if FarmState.cell_key(cell) != key or not catalog.plantable(cell, data.tree_damage):
 			return "地块超出农田"
 		var p = data.plots[key]
 		if not p is Dictionary or not p.has_all(["crop", "growth", "watered"]):
@@ -98,7 +108,7 @@ func validate(data: Variant) -> String:
 		or pos[1] >= (int(catalog.region(data.map_id).height) - 1) * 32
 	):
 		return "角色超出地图"
-	if catalog.blocked(Vector2i(int(pos[0] / 32), int(pos[1] / 32)), data.map_id):
+	if catalog.blocked(Vector2i(int(pos[0] / 32), int(pos[1] / 32)), data.map_id, data.tree_damage):
 		return "角色位于障碍物内"
 	return ""
 

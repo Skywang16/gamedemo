@@ -5,7 +5,7 @@ var state: FarmState
 var rules: FarmRules
 var stories: StoryRules
 var store: SaveStore
-const WORLD_RECT = Rect2(16, 96, 960, 608)
+const WORLD_RECT = Rect2(0, 0, 1280, 800)
 var world: FarmWorld
 var world_viewport: SubViewport
 var world_display: TextureRect
@@ -14,6 +14,7 @@ var front: FrontMenu
 var loaded: Dictionary
 var selected_tool: String = "hoe"
 var selected_crop: String = "turnip"
+var action_crop: String = "turnip"
 var mouse_aim: bool = false
 var clock_accumulator: float = 0.0
 var autosave_accumulator: float = 0.0
@@ -138,12 +139,8 @@ func _start_game(initial_state: FarmState) -> void:
 	selected_crop = catalog.crops.keys()[0]
 	_refresh()
 	_save(false)
-	if not state.narrative.intro_seen:
-		_start_scene("prologue")
-	elif not state.narrative.active_scene.is_empty():
+	if not state.narrative.active_scene.is_empty():
 		_start_scene(state.narrative.active_scene)
-	else:
-		hud.toast("欢迎回来，" + state.profile.name + "。" + stories.quest(state).hint, 7)
 
 
 func _build_world() -> void:
@@ -159,6 +156,7 @@ func _build_world() -> void:
 	world = FarmWorld.new()
 	world_viewport.add_child(world)
 	world.configure(catalog, state)
+	world.player.action_contact.connect(_tool_contact)
 	world.player.can_move = false
 	world_display = TextureRect.new()
 	world_display.position = WORLD_RECT.position
@@ -182,7 +180,7 @@ func _process(delta: float) -> void:
 		mouse_aim = false
 	world.update_target(mouse_aim, _pointer_in_world())
 	var station = world.nearby_station()
-	hud.set_target(_target_description(), station.get("name", ""))
+	hud.set_target(station.get("name", ""), world.world_to_screen(world.player.position))
 	if hud.is_modal():
 		return
 	clock_accumulator += delta
@@ -216,14 +214,16 @@ func _unhandled_input(event: InputEvent) -> void:
 			elif scene_event not in ["festival", "prologue"]:
 				_on_action("dialogue_finish", {})
 		elif event.is_action_pressed("menu"):
-			if scene_event != "prologue":
-				hud.close_modal()
+			state.narrative.active_scene = ""
+			state.narrative.page = 0
+			hud.close_modal()
+			_save(false)
 		return
 	if event.is_action_pressed("menu"):
 		if hud.is_modal():
 			hud.close_modal()
 		else:
-			hud.show_pause(sound_on)
+			hud.dialogs.show_pause(sound_on)
 		get_viewport().set_input_as_handled()
 		return
 	if hud.is_modal():
@@ -254,31 +254,42 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _use_tool() -> void:
-	var response = rules.apply_tool(
-		state, selected_tool, world.target, world.player.cell(), selected_crop
-	)
-	_feedback(response)
+	if world.player.swing_tool(selected_tool, world.target):
+		action_crop = selected_crop
+
+
+func _tool_contact(tool: String, cell: Vector2i) -> void:
+	var response = rules.apply_tool(state, tool, cell, world.player.cell(), action_crop)
+	_feedback(response, false)
 	if response.ok:
 		if response.has("cleared_id"):
 			world.remove_debris(response.cleared_id)
-		world.effect(world.target, selected_tool)
-		_sound("harvest" if selected_tool == "harvest" else "action")
+		if response.has("tree_id"):
+			world.strike_tree(response.tree_id, response.tree_hits)
+		world.effect(cell, tool)
+		if response.has("harvest"):
+			world.effects.pickup(
+				world.tex(catalog.items[response.harvest].icon),
+				Vector2(cell) * 32 + Vector2(16, 16)
+			)
+		_sound("harvest" if tool == "harvest" else "action")
 
 
 func _interact() -> void:
+	if world.player.action_remaining > 0:
+		return
 	var station = world.nearby_station()
 	if station.is_empty():
-		hud.toast("靠近门口、路标、人物或采集物，按 E 互动。")
 		return
 	match station.kind:
 		"exit":
 			_travel(station.destination, Vector2(station.arrival[0], station.arrival[1]))
 		"bed":
-			hud.show_sleep()
+			hud.dialogs.show_sleep()
 		"shop":
-			hud.show_shop()
+			hud.dialogs.show_shop()
 		"shipping":
-			hud.show_shipping(rules.sale_quote(state))
+			hud.dialogs.show_shipping(rules.sale_quote(state))
 		"npc":
 			_talk_npc(station.id)
 		"gather":
@@ -292,22 +303,22 @@ func _interact() -> void:
 			elif state.narrative.stage == 2:
 				_request_scene("bridge")
 			else:
-				hud.toast("沈砚说：先去米朵的小馆坐坐吧，大家有话想跟你说。")
+				hud.toast("桥面断了，下面是湍急的水。")
 		"lantern":
 			if state.narrative.stage == 5:
 				_request_scene("festival")
 			elif state.narrative.stage == 6:
-				hud.show_ending()
+				hud.dialogs.show_ending()
 			else:
-				hud.toast("河灯台还在等大家。先完成手记里的准备吧。")
+				hud.toast("灯架空着，还没人过来。")
 		"letter":
-			_start_scene("letter")
+			_start_scene("letter" if state.narrative.intro_seen else "prologue")
 		"storage":
-			hud.show_bag(true)
+			hud.dialogs.show_bag(true)
 		"kitchen":
-			hud.show_cooking()
+			hud.dialogs.show_cooking()
 		"upgrade":
-			hud.show_upgrade()
+			hud.dialogs.show_upgrade()
 		"board":
 			_on_action("map", {})
 
@@ -342,7 +353,7 @@ func _talk_npc(id: String) -> void:
 	if event == "welcome":
 		_start_scene(event)
 	else:
-		hud.show_npc(id, line, event)
+		hud.dialogs.show_npc(id, line, event)
 
 
 func _request_scene(event: String) -> void:
@@ -359,22 +370,13 @@ func _start_scene(event: String) -> void:
 		pages = catalog.story.scenes.prologue
 	else:
 		pages = catalog.story.scenes[event].duplicate(true)
-		if event == "welcome":
-			pages[0][1] += (
-				"\n\n"
-				+ (
-					"想重新开始的话，就先把今天过好。"
-					if state.narrative.intent == "restart"
-					else "想照料土地？那我们一定有很多话聊！"
-				)
-			)
 	scene_index = int(state.narrative.page) if state.narrative.active_scene == event else 0
 	scene_index = clampi(scene_index, 0, pages.size() - 1)
 	if event != "letter":
 		state.narrative.active_scene = event
 		state.narrative.page = scene_index
 		_save(false)
-	hud.show_dialogue(pages, scene_index, event)
+	hud.dialogs.show_dialogue(pages, scene_index, event)
 
 
 func _finish_scene(choice: String) -> void:
@@ -394,7 +396,7 @@ func _finish_scene(choice: String) -> void:
 	_save(false)
 	world.queue_redraw()
 	if scene_event == "festival":
-		hud.show_ending()
+		hud.dialogs.show_ending()
 		_sound("day")
 	elif not response.message.is_empty():
 		hud.toast(response.message)
@@ -411,36 +413,36 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			selected_tool = "seed"
 			_refresh()
 		"ask_sleep":
-			hud.show_sleep()
+			hud.dialogs.show_sleep()
 		"sleep":
 			_next_day()
 		"pause":
-			hud.show_pause(sound_on)
+			hud.dialogs.show_pause(sound_on)
 		"close":
 			hud.close_modal()
 		"save":
 			_save(true)
 		"sound":
 			sound_on = not sound_on
-			hud.show_pause(sound_on)
+			hud.dialogs.show_pause(sound_on)
 		"buy":
 			var response = rules.buy_seeds(state, payload.crop, int(payload.quantity))
-			hud.show_shop()
+			hud.dialogs.show_shop()
 			_feedback(response)
 		"sell":
 			hud.close_modal()
 			_feedback(rules.sell_produce(state))
 		"journal":
-			hud.show_journal()
+			hud.dialogs.show_journal()
 		"map":
 			state.player_position = world.player.position
-			hud.show_map()
+			hud.dialogs.show_map()
 		"bag":
-			hud.show_bag()
+			hud.dialogs.show_bag()
 		"story":
 			_request_scene(payload.event)
 		"gift_menu":
-			hud.show_gifts(payload.npc)
+			hud.dialogs.show_gifts(payload.npc)
 		"gift":
 			var response = stories.gift(state, payload.npc, payload.item)
 			hud.close_modal()
@@ -453,15 +455,15 @@ func _on_action(action: String, payload: Dictionary) -> void:
 				_start_scene("memory_" + payload.npc)
 		"transfer":
 			var response = stories.transfer(state, payload.id, payload.deposit)
-			hud.show_bag(true)
+			hud.dialogs.show_bag(true)
 			_feedback(response)
 		"cook":
 			var response = stories.cook(state)
-			hud.show_cooking()
+			hud.dialogs.show_cooking()
 			_feedback(response)
 		"upgrade":
 			var response = stories.upgrade(state)
-			hud.show_upgrade()
+			hud.dialogs.show_upgrade()
 			_feedback(response)
 		"dialogue_next":
 			if scene_index < pages.size() - 1:
@@ -469,7 +471,7 @@ func _on_action(action: String, payload: Dictionary) -> void:
 				if scene_event != "letter":
 					state.narrative.page = scene_index
 					_save(false)
-				hud.show_dialogue(pages, scene_index, scene_event)
+				hud.dialogs.show_dialogue(pages, scene_index, scene_event)
 		"dialogue_finish":
 			if scene_index == pages.size() - 1:
 				_finish_scene(payload.get("choice", ""))
@@ -483,38 +485,33 @@ func _on_action(action: String, payload: Dictionary) -> void:
 
 
 func _next_day() -> void:
-	var response = rules.next_day(state)
+	rules.next_day(state)
+	hud.close_modal()
 	clock_accumulator = 0
 	stories.enter(state, "cottage", Vector2(464, 464))
 	_build_world()
 	world.modulate = Color.WHITE
-	hud.show_morning(response.message)
+	hud.toast("春 · 第 %d 天" % state.day)
 	_sound("day")
 	_refresh()
 	_save(false)
 
 
-func _feedback(response: Dictionary) -> void:
+func _feedback(response: Dictionary, play_sound: bool = true) -> void:
 	hud.toast(response.message)
 	if response.ok:
 		_refresh()
 		_save(false)
-		_sound("action")
+		if play_sound:
+			_sound("action")
 
 
 func _save(show_toast: bool) -> String:
 	state.player_position = world.player.position
 	var error = store.save_game(state)
-	if error.is_empty():
-		hud.save_label.text = (
-			"已保存 · 第 %d 天 · %s" % [state.day, catalog.region(state.current_map).name]
-		)
-		if show_toast:
-			hud.toast("这一天的故事，已经保存。")
-	else:
-		hud.save_label.text = "保存失败，请重试"
-		if show_toast or not error.is_empty():
-			hud.toast(error, 7)
+	hud.notify_saved(error)
+	if show_toast and error.is_empty():
+		hud.toast("已保存")
 	return error
 
 
@@ -526,26 +523,6 @@ func _refresh() -> void:
 func _sound(kind: String) -> void:
 	if sound_on:
 		audio[kind].play()
-
-
-func _target_description() -> String:
-	if not world.target_visible:
-		return catalog.region(state.current_map).name + " · 靠近人物、路口或门前按 E · M 查看路线"
-	var debris = catalog.debris_at(world.target, state)
-	if not debris.is_empty():
-		return {"weeds": "杂草 · 按 5 选镰刀清理", "branch": "枯枝 · 按 6 选斧头清理", "rock": "碎石 · 按 7 选镐清理"}[
-			debris.kind
-		]
-	var p = state.plots.get(FarmState.cell_key(world.target))
-	if p == null:
-		return "空地 · 用锄头翻土后播种"
-	var water = "已浇水" if p.watered else "今天还没浇水"
-	if p.crop == "":
-		return "已翻土 · " + water
-	var c = catalog.crops[p.crop]
-	if int(p.growth) >= int(c.growth_days):
-		return "%s成熟了 · 按 4 收获" % c.name
-	return "%s · 生长 %d / %d 天 · %s" % [c.name, p.growth, c.growth_days, water]
 
 
 func capture_after_frame(path: String) -> void:

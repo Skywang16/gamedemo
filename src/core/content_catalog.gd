@@ -9,6 +9,8 @@ var story: Dictionary = {}
 var blocked_cells: Dictionary = {}
 var debris_ids: Dictionary = {}
 var debris_cells: Dictionary = {}
+var tree_ids: Dictionary = {}
+var tree_cells: Dictionary = {}
 
 
 func load_content() -> String:
@@ -25,11 +27,12 @@ func load_content() -> String:
 		var item = items[id]
 		if (
 			not item is Dictionary
-			or not item.has_all(["name", "kind", "buy_price", "sell_price", "icon"])
+			or not item.has_all(["name", "kind", "buy_price", "sell_price", "icon", "description"])
 		):
 			return "物品配置不完整：" + id
 		if (
 			not item.name is String
+			or not item.description is String
 			or not item.icon is String
 			or item.kind not in ["seed", "produce", "material"]
 		):
@@ -134,10 +137,14 @@ func load_content() -> String:
 			for y in range(int(r[1]), int(r[1] + r[3])):
 				for x in range(int(r[0]), int(r[0] + r[2])):
 					cells[Vector2i(x, y)] = true
+		tree_cells[id] = {}
 		for at in area.trees:
 			if not numeric_array(at, 2):
 				return "树木坐标无效：" + id
-			cells[Vector2i(at[0], at[1])] = true
+			var cell = Vector2i(at[0], at[1])
+			var tree_id = id + ":" + FarmState.cell_key(cell)
+			tree_ids[tree_id] = {"map": id, "cell": cell}
+			tree_cells[id][cell] = tree_id
 		blocked_cells[id] = cells
 		for prop in area.props:
 			if (
@@ -314,9 +321,12 @@ func numeric_array(value: Variant, length: int) -> bool:
 	return true
 
 
-func plantable(cell: Vector2i) -> bool:
+func plantable(cell: Vector2i, tree_damage: Dictionary = {}) -> bool:
 	var r = map.plantable
-	if not Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])).has_point(cell) or blocked(cell):
+	if (
+		not Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3])).has_point(cell)
+		or blocked(cell, "home_farm", tree_damage)
+	):
 		return false
 	for path in map.no_plant:
 		if Rect2i(int(path[0]), int(path[1]), int(path[2]), int(path[3])).has_point(cell):
@@ -324,7 +334,12 @@ func plantable(cell: Vector2i) -> bool:
 	return true
 
 
-func blocked(cell: Vector2i, map_id: String = "home_farm") -> bool:
+func blocked(cell: Vector2i, map_id: String = "home_farm", tree_damage: Dictionary = {}) -> bool:
+	var tree_id = tree_cells[map_id].get(cell, "")
+	return static_blocked(cell, map_id) or (tree_id != "" and tree_damage.get(tree_id, 0) < 5)
+
+
+func static_blocked(cell: Vector2i, map_id: String) -> bool:
 	var area = regions[map_id]
 	return (
 		cell.x <= 0
@@ -333,6 +348,11 @@ func blocked(cell: Vector2i, map_id: String = "home_farm") -> bool:
 		or cell.y >= int(area.height) - 1
 		or blocked_cells[map_id].has(cell)
 	)
+
+
+func tree_at(cell: Vector2i, state: FarmState) -> String:
+	var id: String = tree_cells[state.current_map].get(cell, "")
+	return id if state.tree_damage.get(id, 0) < 5 else ""
 
 
 func debris_at(cell: Vector2i, state: FarmState) -> Dictionary:

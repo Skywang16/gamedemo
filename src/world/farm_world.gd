@@ -8,7 +8,10 @@ var actors: Node2D
 var textures: Dictionary = {}
 var target: Vector2i = Vector2i(-1, -1)
 var target_visible: bool = false
-var particles: Array = []
+var effects: WorldEffects
+var ambient: WorldAmbient
+var tree_nodes: Dictionary = {}
+var ambient_time: float = 0.0
 var background: Texture2D
 var region: Dictionary
 var npc_nodes: Dictionary = {}
@@ -28,6 +31,9 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	variation.base_font = load("res://assets/fonts/NotoSansSC.ttf")
 	variation.variation_opentype = {2003265652: 600.0}
 	map_font = variation
+	ambient = WorldAmbient.new()
+	add_child(ambient)
+	ambient.configure(region)
 	actors = Node2D.new()
 	actors.y_sort_enabled = true
 	add_child(actors)
@@ -38,22 +44,33 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 			Vector2(prop.offset[0], prop.offset[1])
 		)
 	for p in region.trees:
-		add_prop(
-			"tree_%d" % ((int(p[0]) + int(p[1])) % 4),
-			Vector2((p[0] + 0.5) * 32, (p[1] + 0.5) * 32),
-			Vector2(-48, -120)
+		var cell = Vector2i(p[0], p[1])
+		var id = catalog.tree_cells[state.current_map][cell]
+		var tree = TreeProp.new()
+		tree.position = Vector2(cell) * 32 + Vector2(16, 16)
+		actors.add_child(tree)
+		tree.configure(
+			tex("tree_moving_%d" % ((cell.x + cell.y) % 4)), int(state.tree_damage.get(id, 0))
 		)
+		tree.landed.connect(
+			func(at):
+				effects.burst("axe", at, 24)
+				effects.burst("scythe", at + Vector2(0, -20), 16)
+		)
+		tree_nodes[id] = tree
 	var body = StaticBody2D.new()
 	add_child(body)
 	# Merge contiguous occupied cells into row rectangles rather than one body per tile.
 	for y in range(int(region.height)):
 		var x = 0
 		while x < int(region.width):
-			if not catalog.blocked(Vector2i(x, y), state.current_map):
+			if not catalog.static_blocked(Vector2i(x, y), state.current_map):
 				x += 1
 				continue
 			var start = x
-			while x < int(region.width) and catalog.blocked(Vector2i(x, y), state.current_map):
+			while (
+				x < int(region.width) and catalog.static_blocked(Vector2i(x, y), state.current_map)
+			):
 				x += 1
 			add_collider(
 				body, Vector2((start + x) * 16, y * 32 + 16), Vector2((x - start) * 32, 32)
@@ -76,12 +93,15 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		if npc.map == state.current_map:
 			var at = Vector2(catalog.npc_cell(id, state.minute)) * 32 + Vector2(16, 16)
 			npc_nodes[id] = add_prop(npc.sprite, at, Vector2(-16, -44))
+	effects = WorldEffects.new()
+	effects.z_index = 2
+	add_child(effects)
 	player = Farmer.new()
 	player.appearance = state.profile
 	player.position = state.player_position
 	actors.add_child(player)
 	camera = Camera2D.new()
-	camera.zoom = Vector2(1.2, 1.2) if region.width <= 30 else Vector2(1.5, 1.5)
+	camera.zoom = Vector2(1.34, 1.34) if region.width <= 30 else Vector2(1.5, 1.5)
 	camera.offset = Vector2.ZERO if region.width <= 30 else Vector2(0, -48)
 	camera.limit_left = 0
 	camera.limit_top = 0
@@ -158,41 +178,46 @@ func update_target(mouse_aim: bool, pointer: Vector2 = Vector2.ZERO) -> void:
 		target = Vector2i(floori(point.x / 32), floori(point.y / 32))
 	else:
 		target = player.cell() + player.facing
-	target_visible = state.current_map == "home_farm" and catalog.plantable(target)
+	target_visible = (
+		(state.current_map == "home_farm" and catalog.plantable(target, state.tree_damage))
+		or not catalog.tree_at(target, state).is_empty()
+	)
 	queue_redraw()
 
 
 func effect(cell: Vector2i, kind: String) -> void:
-	var color = Color("a7d7c9") if kind == "water" else Color("ecd38b")
-	for i in range(8):
-		var a = float(i) * TAU / 8.0
-		particles.append(
-			{
-				"p": Vector2(cell) * 32 + Vector2(16, 18),
-				"v": Vector2(cos(a) * 25, sin(a) * 23 - 20),
-				"life": 0.5,
-				"color": color
-			}
-		)
-	player.celebrate()
+	var at = Vector2(cell) * 32 + Vector2(16, 18)
+	effects.burst(kind, at)
+	if kind == "water":
+		effects.pour(player.position + Vector2(player.facing) * 20 + Vector2(0, -17), at)
+
+
+func strike_tree(id: String, hits: int) -> void:
+	tree_nodes[id].strike(hits, player.position.x)
+	if hits in [3, 5]:
+		effects.pickup(tex("wood"), tree_nodes[id].position)
 
 
 func _process(delta: float) -> void:
+	ambient_time += delta
 	if state != null and int(state.minute / 840) != last_period:
 		last_period = int(state.minute / 840)
 		for id in npc_nodes:
 			npc_nodes[id].position = (
 				Vector2(catalog.npc_cell(id, state.minute)) * 32 + Vector2(16, 16)
 			)
-		queue_redraw()
-	for i in range(particles.size() - 1, -1, -1):
-		particles[i].life -= delta
-		particles[i].p += particles[i].v * delta
-		particles[i].v.y += 55 * delta
-		if particles[i].life <= 0:
-			particles.remove_at(i)
-	if not particles.is_empty():
-		queue_redraw()
+	for id in npc_nodes:
+		var sprite: Sprite2D = npc_nodes[id].get_child(0)
+		sprite.position.y = (
+			-44 + (1 if sin(ambient_time * 2.2 + npc_nodes[id].position.x) > 0.6 else 0)
+		)
+	for id in debris_nodes:
+		var anchor: Node2D = debris_nodes[id]
+		if anchor.position.distance_squared_to(player.position) < 500000:
+			var sprite: Sprite2D = anchor.get_child(0)
+			if catalog.debris_ids[id].kind == "weeds":
+				sprite.skew = sin(ambient_time * 2 + anchor.position.x * .05) * .045
+	queue_redraw()
 
 
 func _draw() -> void:
@@ -219,10 +244,6 @@ func _draw() -> void:
 			var ydir = 1 if corner.y < 16 else -1
 			draw_line(pos + corner, pos + corner + Vector2(7 * xdir, 0), color, 2)
 			draw_line(pos + corner, pos + corner + Vector2(0, 7 * ydir), color, 2)
-	for p in particles:
-		var col = p.color
-		col.a = p.life * 2.0
-		draw_rect(Rect2(p.p, Vector2(3, 3)), col)
 
 
 func available_stations() -> Array:
@@ -269,7 +290,10 @@ func _draw_landmarks() -> void:
 	if state.current_map == "lake" and state.narrative.stage == 6:
 		for i in range(18):
 			var area = region.lantern_area
-			var at = Vector2(area[0] + (i * 137) % int(area[2]), area[1] + (i * 79) % int(area[3]))
+			var at = (
+				Vector2(area[0] + (i * 137) % int(area[2]), area[1] + (i * 79) % int(area[3]))
+				+ Vector2(sin(ambient_time * .4 + i) * 6, sin(ambient_time + i) * 2)
+			)
 			draw_circle(at, 12, Color("f6d89825"))
 			draw_rect(Rect2(at - Vector2(4, 3), Vector2(8, 6)), Color("f1d28b"))
 			draw_line(at + Vector2(0, 6), at + Vector2(0, 14), Color("c6b681"), 2)

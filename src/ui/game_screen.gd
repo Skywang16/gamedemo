@@ -3,29 +3,58 @@ extends Control
 
 signal action_requested(action: String, payload: Dictionary)
 
-const CREAM = Color("f2e8ca")
-const MUTED = Color("a6b89c")
-const GOLD = Color("e2bd75")
-const GREEN = Color("203c31")
+const INK = Color("59391f")
+const MUTED = Color("8b6845")
+const GOLD = Color("a7652c")
+const LIGHT = Color("fff0c3")
 
 var catalog: ContentCatalog
 var font: Font
+var skins: Dictionary = {}
 
 
-func setup_theme(size_px: int = 17) -> void:
+func setup_theme(size_px: int = 18) -> void:
+	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var variation = FontVariation.new()
 	variation.base_font = load("res://assets/fonts/NotoSansSC.ttf")
-	variation.variation_opentype = {2003265652: 500.0}
+	variation.variation_opentype = {2003265652: 550.0}
 	font = variation
 	var theme_data = Theme.new()
 	theme_data.default_font = font
 	theme_data.default_font_size = size_px
+	theme_data.set_stylebox("panel", "TooltipPanel", _skin("paper"))
+	theme_data.set_color("font_color", "TooltipLabel", INK)
+	theme_data.set_font_size("font_size", "TooltipLabel", 17)
 	theme = theme_data
 
 
-func icon(id: String, rect: Rect2, parent: Node) -> void:
+func _skin(name: String) -> StyleBoxTexture:
+	if not skins.has(name):
+		var style = StyleBoxTexture.new()
+		style.texture = load("res://assets/ui/%s.png" % name)
+		style.texture_margin_left = 11
+		style.texture_margin_right = 11
+		style.texture_margin_top = 12
+		style.texture_margin_bottom = 12
+		style.content_margin_left = 12
+		style.content_margin_right = 12
+		style.content_margin_top = 8
+		style.content_margin_bottom = 8
+		skins[name] = style
+	return skins[name]
+
+
+func icon(id: String, rect: Rect2, parent: Node) -> TextureRect:
+	return _picture("res://assets/art/%s.png" % id, rect, parent)
+
+
+func ui_icon(id: String, rect: Rect2, parent: Node) -> TextureRect:
+	return _picture("res://assets/ui/%s.png" % id, rect, parent)
+
+
+func _picture(path: String, rect: Rect2, parent: Node) -> TextureRect:
 	var picture = TextureRect.new()
-	picture.texture = load("res://assets/art/%s.png" % id)
+	picture.texture = load(path)
 	picture.position = rect.position
 	picture.size = rect.size
 	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -33,31 +62,38 @@ func icon(id: String, rect: Rect2, parent: Node) -> void:
 	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(picture)
+	return picture
 
 
-func _style(color: Color, radius: int = 8, border: Color = Color.TRANSPARENT) -> StyleBoxFlat:
-	var s = StyleBoxFlat.new()
-	s.bg_color = color
-	s.set_corner_radius_all(radius)
-	s.set_border_width_all(1)
-	s.border_color = border
-	s.content_margin_left = 12
-	s.content_margin_right = 12
-	return s
+func _frame(rect: Rect2, skin: String = "paper", parent: Node = self) -> Panel:
+	var panel = Panel.new()
+	panel.position = rect.position
+	panel.size = rect.size
+	panel.add_theme_stylebox_override("panel", _skin(skin))
+	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	parent.add_child(panel)
+	return panel
 
 
 func _panel(rect: Rect2, color: Color, parent: Node = self) -> Panel:
 	var panel = Panel.new()
 	panel.position = rect.position
 	panel.size = rect.size
-	panel.add_theme_stylebox_override("panel", _style(color, 8))
+	var style = StyleBoxFlat.new()
+	style.bg_color = color
+	panel.add_theme_stylebox_override("panel", style)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(panel)
 	return panel
 
 
 func _label(
-	text: String, rect: Rect2, size_px: int, color: Color, wrap: bool = false, parent: Node = self
+	text: String,
+	rect: Rect2,
+	size_px: int,
+	color: Color = INK,
+	wrap: bool = false,
+	parent: Node = self
 ) -> Label:
 	var label = Label.new()
 	label.text = text
@@ -69,6 +105,8 @@ func _label(
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if wrap:
 		label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	else:
+		label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	parent.add_child(label)
 	return label
 
@@ -79,14 +117,23 @@ func _button(text: String, rect: Rect2, action: Callable, parent: Node = self) -
 	button.position = rect.position
 	button.size = rect.size
 	button.focus_mode = Control.FOCUS_NONE
-	button.add_theme_color_override("font_color", CREAM)
-	button.add_theme_color_override("font_hover_color", Color("fff3c9"))
-	button.add_theme_color_override("font_disabled_color", Color("7e8b72"))
-	button.add_theme_stylebox_override("normal", _style(GREEN, 6, Color("496044")))
-	button.add_theme_stylebox_override("hover", _style(Color("3e5840"), 6, GOLD))
-	button.add_theme_stylebox_override("pressed", _style(Color("65704b"), 6, GOLD))
-	button.add_theme_stylebox_override("disabled", _style(Color("283a2d"), 6))
-	button.add_theme_stylebox_override("focus", _style(Color("ffffff08"), 6, GOLD))
+	button.add_theme_color_override("font_color", LIGHT)
+	button.add_theme_color_override("font_hover_color", Color("fff8db"))
+	button.add_theme_color_override("font_pressed_color", LIGHT)
+	button.add_theme_color_override("font_disabled_color", Color("8c7754"))
+	button.add_theme_color_override("font_shadow_color", Color("684222"))
+	button.add_theme_constant_override("shadow_offset_y", 1)
+	for pair in [
+		["normal", "button"], ["hover", "hover"], ["pressed", "pressed"], ["disabled", "disabled"]
+	]:
+		button.add_theme_stylebox_override(pair[0], _skin(pair[1]))
 	button.pressed.connect(action)
 	parent.add_child(button)
+	return button
+
+
+func _slot(rect: Rect2, action: Callable, parent: Node = self) -> Button:
+	var button = _button("", rect, action, parent)
+	button.add_theme_stylebox_override("normal", _skin("slot"))
+	button.add_theme_stylebox_override("hover", _skin("selected"))
 	return button

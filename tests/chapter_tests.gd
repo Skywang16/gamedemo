@@ -26,6 +26,7 @@ func run() -> void:
 		return
 	rules = FarmRules.new(catalog)
 	story = StoryRules.new(catalog)
+	test_optional_intro()
 	test_chapter()
 	test_growth()
 	test_persistence()
@@ -44,7 +45,7 @@ func test_chapter() -> void:
 	check(not story.complete(s, "prologue", "restart").ok, "intro cannot repeat")
 	check(story.complete(s, "welcome").ok, "meet neighbor")
 	var before = s.snapshot(catalog)
-	check(not story.complete(s, "first_meal").ok, "tutorial and produce required")
+	check(not story.complete(s, "first_meal").ok, "delivery requires produce")
 	check(before == s.snapshot(catalog), "failed delivery atomic")
 	check(not story.enter(s, "lake", Vector2(144, 944)).ok, "lake locked")
 	for x in range(34, 38):
@@ -107,6 +108,19 @@ func test_chapter() -> void:
 	check(
 		SaveStore.new(catalog).validate(s.snapshot(catalog)).is_empty(),
 		"completed chapter save valid"
+	)
+
+
+func test_optional_intro() -> void:
+	var s = FarmState.new_game(catalog)
+	check(
+		story.complete(s, "welcome").ok and not s.narrative.intro_seen,
+		"main story does not require letter"
+	)
+	s.inventory.turnip = 2
+	check(
+		story.complete(s, "first_meal").ok and not s.progress.planted,
+		"delivery does not require hidden tutorial flags"
 	)
 
 

@@ -1,6 +1,11 @@
 class_name FarmRules
 extends RefCounted
 
+const CLEARING = {
+	"weeds": {"tool": "scythe", "cost": 1, "item": "fiber"},
+	"branch": {"tool": "axe", "cost": 3, "item": "wood"},
+	"rock": {"tool": "pickaxe", "cost": 3, "item": "stone"}
+}
 var catalog: ContentCatalog
 
 
@@ -12,89 +17,111 @@ func apply_tool(
 	s: FarmState, tool: String, cell: Vector2i, actor: Vector2i, crop_id: String
 ) -> Dictionary:
 	if maxi(absi(cell.x - actor.x), absi(cell.y - actor.y)) > 1:
-		return result(false, "靠近一点，只能照料身边一格的土地。")
-	if s.current_map != "home_farm" or not catalog.plantable(cell):
-		return result(false, "这里不能开垦。选择农场内没有树木、水面和道路的草地。")
+		return result(false)
+	var tree_id = catalog.tree_at(cell, s)
+	if not tree_id.is_empty():
+		return _chop(s, tool, tree_id)
+	if s.current_map != "home_farm" or not catalog.plantable(cell, s.tree_damage):
+		return result(false)
 	var debris = catalog.debris_at(cell, s)
-	if tool in ["scythe", "axe", "pickaxe"]:
-		if debris.is_empty():
-			return result(false, "这里没有需要清理的杂物。")
-		var tools = {"weeds": "scythe", "branch": "axe", "rock": "pickaxe"}
-		var names = {"weeds": "镰刀（5）", "branch": "斧头（6）", "rock": "镐（7）"}
-		if tool != tools[debris.kind]:
-			return result(false, "请用%s清理。" % names[debris.kind])
-		var cost = 1 if tool == "scythe" else 3
-		if s.stamina < cost:
-			return exhausted()
-		s.stamina -= cost
-		s.cleared.append(debris.id)
-		var item = {"weeds": "fiber", "branch": "wood", "rock": "stone"}[debris.kind]
-		s.inventory[item] += 1
-		s.development.foraging_xp += 2
-		return result(
-			true, "清出一块空地，获得%s。按 1 翻土。" % catalog.items[item].name, {"cleared_id": debris.id}
-		)
 	if not debris.is_empty():
-		return result(false, "先清理杂物：5 镰刀除草，6 斧头伐枝，7 镐碎石。")
+		return _clear(s, tool, debris)
 	var key = FarmState.cell_key(cell)
-	var p = s.plots.get(key)
+	var plot = s.plots.get(key)
 	match tool:
 		"hoe":
-			if p != null:
-				return result(false, "这块土地已经翻好了。")
-			if s.stamina < 2:
-				return exhausted()
-			s.plots[key] = {"crop": "", "growth": 0, "watered": false}
-			s.stamina -= 2
-			s.progress.tilled = true
-			return result(true, "土地翻好了。按 2 播种。")
+			return _till(s, key, plot)
 		"seed":
-			if p == null:
-				return result(false, "先按 1 用锄头翻土。")
-			if p.crop != "":
-				return result(false, "这里已经有作物了。")
-			var c = catalog.crops[crop_id]
-			if int(s.inventory[c.seed_item]) < 1:
-				return result(false, "种子用完了，可以去右上方小摊购买。")
-			if s.stamina < 1:
-				return exhausted()
-			s.inventory[c.seed_item] -= 1
-			p.crop = crop_id
-			p.growth = 0
-			s.stamina -= 1
-			s.progress.planted = true
-			return result(true, "种下了%s。按 3 浇水。" % c.name)
+			return _plant(s, plot, crop_id)
 		"water":
-			if p == null:
-				return result(false, "先翻土，再浇水。")
-			if p.watered:
-				return result(false, "今天已经浇过水了。")
-			if s.stamina < 1:
-				return exhausted()
-			p.watered = true
-			if int(s.development.watering_level) > 0:
-				for side in [Vector2i.LEFT, Vector2i.RIGHT]:
-					var adjacent = s.plots.get(FarmState.cell_key(cell + side))
-					if adjacent != null:
-						adjacent.watered = true
-			s.stamina -= 1
-			s.progress.watered = true
-			return result(true, "浇好水了，睡一觉就会生长。")
+			return _water(s, plot, cell)
 		"harvest":
-			if p == null or p.crop == "":
-				return result(false, "这里还没有可以收获的作物。")
-			var c = catalog.crops[p.crop]
-			if int(p.growth) < int(c.growth_days):
-				return result(
-					false, "%s还需要 %d 个浇水日。" % [c.name, int(c.growth_days) - int(p.growth)]
-				)
-			s.inventory[c.harvest_item] += int(c.yield)
-			p.crop = ""
-			p.growth = 0
-			s.progress.harvested = true
-			s.development.farming_xp += 10
-			return result(true, "收获了%s！屋前收货箱可以出售。" % c.name, {"harvest": c.harvest_item})
-	return result(false, "未知工具。")
+			return _harvest(s, plot)
+	return result(false)
+
+
+func _chop(s: FarmState, tool: String, id: String) -> Dictionary:
+	if tool != "axe":
+		return result(false)
+	if s.stamina < 3:
+		return exhausted()
+	s.stamina -= 3
+	var hits = int(s.tree_damage.get(id, 0)) + 1
+	s.tree_damage[id] = hits
+	var amount = 4 if hits == 3 else (1 if hits == 5 else 0)
+	s.inventory.wood += amount
+	s.development.foraging_xp += 2
+	return result(true, "+%d 木材" % amount if amount else "", {"tree_id": id, "tree_hits": hits})
+
+
+func _clear(s: FarmState, tool: String, debris: Dictionary) -> Dictionary:
+	var clearing = CLEARING[debris.kind]
+	if tool != clearing.tool:
+		return result(false)
+	if s.stamina < clearing.cost:
+		return exhausted()
+	s.stamina -= clearing.cost
+	s.cleared.append(debris.id)
+	s.inventory[clearing.item] += 1
+	s.development.foraging_xp += 2
+	return result(true, "+1 " + catalog.items[clearing.item].name, {"cleared_id": debris.id})
+
+
+func _till(s: FarmState, key: String, plot: Variant) -> Dictionary:
+	if plot != null:
+		return result(false)
+	if s.stamina < 2:
+		return exhausted()
+	s.plots[key] = {"crop": "", "growth": 0, "watered": false}
+	s.stamina -= 2
+	s.progress.tilled = true
+	return result(true)
+
+
+func _plant(s: FarmState, plot: Variant, crop_id: String) -> Dictionary:
+	if plot == null or plot.crop != "":
+		return result(false)
+	var crop = catalog.crops[crop_id]
+	if s.inventory[crop.seed_item] < 1:
+		return result(false, "没有种子")
+	if s.stamina < 1:
+		return exhausted()
+	s.inventory[crop.seed_item] -= 1
+	plot.crop = crop_id
+	plot.growth = 0
+	s.stamina -= 1
+	s.progress.planted = true
+	return result(true)
+
+
+func _water(s: FarmState, plot: Variant, cell: Vector2i) -> Dictionary:
+	if plot == null or plot.watered:
+		return result(false)
+	if s.stamina < 1:
+		return exhausted()
+	plot.watered = true
+	if s.development.watering_level > 0:
+		for side in [Vector2i.LEFT, Vector2i.RIGHT]:
+			var adjacent = s.plots.get(FarmState.cell_key(cell + side))
+			if adjacent != null:
+				adjacent.watered = true
+	s.stamina -= 1
+	s.progress.watered = true
+	return result(true)
+
+
+func _harvest(s: FarmState, plot: Variant) -> Dictionary:
+	if plot == null or plot.crop == "":
+		return result(false)
+	var crop = catalog.crops[plot.crop]
+	if plot.growth < crop.growth_days:
+		return result(false)
+	s.inventory[crop.harvest_item] += int(crop.yield)
+	plot.crop = ""
+	plot.growth = 0
+	s.progress.harvested = true
+	s.development.farming_xp += 10
+	return result(true, "+%d %s" % [crop.yield, crop.name], {"harvest": crop.harvest_item})
 
 
 func next_day(s: FarmState) -> Dictionary:
@@ -125,10 +152,10 @@ func buy_seeds(s: FarmState, crop_id: String, quantity: int = 1) -> Dictionary:
 	var c = catalog.crops[crop_id]
 	var cost = int(catalog.items[c.seed_item].buy_price) * quantity
 	if s.gold < cost:
-		return result(false, "金币不够。先收获并出售一些作物吧。")
+		return result(false, "金币不足")
 	s.gold -= cost
 	s.inventory[c.seed_item] += quantity
-	return result(true, "买到了 %d 份%s种子。" % [quantity, c.name])
+	return result(true, "+%d %s种子" % [quantity, c.name])
 
 
 func sale_quote(s: FarmState) -> Dictionary:
@@ -145,20 +172,20 @@ func sale_quote(s: FarmState) -> Dictionary:
 func sell_produce(s: FarmState) -> Dictionary:
 	var quote = sale_quote(s)
 	if quote.count == 0:
-		return result(false, "背包里还没有农产品，按 4 收获成熟作物。")
+		return result(false, "没有可出售的农产品")
 	for id in catalog.items:
 		if catalog.items[id].kind == "produce":
 			s.inventory[id] = 0
 	s.gold += int(quote.gold)
 	s.progress.sold = true
-	return result(true, "出售了 %d 份农产品，获得 %d 金币。" % [quote.count, quote.gold])
+	return result(true, "出售 %d 份农产品 · +%d G" % [quote.count, quote.gold])
 
 
 func exhausted() -> Dictionary:
-	return result(false, "体力不足。去左上方小屋休息，或在菜单中结束一天。")
+	return result(false, "体力不足")
 
 
-func result(ok: bool, message: String, extra: Dictionary = {}) -> Dictionary:
+func result(ok: bool, message: String = "", extra: Dictionary = {}) -> Dictionary:
 	var r = {"ok": ok, "message": message}
 	r.merge(extra)
 	return r

@@ -1,6 +1,5 @@
 from PIL import Image, ImageDraw
 from .props import crate
-from .environment import house
 
 
 def rect(draw, box, color):
@@ -151,85 +150,3 @@ def build_interiors(output):
                 d.ellipse((x, 119, x + 17, 136), fill="#c9a06b")
                 d.ellipse((x + 4, 123, x + 13, 132), outline="#84633f")
         save(room + "_background", im)
-
-
-def build_title(output):
-    def save(name, image):
-        image.save(output / (name + ".png"))
-
-    # A composed title landscape, at native low resolution then nearest-neighbor upscale.
-    im = Image.new("RGBA", (320, 200), "#b7ccb0")
-    d = ImageDraw.Draw(im)
-    for y in range(100):
-        d.line((0, y, 319, y), fill=(183 - y // 5, 204 - y // 10, 176 + y // 8))
-    d.ellipse((228, 22, 258, 52), fill="#f2df9e")
-    d.polygon(
-        [
-            (0, 90),
-            (48, 37),
-            (97, 83),
-            (140, 48),
-            (201, 91),
-            (248, 59),
-            (319, 84),
-            (319, 130),
-            (0, 130),
-        ],
-        fill="#7e9e85",
-    )
-    d.polygon(
-        [
-            (0, 103),
-            (62, 78),
-            (112, 104),
-            (171, 84),
-            (229, 102),
-            (288, 82),
-            (319, 98),
-            (319, 158),
-            (0, 158),
-        ],
-        fill="#4f7d69",
-    )
-    d.polygon(
-        [(0, 145), (90, 108), (189, 122), (320, 108), (320, 200), (0, 200)],
-        fill="#557d4b",
-    )
-    d.polygon(
-        [
-            (169, 123),
-            (238, 116),
-            (319, 135),
-            (320, 184),
-            (246, 168),
-            (186, 169),
-            (139, 151),
-        ],
-        fill="#75a69c",
-    )
-    d.polygon(
-        [
-            (0, 195),
-            (72, 162),
-            (110, 140),
-            (148, 137),
-            (144, 145),
-            (117, 151),
-            (85, 178),
-            (54, 200),
-        ],
-        fill="#c8ae77",
-    )
-    for i in range(35):
-        x = (i * 43) % 320
-        y = 120 + (i * 19) % 76
-        if x > 180:
-            continue
-        d.ellipse((x, y, x + 18, y + 15), fill="#315a3e")
-        d.ellipse((x + 2, y - 5, x + 16, y + 10), fill="#709450")
-    im.alpha_composite(house().resize((56, 56), Image.Resampling.NEAREST), (74, 107))
-    for i in range(50):
-        x = (i * 73) % 320
-        y = 155 + (i * 7) % 45
-        d.point((x, y), fill="#d6c37c")
-    save("title_landscape", im.resize((1280, 800), Image.Resampling.NEAREST))

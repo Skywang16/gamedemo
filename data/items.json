@@ -4,55 +4,63 @@
     "kind": "seed",
     "buy_price": 4,
     "sell_price": 0,
-    "icon": "turnip_seeds"
+    "icon": "turnip_packet",
+    "description": "春季种子。每天浇水，3 天成熟。"
   },
   "carrot_seed": {
     "name": "胡萝卜种子",
     "kind": "seed",
     "buy_price": 6,
     "sell_price": 0,
-    "icon": "carrot_seeds"
+    "icon": "carrot_packet",
+    "description": "春季种子。每天浇水，4 天成熟。"
   },
   "turnip": {
     "name": "萝卜",
     "kind": "produce",
     "buy_price": 0,
     "sell_price": 12,
-    "icon": "turnip_item"
+    "icon": "turnip_item",
+    "description": "刚采下的白萝卜，叶尖还带着露水。"
   },
   "carrot": {
     "name": "胡萝卜",
     "kind": "produce",
     "buy_price": 0,
     "sell_price": 20,
-    "icon": "carrot_item"
+    "icon": "carrot_item",
+    "description": "脆甜的胡萝卜。可以出售，也可以送给朋友。"
   },
   "wood": {
     "name": "木材",
     "kind": "material",
     "buy_price": 0,
     "sell_price": 0,
-    "icon": "wood"
+    "icon": "wood",
+    "description": "坚实的木料，可用于修桥和制作工具。"
   },
   "stone": {
     "name": "石料",
     "kind": "material",
     "buy_price": 0,
     "sell_price": 0,
-    "icon": "stone"
+    "icon": "stone",
+    "description": "从碎岩中采出的石料。"
   },
   "berry": {
     "name": "野莓",
     "kind": "material",
     "buy_price": 0,
     "sell_price": 0,
-    "icon": "berry"
+    "icon": "berry",
+    "description": "酸甜的野莓。两份能煮一碗恢复体力的粥。"
   },
   "fiber": {
     "name": "纤维",
     "kind": "material",
     "buy_price": 0,
     "sell_price": 0,
-    "icon": "fiber"
+    "icon": "fiber",
+    "description": "清除杂草收集的植物纤维。"
   }
 }

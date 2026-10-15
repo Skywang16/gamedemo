@@ -32,6 +32,9 @@ func _draw() -> void:
 			texture, Rect2(map_rect.position + at * ratio, texture.get_size() * ratio), false
 		)
 	for p in region.trees:
+		var id = catalog.tree_cells[state.current_map][Vector2i(p[0], p[1])]
+		if state.tree_damage.get(id, 0) >= 3:
+			continue
 		draw_circle(map_rect.position + Vector2(p[0] * 32, p[1] * 32) * ratio, 2, Color("36573b"))
 	for station in region.stations:
 		var at = (
