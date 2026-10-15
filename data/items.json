@@ -1,0 +1,58 @@
+{
+  "turnip_seed": {
+    "name": "萝卜种子",
+    "kind": "seed",
+    "buy_price": 4,
+    "sell_price": 0,
+    "icon": "turnip_seeds"
+  },
+  "carrot_seed": {
+    "name": "胡萝卜种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "carrot_seeds"
+  },
+  "turnip": {
+    "name": "萝卜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "turnip_item"
+  },
+  "carrot": {
+    "name": "胡萝卜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "carrot_item"
+  },
+  "wood": {
+    "name": "木材",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 0,
+    "icon": "wood"
+  },
+  "stone": {
+    "name": "石料",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 0,
+    "icon": "stone"
+  },
+  "berry": {
+    "name": "野莓",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 0,
+    "icon": "berry"
+  },
+  "fiber": {
+    "name": "纤维",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 0,
+    "icon": "fiber"
+  }
+}

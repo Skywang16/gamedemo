@@ -1,0 +1,15 @@
+.godot/
+*.tmp
+.DS_Store
+build/
+__pycache__/
+*.pyc
+
+.venv/
+.ruff_cache/
+
+# Local export output and editor-specific files.
+*.app/
+*.zip
+/dist/
+.idea/

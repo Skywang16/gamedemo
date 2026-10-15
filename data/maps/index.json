@@ -1,0 +1,11 @@
+{
+  "maps": [
+    "home_farm",
+    "town",
+    "forest",
+    "lake",
+    "cottage",
+    "inn",
+    "workshop"
+  ]
+}

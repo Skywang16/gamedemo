@@ -1,0 +1,81 @@
+{
+  "id": "inn",
+  "name": "米朵的小馆",
+  "width": 30,
+  "height": 19,
+  "tile_size": 32,
+  "background": "inn_background",
+  "spawn": [
+    464,
+    464
+  ],
+  "obstacles": [
+    [
+      1,
+      1,
+      28,
+      3
+    ],
+    [
+      1,
+      4,
+      3,
+      14
+    ],
+    [
+      25,
+      4,
+      4,
+      14
+    ],
+    [
+      4,
+      16,
+      21,
+      2
+    ],
+    [
+      7,
+      6,
+      4,
+      2
+    ],
+    [
+      18,
+      6,
+      4,
+      2
+    ]
+  ],
+  "trees": [],
+  "props": [],
+  "stations": [
+    {
+      "id": "town",
+      "name": "回到青苇镇",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "town",
+      "arrival": [
+        784,
+        720
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "灶台 / 烹饪",
+      "kind": "kitchen",
+      "cell": [
+        20,
+        8
+      ]
+    }
+  ],
+  "gather": [],
+  "debris": [],
+  "paths": [],
+  "water": []
+}

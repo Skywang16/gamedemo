@@ -1,0 +1,4 @@
+{
+  "turnip": {"name": "萝卜", "seed_item": "turnip_seed", "harvest_item": "turnip", "growth_days": 3, "yield": 1, "stages": ["turnip_seeds", "turnip_sprout", "turnip_young", "turnip_mature"]},
+  "carrot": {"name": "胡萝卜", "seed_item": "carrot_seed", "harvest_item": "carrot", "growth_days": 4, "yield": 1, "stages": ["carrot_seeds", "carrot_sprout", "carrot_young", "carrot_mature"]}
+}
