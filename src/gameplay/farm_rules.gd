@@ -82,6 +82,8 @@ func _plant(s: FarmState, plot: Variant, crop_id: String) -> Dictionary:
 	if plot == null or plot.crop != "":
 		return result(false)
 	var crop = catalog.crops[crop_id]
+	if not crop.seasons.has(catalog.calendar.season_of(s.day)):
+		return result(false, "%s不适合在%s天种" % [crop.name, catalog.calendar.date(s.day).season_name])
 	if s.inventory[crop.seed_item] < 1:
 		return result(false, "没有种子")
 	if s.stamina < 1:
@@ -137,13 +139,44 @@ func next_day(s: FarmState) -> Dictionary:
 				ready += 1
 		p.watered = false
 	s.daily = {"talked": [], "gifted": [], "gathered": []}
+	var old_season = catalog.calendar.season_of(s.day)
 	s.day += 1
 	s.minute = FarmState.MORNING
 	s.stamina = FarmState.MAX_STAMINA
 	s.progress.slept = true
+	var season = catalog.calendar.season_of(s.day)
+	var withered = 0
+	if season != old_season:
+		withered = _wither_out_of_season(s, season)
+		ready = 0
+		for p in s.plots.values():
+			if p.crop != "" and int(p.growth) >= int(catalog.crops[p.crop].growth_days):
+				ready += 1
+	var weather = catalog.weather.weather_on(s.world_seed, s.day)
+	if catalog.weather.waters_crops(weather):
+		for p in s.plots.values():
+			p.watered = true
 	return result(
-		true, "第 %d 天 · %d 株生长，%d 株可收获。" % [s.day, grew, ready], {"grew": grew, "ready": ready}
+		true,
+		"第 %d 天 · %d 株生长，%d 株可收获。" % [s.day, grew, ready],
+		{
+			"grew": grew,
+			"ready": ready,
+			"weather": weather,
+			"season_changed": season != old_season,
+			"withered": withered,
+		}
 	)
+
+
+func _wither_out_of_season(s: FarmState, season: String) -> int:
+	var count = 0
+	for p in s.plots.values():
+		if p.crop != "" and not catalog.crops[p.crop].seasons.has(season):
+			p.crop = ""
+			p.growth = 0
+			count += 1
+	return count
 
 
 func buy_seeds(s: FarmState, crop_id: String, quantity: int = 1) -> Dictionary:

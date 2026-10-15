@@ -1,13 +1,14 @@
 class_name FarmState
 extends RefCounted
 
-const SCHEMA_VERSION = 4
+const SCHEMA_VERSION = 5
 const MAX_STAMINA = 100
 const MORNING = 8 * 60
 const NIGHT = 20 * 60
 const GOALS = ["tilled", "planted", "watered", "slept", "harvested", "sold"]
 
 var day: int = 1
+var world_seed: int = 0
 var minute: int = MORNING
 var stamina: int = MAX_STAMINA
 var gold: int = 40
@@ -41,8 +42,9 @@ static func key_cell(key: String) -> Vector2i:
 	return Vector2i(int(parts[0]), int(parts[1]))
 
 
-static func new_game(catalog: ContentCatalog) -> FarmState:
+static func new_game(catalog: ContentCatalog, seed_value: int = 0) -> FarmState:
 	var s = FarmState.new()
+	s.world_seed = seed_value
 	for id in catalog.items:
 		s.inventory[id] = 0
 		s.storage[id] = 0
@@ -69,6 +71,7 @@ func snapshot(catalog: ContentCatalog) -> Dictionary:
 		"storage": storage.duplicate(true),
 		"cleared": cleared.duplicate(),
 		"tree_damage": tree_damage.duplicate(),
+		"world_seed": world_seed,
 		"day": day,
 		"minute": minute,
 		"stamina": stamina,
@@ -99,6 +102,7 @@ static func from_validated(data: Dictionary) -> FarmState:
 		s.relationships[id] = int(s.relationships[id])
 	for id in s.storage:
 		s.storage[id] = int(s.storage[id])
+	s.world_seed = int(data.world_seed)
 	s.day = int(data.day)
 	s.minute = int(data.minute)
 	s.stamina = int(data.stamina)

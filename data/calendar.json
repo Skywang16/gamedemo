@@ -1,0 +1,40 @@
+{
+	"days_per_season": 28,
+	"seasons": [
+		{"id": "spring", "name": "春"},
+		{"id": "summer", "name": "夏"},
+		{"id": "autumn", "name": "秋"},
+		{"id": "winter", "name": "冬"}
+	],
+	"weekdays": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+	"weather_names": {
+		"sunny": {"name": "晴", "long": "晴天"},
+		"cloudy": {"name": "阴", "long": "阴天"},
+		"rain": {"name": "雨", "long": "下雨"},
+		"storm": {"name": "雷", "long": "雷雨"},
+		"wind": {"name": "风", "long": "大风"},
+		"snow": {"name": "雪", "long": "下雪"}
+	},
+	"weather": {
+		"spring": [["sunny", 50], ["cloudy", 15], ["rain", 22], ["wind", 8], ["storm", 5]],
+		"summer": [["sunny", 55], ["cloudy", 12], ["rain", 18], ["wind", 5], ["storm", 10]],
+		"autumn": [["sunny", 45], ["cloudy", 20], ["rain", 18], ["wind", 12], ["storm", 5]],
+		"winter": [["sunny", 30], ["cloudy", 25], ["snow", 40], ["wind", 5]]
+	},
+	"calm_days": 3,
+	"festivals": [
+		{"id": "plow_rite", "name": "开犁礼", "season": "spring", "day": 8, "kind": "festival", "weather": "sunny"},
+		{"id": "kite_day", "name": "风筝日", "season": "spring", "day": 15, "kind": "minor", "weather": "wind"},
+		{"id": "spring_lantern", "name": "春灯", "season": "spring", "day": 20, "kind": "festival", "weather": "sunny"},
+		{"id": "dragon_boat", "name": "龙舟赛", "season": "summer", "day": 12, "kind": "festival", "weather": "sunny"},
+		{"id": "lotus_night", "name": "荷塘夜话", "season": "summer", "day": 18, "kind": "minor", "weather": "cloudy"},
+		{"id": "starriver_night", "name": "星河夜", "season": "summer", "day": 26, "kind": "festival", "weather": "sunny"},
+		{"id": "harvest_fair", "name": "丰收展", "season": "autumn", "day": 9, "kind": "festival", "weather": "sunny"},
+		{"id": "drying_day", "name": "晒秋日", "season": "autumn", "day": 18, "kind": "minor", "weather": "sunny"},
+		{"id": "river_lantern", "name": "河灯夜", "season": "autumn", "day": 24, "kind": "festival", "weather": "cloudy"},
+		{"id": "snow_lantern_fair", "name": "雪灯市", "season": "winter", "day": 9, "kind": "festival", "weather": "snow"},
+		{"id": "porridge_day", "name": "腊粥日", "season": "winter", "day": 14, "kind": "minor", "weather": "cloudy"},
+		{"id": "stage_night", "name": "戏台夜", "season": "winter", "day": 18, "kind": "festival", "weather": "snow"},
+		{"id": "year_end_feast", "name": "岁末席", "season": "winter", "day": 28, "kind": "festival", "weather": "snow"}
+	]
+}

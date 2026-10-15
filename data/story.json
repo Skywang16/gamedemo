@@ -3,6 +3,7 @@
     "ahe": {
       "name": "阿禾",
       "age": 26,
+      "birthday": {"season": "spring", "day": 3},
       "role": "种子商 · 把日子种回土里",
       "map": "home_farm",
       "positions": [
@@ -28,6 +29,7 @@
     "shen": {
       "name": "沈砚",
       "age": 34,
+      "birthday": {"season": "winter", "day": 4},
       "role": "木匠 · 没说出口的承诺",
       "map": "town",
       "positions": [
@@ -53,6 +55,7 @@
     "mido": {
       "name": "米朵",
       "age": 29,
+      "birthday": {"season": "summer", "day": 2},
       "role": "小馆主人 · 一顿饭的距离",
       "map": "town",
       "positions": [
@@ -78,6 +81,7 @@
     "lin": {
       "name": "林栖",
       "age": 22,
+      "birthday": {"season": "autumn", "day": 4},
       "role": "湿地记录员 · 给未来的信",
       "map": "lake",
       "positions": [

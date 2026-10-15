@@ -32,6 +32,7 @@ check:
 test: import
 	$(GODOT) --headless --script res://tests/test_runner.gd
 	$(GODOT) --headless --script res://tests/chapter_tests.gd
+	$(GODOT) --headless --script res://tests/calendar_tests.gd
 
 test-ui: import
 	$(GODOT) --script res://tests/ui_smoke.gd -- --save-dir=user://ui-test-$$(uuidgen)

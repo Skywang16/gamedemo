@@ -9,6 +9,7 @@ var state: FarmState
 var dialogs: GameDialogs
 var chrome: Control
 var day_label: Label
+var clock_frame: Panel
 var time_label: Label
 var gold_label: Label
 var stamina_fill: ColorRect
@@ -46,7 +47,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	location_frame = _frame(Rect2(22, 22, 220, 48), "wood", chrome)
 	location_label = _label("", Rect2(38, 28, 188, 34), 19, LIGHT, false, chrome)
 	location_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	var clock_frame = _frame(Rect2(1044, 18, 216, 152), "paper", chrome)
+	clock_frame = _frame(Rect2(1044, 18, 216, 152), "paper", chrome)
 	clock_frame.mouse_filter = Control.MOUSE_FILTER_STOP
 	ui_icon("sun", Rect2(1063, 38, 44, 44), chrome)
 	day_label = _label("", Rect2(1114, 31, 130, 33), 21, INK, false, chrome)
@@ -136,8 +137,13 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 
 
 func refresh(selected_tool: String, selected_crop: String) -> void:
-	day_label.text = "春  %d 日" % state.day
-	time_label.text = "%02d:%02d" % [state.minute / 60, state.minute % 60]
+	var date = catalog.calendar.date(state.day)
+	var weather = catalog.weather.weather_on(state.world_seed, state.day)
+	day_label.text = (
+		"%s %d 日 %s" % [date.season_name, date.day, catalog.weather.short_name(weather)]
+	)
+	time_label.text = "%s %02d:%02d" % [date.weekday_name, state.minute / 60, state.minute % 60]
+	clock_frame.tooltip_text = _calendar_tooltip(weather)
 	gold_label.text = "%d" % state.gold
 	var energy = float(state.stamina) / FarmState.MAX_STAMINA
 	stamina_fill.position = Vector2(1233, 571 + (1 - energy) * 148)
@@ -206,3 +212,22 @@ func is_modal() -> bool:
 
 func close_modal() -> void:
 	dialogs.close_modal()
+
+
+func _calendar_tooltip(weather: String) -> String:
+	var lines = [
+		catalog.calendar.long_label(state.day) + " · " + catalog.weather.long_name(weather),
+		(
+			"明天："
+			+ catalog.weather.long_name(catalog.weather.weather_on(state.world_seed, state.day + 1))
+		),
+	]
+	var festival = catalog.calendar.festival_on(state.day)
+	if not festival.is_empty():
+		lines.append("今天：" + festival.name)
+	for id in catalog.calendar.birthdays_on(state.day, catalog.story.npcs):
+		lines.append("%s 生日" % catalog.story.npcs[id].name)
+	var upcoming = catalog.calendar.next_festival(state.day)
+	if not upcoming.is_empty():
+		lines.append("下个节日：%s（%d 天后）" % [upcoming.festival.name, upcoming.day - state.day])
+	return "\n".join(lines)

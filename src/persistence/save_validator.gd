@@ -16,6 +16,7 @@ func validate(data: Variant) -> String:
 		[
 			"schema_version",
 			"map_id",
+			"world_seed",
 			"day",
 			"minute",
 			"stamina",
@@ -34,6 +35,8 @@ func validate(data: Variant) -> String:
 		or not catalog.regions.has(data.map_id)
 	):
 		return "存档版本或地图不兼容"
+	if not whole(data.world_seed, 0, 2147483647):
+		return "世界种子无效"
 	if (
 		not whole(data.day, 1, 999999)
 		or not whole(data.minute, FarmState.MORNING, FarmState.NIGHT - 1)

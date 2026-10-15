@@ -107,7 +107,7 @@ func _on_front(action: String, payload: Dictionary) -> void:
 			if loaded.state != null:
 				_start_game(loaded.state)
 		"create":
-			var candidate = FarmState.new_game(catalog)
+			var candidate = FarmState.new_game(catalog, randi_range(1, 2147483647))
 			candidate.profile = payload.duplicate(true)
 			var invalid = store.validate(candidate.snapshot(catalog))
 			if not invalid.is_empty():
@@ -482,16 +482,28 @@ func _on_action(action: String, payload: Dictionary) -> void:
 
 
 func _next_day() -> void:
-	rules.next_day(state)
+	var morning = rules.next_day(state)
 	hud.close_modal()
 	clock_accumulator = 0
 	stories.enter(state, "cottage", Vector2(464, 464))
 	_build_world()
 	world.modulate = Color.WHITE
-	hud.toast("春 · 第 %d 天" % state.day)
+	hud.toast(_morning_message(morning))
 	_sound("day")
 	_refresh()
 	_save(false)
+
+
+func _morning_message(morning: Dictionary) -> String:
+	var parts = [
+		"%s · %s" % [catalog.calendar.label(state.day), catalog.weather.long_name(morning.weather)]
+	]
+	var festival = catalog.calendar.festival_on(state.day)
+	if not festival.is_empty():
+		parts.append("今天是" + festival.name)
+	if morning.season_changed:
+		parts.append("换季了" + ("，%d 株作物枯萎" % morning.withered if morning.withered > 0 else ""))
+	return "，".join(parts)
 
 
 func _feedback(response: Dictionary, play_sound: bool = true) -> void:

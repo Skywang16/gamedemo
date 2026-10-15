@@ -6,6 +6,8 @@ var crops: Dictionary = {}
 var map: Dictionary = {}
 var regions: Dictionary = {}
 var story: Dictionary = {}
+var calendar: GameCalendar = GameCalendar.new()
+var weather: WeatherRules = WeatherRules.new(calendar)
 var blocked_cells: Dictionary = {}
 var debris_ids: Dictionary = {}
 var debris_cells: Dictionary = {}
@@ -23,6 +25,12 @@ func load_content() -> String:
 		if not value is Dictionary:
 			return "配置文件无法解析：" + pair[1]
 		set(pair[0], value)
+	var calendar_data = JSON.parse_string(FileAccess.get_file_as_string("res://data/calendar.json"))
+	if not calendar_data is Dictionary:
+		return "配置文件无法解析：res://data/calendar.json"
+	var calendar_error = calendar.load_data(calendar_data)
+	if not calendar_error.is_empty():
+		return calendar_error
 	for id in items:
 		var item = items[id]
 		if (
@@ -52,7 +60,7 @@ func load_content() -> String:
 		if (
 			not c is Dictionary
 			or not c.has_all(
-				["name", "seed_item", "harvest_item", "growth_days", "yield", "stages"]
+				["name", "seed_item", "harvest_item", "growth_days", "yield", "stages", "seasons"]
 			)
 		):
 			return "作物配置不完整：" + id
@@ -62,6 +70,11 @@ func load_content() -> String:
 			return "作物的种子/收获物类型错误：" + id
 		if not natural(c.growth_days) or c.growth_days < 1 or not natural(c.yield) or c.yield < 1:
 			return "作物生长天数或产量错误：" + id
+		if not c.seasons is Array or c.seasons.is_empty():
+			return "作物没有可种植季节：" + id
+		for season_id in c.seasons:
+			if not season_id is String or calendar.season_index(season_id) < 0:
+				return "作物季节无效：" + id
 		if not c.stages is Array or c.stages.size() < 2:
 			return "作物阶段图片不足：" + id
 		for texture in c.stages:
