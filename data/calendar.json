@@ -1,40 +1,427 @@
 {
-	"days_per_season": 28,
-	"seasons": [
-		{"id": "spring", "name": "春"},
-		{"id": "summer", "name": "夏"},
-		{"id": "autumn", "name": "秋"},
-		{"id": "winter", "name": "冬"}
-	],
-	"weekdays": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-	"weather_names": {
-		"sunny": {"name": "晴", "long": "晴天"},
-		"cloudy": {"name": "阴", "long": "阴天"},
-		"rain": {"name": "雨", "long": "下雨"},
-		"storm": {"name": "雷", "long": "雷雨"},
-		"wind": {"name": "风", "long": "大风"},
-		"snow": {"name": "雪", "long": "下雪"}
-	},
-	"weather": {
-		"spring": [["sunny", 50], ["cloudy", 15], ["rain", 22], ["wind", 8], ["storm", 5]],
-		"summer": [["sunny", 55], ["cloudy", 12], ["rain", 18], ["wind", 5], ["storm", 10]],
-		"autumn": [["sunny", 45], ["cloudy", 20], ["rain", 18], ["wind", 12], ["storm", 5]],
-		"winter": [["sunny", 30], ["cloudy", 25], ["snow", 40], ["wind", 5]]
-	},
-	"calm_days": 3,
-	"festivals": [
-		{"id": "plow_rite", "name": "开犁礼", "season": "spring", "day": 8, "kind": "festival", "weather": "sunny"},
-		{"id": "kite_day", "name": "风筝日", "season": "spring", "day": 15, "kind": "minor", "weather": "wind"},
-		{"id": "spring_lantern", "name": "春灯", "season": "spring", "day": 20, "kind": "festival", "weather": "sunny"},
-		{"id": "dragon_boat", "name": "龙舟赛", "season": "summer", "day": 12, "kind": "festival", "weather": "sunny"},
-		{"id": "lotus_night", "name": "荷塘夜话", "season": "summer", "day": 18, "kind": "minor", "weather": "cloudy"},
-		{"id": "starriver_night", "name": "星河夜", "season": "summer", "day": 26, "kind": "festival", "weather": "sunny"},
-		{"id": "harvest_fair", "name": "丰收展", "season": "autumn", "day": 9, "kind": "festival", "weather": "sunny"},
-		{"id": "drying_day", "name": "晒秋日", "season": "autumn", "day": 18, "kind": "minor", "weather": "sunny"},
-		{"id": "river_lantern", "name": "河灯夜", "season": "autumn", "day": 24, "kind": "festival", "weather": "cloudy"},
-		{"id": "snow_lantern_fair", "name": "雪灯市", "season": "winter", "day": 9, "kind": "festival", "weather": "snow"},
-		{"id": "porridge_day", "name": "腊粥日", "season": "winter", "day": 14, "kind": "minor", "weather": "cloudy"},
-		{"id": "stage_night", "name": "戏台夜", "season": "winter", "day": 18, "kind": "festival", "weather": "snow"},
-		{"id": "year_end_feast", "name": "岁末席", "season": "winter", "day": 28, "kind": "festival", "weather": "snow"}
-	]
+  "days_per_season": 28,
+  "seasons": [
+    {
+      "id": "spring",
+      "name": "春"
+    },
+    {
+      "id": "summer",
+      "name": "夏"
+    },
+    {
+      "id": "autumn",
+      "name": "秋"
+    },
+    {
+      "id": "winter",
+      "name": "冬"
+    }
+  ],
+  "weekdays": [
+    "周一",
+    "周二",
+    "周三",
+    "周四",
+    "周五",
+    "周六",
+    "周日"
+  ],
+  "weather_names": {
+    "sunny": {
+      "name": "晴",
+      "long": "晴天"
+    },
+    "cloudy": {
+      "name": "阴",
+      "long": "阴天"
+    },
+    "rain": {
+      "name": "雨",
+      "long": "下雨"
+    },
+    "storm": {
+      "name": "雷",
+      "long": "雷雨"
+    },
+    "wind": {
+      "name": "风",
+      "long": "大风"
+    },
+    "snow": {
+      "name": "雪",
+      "long": "下雪"
+    }
+  },
+  "weather": {
+    "spring": [
+      [
+        "sunny",
+        50
+      ],
+      [
+        "cloudy",
+        15
+      ],
+      [
+        "rain",
+        22
+      ],
+      [
+        "wind",
+        8
+      ],
+      [
+        "storm",
+        5
+      ]
+    ],
+    "summer": [
+      [
+        "sunny",
+        55
+      ],
+      [
+        "cloudy",
+        12
+      ],
+      [
+        "rain",
+        18
+      ],
+      [
+        "wind",
+        5
+      ],
+      [
+        "storm",
+        10
+      ]
+    ],
+    "autumn": [
+      [
+        "sunny",
+        45
+      ],
+      [
+        "cloudy",
+        20
+      ],
+      [
+        "rain",
+        18
+      ],
+      [
+        "wind",
+        12
+      ],
+      [
+        "storm",
+        5
+      ]
+    ],
+    "winter": [
+      [
+        "sunny",
+        30
+      ],
+      [
+        "cloudy",
+        25
+      ],
+      [
+        "snow",
+        40
+      ],
+      [
+        "wind",
+        5
+      ]
+    ]
+  },
+  "calm_days": 3,
+  "plaza": {
+    "map": "town",
+    "cells": [
+      [
+        40,
+        35
+      ],
+      [
+        39,
+        35
+      ],
+      [
+        41,
+        35
+      ],
+      [
+        38,
+        35
+      ],
+      [
+        42,
+        35
+      ],
+      [
+        39,
+        36
+      ],
+      [
+        41,
+        34
+      ],
+      [
+        41,
+        36
+      ],
+      [
+        40,
+        37
+      ],
+      [
+        37,
+        35
+      ],
+      [
+        43,
+        35
+      ],
+      [
+        38,
+        36
+      ],
+      [
+        42,
+        34
+      ],
+      [
+        42,
+        36
+      ],
+      [
+        39,
+        37
+      ],
+      [
+        41,
+        33
+      ],
+      [
+        41,
+        37
+      ],
+      [
+        40,
+        38
+      ],
+      [
+        36,
+        35
+      ],
+      [
+        44,
+        35
+      ],
+      [
+        37,
+        34
+      ],
+      [
+        37,
+        36
+      ],
+      [
+        43,
+        34
+      ],
+      [
+        38,
+        37
+      ],
+      [
+        42,
+        33
+      ],
+      [
+        42,
+        37
+      ],
+      [
+        39,
+        32
+      ],
+      [
+        39,
+        38
+      ],
+      [
+        41,
+        32
+      ],
+      [
+        41,
+        38
+      ],
+      [
+        40,
+        31
+      ],
+      [
+        40,
+        39
+      ],
+      [
+        35,
+        35
+      ],
+      [
+        45,
+        35
+      ],
+      [
+        36,
+        34
+      ],
+      [
+        44,
+        34
+      ],
+      [
+        37,
+        33
+      ],
+      [
+        37,
+        37
+      ],
+      [
+        43,
+        33
+      ],
+      [
+        43,
+        37
+      ]
+    ]
+  },
+  "festivals": [
+    {
+      "id": "plow_rite",
+      "name": "春耕日",
+      "season": "spring",
+      "day": 8,
+      "kind": "festival",
+      "weather": "sunny",
+      "text": "全镇聚在农场边比赛翻地。"
+    },
+    {
+      "id": "kite_day",
+      "name": "风筝日",
+      "season": "spring",
+      "day": 15,
+      "kind": "minor",
+      "weather": "wind",
+      "text": "草坡上放风筝。"
+    },
+    {
+      "id": "spring_lantern",
+      "name": "春之灯夜",
+      "season": "spring",
+      "day": 20,
+      "kind": "festival",
+      "weather": "sunny",
+      "text": "湖畔点起第一批纸灯。"
+    },
+    {
+      "id": "regatta",
+      "name": "划船赛",
+      "season": "summer",
+      "day": 12,
+      "kind": "festival",
+      "weather": "sunny",
+      "text": "河上划船比赛。"
+    },
+    {
+      "id": "lakeside_picnic",
+      "name": "湖畔野餐",
+      "season": "summer",
+      "day": 18,
+      "kind": "minor",
+      "weather": "cloudy",
+      "text": "傍晚的野餐聚会。"
+    },
+    {
+      "id": "midsummer_stars",
+      "name": "仲夏观星夜",
+      "season": "summer",
+      "day": 26,
+      "kind": "festival",
+      "weather": "sunny",
+      "text": "夜里躺在河边看星星。"
+    },
+    {
+      "id": "harvest_fair",
+      "name": "丰收集市",
+      "season": "autumn",
+      "day": 9,
+      "kind": "festival",
+      "weather": "sunny",
+      "text": "评比作物、手工与料理。"
+    },
+    {
+      "id": "cider_day",
+      "name": "苹果酒日",
+      "season": "autumn",
+      "day": 18,
+      "kind": "minor",
+      "weather": "sunny",
+      "text": "压苹果酒，家家门前摆苹果。"
+    },
+    {
+      "id": "lantern_night",
+      "name": "灯夜",
+      "season": "autumn",
+      "day": 24,
+      "kind": "festival",
+      "weather": "cloudy",
+      "text": "全年最大的节日，把话写在纸灯上放进河里。"
+    },
+    {
+      "id": "winter_market",
+      "name": "冬季集市",
+      "season": "winter",
+      "day": 9,
+      "kind": "festival",
+      "weather": "snow",
+      "text": "雪中的集市，交换礼物。"
+    },
+    {
+      "id": "soup_day",
+      "name": "浓汤日",
+      "season": "winter",
+      "day": 14,
+      "kind": "minor",
+      "weather": "cloudy",
+      "text": "广场上煮一大锅浓汤，每家带一样食材。"
+    },
+    {
+      "id": "playhouse_night",
+      "name": "剧院之夜",
+      "season": "winter",
+      "day": 18,
+      "kind": "festival",
+      "weather": "snow",
+      "text": "鹅毛笔剧团的年度演出。"
+    },
+    {
+      "id": "year_end_feast",
+      "name": "年终宴",
+      "season": "winter",
+      "day": 28,
+      "kind": "festival",
+      "weather": "snow",
+      "text": "全镇共享的长桌晚宴。"
+    }
+  ]
 }

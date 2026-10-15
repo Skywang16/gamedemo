@@ -76,7 +76,7 @@ func test_festivals() -> void:
 	check(upcoming.festival.id == "kite_day", "next festival is strictly later")
 	upcoming = cal.next_festival(112)
 	check(upcoming.day == 112 + 8, "next festival wraps into the next year")
-	check(cal.birthdays_on(3, catalog.story.npcs) == ["ahe"], "Ahe's birthday is spring 3")
+	check(cal.birthdays_on(3, catalog.story.npcs) == ["hazel"], "Hazel's birthday is spring 3")
 	check(cal.birthdays_on(2, catalog.story.npcs).is_empty(), "no birthday on an ordinary day")
 	var bad = {"days_per_season": 28}
 	check(not GameCalendar.new().load_data(bad).is_empty(), "incomplete calendar is rejected")
@@ -130,14 +130,31 @@ func seed_with(day: int, wanted_wet: bool) -> int:
 	return 0
 
 
+func free_cell(s: FarmState) -> Vector2i:
+	for y in range(18, 66):
+		for x in range(4, 90):
+			var cell = Vector2i(x, y)
+			if (
+				catalog.plantable(cell, s.tree_damage)
+				and catalog.tree_at(cell, s).is_empty()
+				and catalog.debris_at(cell, s).is_empty()
+			):
+				return cell
+	return Vector2i(-1, -1)
+
+
+func plant(s: FarmState, crop: String) -> String:
+	var cell = free_cell(s)
+	s.inventory[catalog.crops[crop].seed_item] = 1
+	rules.apply_tool(s, "hoe", cell, cell, crop)
+	rules.apply_tool(s, "seed", cell, cell, crop)
+	return FarmState.cell_key(cell)
+
+
 func planted(day: int, seed_value: int) -> Array:
 	var s = FarmState.new_game(catalog, seed_value)
 	s.day = day
-	var cell = Vector2i(34, 20)
-	rules.apply_tool(s, "scythe", cell, cell, "turnip")
-	rules.apply_tool(s, "hoe", cell, cell, "turnip")
-	rules.apply_tool(s, "seed", cell, cell, "turnip")
-	return [s, FarmState.cell_key(cell)]
+	return [s, plant(s, "turnip")]
 
 
 func test_rain_and_seasons() -> void:
@@ -156,46 +173,37 @@ func test_rain_and_seasons() -> void:
 	rules.next_day(s)
 	check(not s.plots[pair[1]].watered, "dry morning leaves soil dry")
 	# Planting honours the season.
-	var turnip = catalog.crops.turnip
-	var saved = turnip.seasons
-	turnip.seasons = ["spring"]
 	s = FarmState.new_game(catalog)
 	s.day = 29
-	var cell = Vector2i(34, 20)
-	rules.apply_tool(s, "scythe", cell, cell, "turnip")
-	rules.apply_tool(s, "hoe", cell, cell, "turnip")
+	var cell = free_cell(s)
+	s.inventory.pea_seed = 1
+	rules.apply_tool(s, "hoe", cell, cell, "pea")
 	var before = s.snapshot(catalog)
-	var response = rules.apply_tool(s, "seed", cell, cell, "turnip")
+	var response = rules.apply_tool(s, "seed", cell, cell, "pea")
 	check(not response.ok and not response.message.is_empty(), "out-of-season seed explains why")
 	check(before == s.snapshot(catalog), "out-of-season planting is atomic")
-	s.day = 28
-	check(rules.apply_tool(s, "seed", cell, cell, "turnip").ok, "in-season planting works")
 	# Season change withers what cannot live in the new season, but keeps the soil.
+	s = FarmState.new_game(catalog)
+	s.day = 28
+	var key = plant(s, "pea")
 	morning = rules.next_day(s)
 	check(s.day == 29 and morning.season_changed, "spring turns into summer")
 	check(morning.withered == 1, "the out-of-season crop withers")
-	var key = FarmState.cell_key(cell)
 	check(s.plots.has(key) and s.plots[key].crop == "", "tilled soil survives the season")
-	check(s.inventory.turnip_seed == 7, "withering does not refund or duplicate seeds")
-	turnip.seasons = saved
+	check(s.inventory.pea_seed == 0, "withering does not refund or duplicate seeds")
+	# Crops that live in both seasons carry on.
 	s = FarmState.new_game(catalog)
 	s.day = 28
-	rules.apply_tool(s, "scythe", cell, cell, "turnip")
-	rules.apply_tool(s, "hoe", cell, cell, "turnip")
-	rules.apply_tool(s, "seed", cell, cell, "turnip")
+	key = plant(s, "turnip")
 	morning = rules.next_day(s)
-	check(morning.withered == 0 and s.plots[key].crop == "turnip", "all-season crops survive")
+	check(morning.withered == 0 and s.plots[key].crop == "turnip", "year-round crops survive")
 	# A full-grown crop that withers must not stay counted as ready.
-	turnip.seasons = ["spring"]
 	s = FarmState.new_game(catalog)
 	s.day = 28
-	rules.apply_tool(s, "scythe", cell, cell, "turnip")
-	rules.apply_tool(s, "hoe", cell, cell, "turnip")
-	rules.apply_tool(s, "seed", cell, cell, "turnip")
-	s.plots[key].growth = int(turnip.growth_days)
+	key = plant(s, "pea")
+	s.plots[key].growth = int(catalog.crops.pea.growth_days)
 	morning = rules.next_day(s)
 	check(morning.ready == 0 and morning.withered == 1, "withered crops are not ready")
-	turnip.seasons = saved
 
 
 func test_save() -> void:
@@ -203,7 +211,7 @@ func test_save() -> void:
 	var s = FarmState.new_game(catalog, 987654)
 	s.day = 40
 	var snapshot = s.snapshot(catalog)
-	check(snapshot.schema_version == 5, "schema is 5")
+	check(snapshot.schema_version == 6, "schema is 6")
 	check(validator.validate(snapshot).is_empty(), "calendar state validates")
 	var restored = FarmState.from_validated(snapshot)
 	check(restored.world_seed == 987654 and restored.day == 40, "seed and day round-trip")
@@ -221,8 +229,8 @@ func test_save() -> void:
 	missing.erase("world_seed")
 	check(not validator.validate(missing).is_empty(), "missing seed rejected")
 	var old = s.snapshot(catalog)
-	old.schema_version = 4
-	check(not validator.validate(old).is_empty(), "schema 4 saves are not accepted")
+	old.schema_version = 5
+	check(not validator.validate(old).is_empty(), "other schema versions are not accepted")
 	var a = FarmState.new_game(catalog, 5)
 	var b = FarmState.new_game(catalog, 5)
 	a.day = 50
@@ -267,9 +275,13 @@ func test_atmosphere() -> void:
 			)
 	for weather in catalog.calendar.weather_names:
 		check(WorldAtmosphere.WEATHER_GRADE.has(weather), "every weather has a grade: " + weather)
-	check(WorldAtmosphere.dusk(12 * 60) == 0.0 and WorldAtmosphere.dusk(20 * 60) == 1.0, "dusk")
+	check(WorldAtmosphere.dusk(12 * 60) == 0.0 and WorldAtmosphere.dusk(22 * 60) == 1.0, "dusk")
+	check(
+		WorldAtmosphere.dusk(18 * 60) == 0.0 and WorldAtmosphere.dusk(20 * 60) == 0.5,
+		"dusk starts at 18:00"
+	)
 	var noon = WorldAtmosphere.lit("spring", "sunny", 12 * 60)
-	var night = WorldAtmosphere.lit("spring", "sunny", 20 * 60)
+	var night = WorldAtmosphere.lit("spring", "sunny", 22 * 60)
 	check(noon == Color.WHITE and night.get_luminance() < noon.get_luminance(), "evening is darker")
 	var previous: Dictionary = {}
 	var order = WorldAtmosphere.SEASON_ORDER

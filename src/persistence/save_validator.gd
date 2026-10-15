@@ -1,33 +1,48 @@
 class_name SaveValidator
 extends RefCounted
 
+## Every untrusted value from disk is checked here, once, before it enters the domain.
+
+const REQUIRED = [
+	"schema_version",
+	"map_id",
+	"world_seed",
+	"day",
+	"minute",
+	"stamina",
+	"gold",
+	"inventory",
+	"plots",
+	"tree_damage",
+	"progress",
+	"player_position",
+	"cleared",
+	"buildings",
+	"animals",
+	"collected",
+	"festival_done",
+	"stats",
+	"board",
+]
 var catalog: ContentCatalog
+var gather_ids: Dictionary = {}
+var event_ids: Dictionary = {}
 
 
 func _init(content: ContentCatalog) -> void:
 	catalog = content
+	for map_id in catalog.regions:
+		for node in catalog.regions[map_id].get("gather", []):
+			gather_ids[node.id] = true
+	for npc_id in catalog.story.npcs:
+		for event in catalog.story.npcs[npc_id].events:
+			event_ids[event.id] = true
 
 
 func validate(data: Variant) -> String:
-	# All untrusted disk values are checked here, once, before entering the domain.
 	if not data is Dictionary:
 		return "存档不是对象"
-	if not data.has_all(
-		[
-			"schema_version",
-			"map_id",
-			"world_seed",
-			"day",
-			"minute",
-			"stamina",
-			"gold",
-			"inventory",
-			"plots",
-			"tree_damage",
-			"progress",
-			"player_position"
-		]
-	):
+	if not data.has_all(REQUIRED):
 		return "存档字段不完整"
 	if (
 		not whole(data.schema_version, FarmState.SCHEMA_VERSION, FarmState.SCHEMA_VERSION)
@@ -40,15 +55,57 @@ func validate(data: Variant) -> String:
 	if (
 		not whole(data.day, 1, 999999)
 		or not whole(data.minute, FarmState.MORNING, FarmState.NIGHT - 1)
+		or int(data.minute) % FarmState.TICK_MINUTES != 0
 	):
 		return "日期或时间无效"
 	if not whole(data.stamina, 0, FarmState.MAX_STAMINA) or not whole(data.gold, 0, 1000000000):
 		return "体力或金币无效"
+	var error = validate_inventory(data)
+	if not error.is_empty():
+		return error
+	error = validate_land(data)
+	if not error.is_empty():
+		return error
+	error = validate_character(data)
+	if not error.is_empty():
+		return error
+	error = validate_farm_life(data)
+	if not error.is_empty():
+		return error
+	var pos = data.player_position
+	if not pos is Array or pos.size() != 2 or not numeric(pos[0]) or not numeric(pos[1]):
+		return "角色位置无效"
+	var area = catalog.region(data.map_id)
+	if (
+		pos[0] < 32
+		or pos[1] < 32
+		or pos[0] >= (int(area.width) - 1) * 32
+		or pos[1] >= (int(area.height) - 1) * 32
+	):
+		return "角色超出地图"
+	if catalog.blocked(Vector2i(int(pos[0] / 32), int(pos[1] / 32)), data.map_id, data.tree_damage):
+		return "角色位于障碍物内"
+	return ""
+
+
+func numeric(value: Variant) -> bool:
+	return (value is int or value is float) and is_finite(float(value))
+
+
+func whole(value: Variant, low: int, high: int) -> bool:
+	return numeric(value) and value >= low and value <= high and float(value) == floor(float(value))
+
+
+func validate_inventory(data: Dictionary) -> String:
 	if not data.inventory is Dictionary or data.inventory.size() != catalog.items.size():
 		return "背包结构无效"
 	for id in data.inventory:
 		if not catalog.items.has(id) or not whole(data.inventory[id], 0, 1000000):
 			return "物品数量无效"
+	return ""
+
+
+func validate_land(data: Dictionary) -> String:
 	if not data.tree_damage is Dictionary:
 		return "树木记录无效"
 	for id in data.tree_damage:
@@ -87,7 +144,7 @@ func validate(data: Variant) -> String:
 	for goal in FarmState.GOALS:
 		if not data.progress.has(goal) or not data.progress[goal] is bool:
 			return "引导进度无效"
-	if not data.get("cleared") is Array:
+	if not data.cleared is Array:
 		return "开垦记录无效"
 	var cleared_ids: Dictionary = {}
 	for id in data.cleared:
@@ -98,30 +155,77 @@ func validate(data: Variant) -> String:
 		var node = catalog.debris_cells.get(FarmState.key_cell(key), {})
 		if not node.is_empty() and not cleared_ids.has(node.id):
 			return "地块仍有杂物"
-	var character_error = validate_character(data)
-	if not character_error.is_empty():
-		return character_error
-	var pos = data.player_position
-	if not pos is Array or pos.size() != 2 or not numeric(pos[0]) or not numeric(pos[1]):
-		return "角色位置无效"
-	if (
-		pos[0] < 32
-		or pos[1] < 32
-		or pos[0] >= (int(catalog.region(data.map_id).width) - 1) * 32
-		or pos[1] >= (int(catalog.region(data.map_id).height) - 1) * 32
-	):
-		return "角色超出地图"
-	if catalog.blocked(Vector2i(int(pos[0] / 32), int(pos[1] / 32)), data.map_id, data.tree_damage):
-		return "角色位于障碍物内"
 	return ""
 
 
-func numeric(value: Variant) -> bool:
-	return (value is int or value is float) and is_finite(float(value))
-
-
-func whole(value: Variant, low: int, high: int) -> bool:
-	return numeric(value) and value >= low and value <= high and float(value) == floor(float(value))
+func validate_farm_life(data: Dictionary) -> String:
+	if not data.buildings is Dictionary:
+		return "建筑记录无效"
+	for id in data.buildings:
+		var b = data.buildings[id]
+		if (
+			not catalog.buildings.has(id)
+			or not b is Dictionary
+			or not b.has("ready_day")
+			or not whole(b.ready_day, 1, 999999)
+		):
+			return "建筑记录无效"
+	if not data.animals is Array:
+		return "动物记录无效"
+	var count: Dictionary = {}
+	for a in data.animals:
+		if (
+			not a is Dictionary
+			or not a.has_all(
+				["species", "name", "friendship", "fed", "petted", "age", "wait", "ready"]
+			)
+			or not a.species is String
+			or not catalog.animals.has(a.species)
+			or not a.name is String
+			or a.name.is_empty()
+			or a.name.length() > 10
+			or not whole(a.friendship, 0, 100)
+			or not whole(a.age, 0, 100000)
+			or not whole(a.wait, 0, 100)
+			or not a.fed is bool
+			or not a.petted is bool
+			or not a.ready is bool
+		):
+			return "动物数据无效"
+		var home = catalog.animals[a.species].building
+		count[home] = int(count.get(home, 0)) + 1
+		if not data.buildings.has(home) or count[home] > int(catalog.buildings[home].capacity):
+			return "动物没有住处"
+	if not data.collected is Array:
+		return "图志记录无效"
+	var seen: Dictionary = {}
+	for id in data.collected:
+		if not id is String or not catalog.items.has(id) or seen.has(id):
+			return "图志记录重复或无效"
+		seen[id] = true
+	if not data.festival_done is Array:
+		return "节日记录无效"
+	for entry in data.festival_done:
+		if not entry is String or entry.split(":").size() != 2:
+			return "节日记录无效"
+	if not data.stats is Dictionary or data.stats.size() != 4:
+		return "统计无效"
+	for key in ["earned", "harvested", "caught", "cooked"]:
+		if not data.stats.has(key) or not whole(data.stats[key], 0, 1000000000):
+			return "统计无效"
+	var board = data.board
+	if (
+		not board is Dictionary
+		or not board.has_all(["week", "done"])
+		or not whole(board.week, 0, 99999)
+	):
+		return "公告栏记录无效"
+	if not board.done is Array:
+		return "公告栏记录无效"
+	for index in board.done:
+		if not whole(index, 0, 3):
+			return "公告栏记录无效"
+	return ""
 
 
 func validate_character(data: Dictionary) -> String:
@@ -156,10 +260,9 @@ func validate_character(data: Dictionary) -> String:
 		or n.wish not in ["", "stay", "explore", "together"]
 	):
 		return "剧情状态无效"
-	var scene_ids = catalog.story.scenes.keys()
 	if (
 		not n.active_scene is String
-		or (n.active_scene != "" and not scene_ids.has(n.active_scene))
+		or (n.active_scene != "" and not catalog.story.scenes.has(n.active_scene))
 		or not whole(n.page, 0, 20)
 	):
 		return "对话记录无效"
@@ -170,6 +273,8 @@ func validate_character(data: Dictionary) -> String:
 	for id in catalog.story.npcs:
 		if not data.relationships.has(id) or not whole(data.relationships[id], 0, 100):
 			return "人物关系无效"
+	if data.relationships.size() != catalog.story.npcs.size():
+		return "人物关系无效"
 	for field in ["talked", "gifted", "gathered"]:
 		if not data.daily.get(field) is Array:
 			return "每日记录无效"
@@ -180,28 +285,43 @@ func validate_character(data: Dictionary) -> String:
 			seen.append(id)
 			if field != "gathered" and not catalog.story.npcs.has(id):
 				return "未知人物"
-			if field == "gathered":
-				var found = false
-				for node in catalog.regions.forest.gather:
-					if node.id == id:
-						found = true
-				if not found:
-					return "未知采集点"
+			if field == "gathered" and not gather_ids.has(id):
+				return "未知采集点"
+	return validate_development(data)
+
+
+func validate_development(data: Dictionary) -> String:
 	var d = data.development
-	if not d.has_all(["farming_xp", "foraging_xp", "watering_level", "memories"]):
-		return "成长字段不完整"
-	if (
-		not whole(d.farming_xp, 0, 1000000000)
-		or not whole(d.foraging_xp, 0, 1000000000)
-		or not whole(d.watering_level, 0, 1)
-		or not d.memories is Array
+	if not d.has_all(
+		[
+			"farming_xp",
+			"foraging_xp",
+			"fishing_xp",
+			"cooking_xp",
+			"mining_xp",
+			"rod",
+			"events",
+			"tools"
+		]
 	):
-		return "成长数据无效"
-	var memories: Array = []
-	for id in d.memories:
-		if not catalog.story.npcs.has(id) or memories.has(id):
-			return "人物回忆无效"
-		memories.append(id)
+		return "成长字段不完整"
+	for key in ["farming_xp", "foraging_xp", "fishing_xp", "cooking_xp", "mining_xp"]:
+		if not whole(d[key], 0, 1000000000):
+			return "成长数据无效"
+	if not whole(d.rod, 0, catalog.rods.size() - 1):
+		return "鱼竿等级无效"
+	if not d.tools is Dictionary or d.tools.size() != FarmState.TOOLS.size():
+		return "工具等级无效"
+	for tool in FarmState.TOOLS:
+		if not d.tools.has(tool) or not whole(d.tools[tool], 0, catalog.tool_tiers.size()):
+			return "工具等级无效"
+	if not d.events is Array:
+		return "人物事件记录无效"
+	var seen: Dictionary = {}
+	for id in d.events:
+		if not id is String or not event_ids.has(id) or seen.has(id):
+			return "人物事件记录重复或无效"
+		seen[id] = true
 	if data.storage.size() != catalog.items.size():
 		return "储物字段不完整"
 	for id in data.storage:

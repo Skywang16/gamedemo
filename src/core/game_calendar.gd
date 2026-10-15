@@ -11,11 +11,22 @@ var festivals: Array = []
 var weather_names: Dictionary = {}
 var weather_table: Dictionary = {}
 var calm_days: int = 0
+var plaza_map: String = ""
+var plaza_cells: Array = []
 
 
 func load_data(data: Dictionary) -> String:
 	if not data.has_all(
-		["days_per_season", "seasons", "weekdays", "weather_names", "weather", "festivals"]
+		[
+			"days_per_season",
+			"seasons",
+			"weekdays",
+			"weather_names",
+			"weather",
+			"festivals",
+			"plaza",
+			"calm_days"
+		]
 	):
 		return "日历配置不完整"
 	days_per_season = int(data.days_per_season)
@@ -24,7 +35,11 @@ func load_data(data: Dictionary) -> String:
 	festivals = data.festivals
 	weather_names = data.weather_names
 	weather_table = data.weather
-	calm_days = int(data.get("calm_days", 0))
+	calm_days = int(data.calm_days)
+	plaza_map = data.plaza.map
+	plaza_cells = data.plaza.cells
+	if plaza_cells.is_empty():
+		return "节日广场没有站位"
 	if days_per_season < 7 or days_per_season % weekdays.size() != 0 or seasons.size() != 4:
 		return "日历长度必须是 4 个季节、且每季天数为一周的整数倍"
 	for season in seasons:
@@ -134,3 +149,14 @@ func birthdays_on(day: int, npcs: Dictionary) -> Array:
 		if b is Dictionary and b.season == d.season and int(b.day) == d.day:
 			found.append(id)
 	return found
+
+
+## "HH:MM" for a minute counted from midnight; the day runs past 24:00, shown as 00:xx, 01:xx.
+static func clock(minute: int) -> String:
+	return "%02d:%02d" % [int(minute / 60) % 24, minute % 60]
+
+
+## The plaza cell where villager number `index` stands during a festival.
+func plaza_cell(index: int) -> Vector2i:
+	var c = plaza_cells[index % plaza_cells.size()]
+	return Vector2i(int(c[0]), int(c[1]))

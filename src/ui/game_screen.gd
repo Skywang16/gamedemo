@@ -137,3 +137,52 @@ func _slot(rect: Rect2, action: Callable, parent: Node = self) -> Button:
 	button.add_theme_stylebox_override("normal", _skin("slot"))
 	button.add_theme_stylebox_override("hover", _skin("selected"))
 	return button
+
+
+## Previous / next page buttons with a "page x / y" label between them.
+func add_pager(
+	parent: Node, at: Vector2, width: float, page: int, pages: int, on_page: Callable
+) -> void:
+	var prev = _button("‹ 上一页", Rect2(at, Vector2(150, 40)), func(): on_page.call(page - 1), parent)
+	prev.disabled = page <= 0
+	var label = _label(
+		"第 %d / %d 页" % [page + 1, maxi(1, pages)],
+		Rect2(at + Vector2(width / 2.0 - 70.0, 0), Vector2(140, 40)),
+		18,
+		MUTED,
+		false,
+		parent
+	)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	var next = _button(
+		"下一页 ›",
+		Rect2(at + Vector2(width - 150.0, 0), Vector2(150, 40)),
+		func(): on_page.call(page + 1),
+		parent
+	)
+	next.disabled = page >= pages - 1
+
+
+static func page_count(total: int, per_page: int) -> int:
+	return maxi(1, int(ceil(float(total) / float(per_page))))
+
+
+## A row of tab buttons; the current one is drawn raised.
+func add_tabs(
+	parent: Node, at: Vector2, tabs: Array, current: String, width: float, on_select: Callable
+) -> void:
+	var x = at.x
+	for entry in tabs:
+		var id: String = entry[0]
+		var button = _button(
+			entry[1],
+			Rect2(Vector2(x, at.y), Vector2(width, 42)),
+			func(): on_select.call(id),
+			parent
+		)
+		var raised = id == current
+		button.add_theme_stylebox_override("normal", _skin("selected" if raised else "button"))
+		button.add_theme_stylebox_override("hover", _skin("selected" if raised else "hover"))
+		button.add_theme_color_override("font_color", INK if raised else LIGHT)
+		button.add_theme_color_override("font_hover_color", INK if raised else Color("fff8db"))
+		x += width + 8.0

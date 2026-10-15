@@ -24,9 +24,9 @@ static func grade(season: String, weather: String) -> Color:
 	return SEASON_GRADE.get(season, Color.WHITE) * WEATHER_GRADE.get(weather, Color.WHITE)
 
 
-## Fraction of the evening dusk applied at `minute` (0 during the day, 1 at nightfall).
+## Fraction of the evening dusk applied at `minute`: 0 until 18:00, 1 from 22:00 on.
 static func dusk(minute: int) -> float:
-	return clampf(float(minute - 17 * 60) / 180.0, 0.0, 1.0)
+	return clampf(float(minute - 18 * 60) / 240.0, 0.0, 1.0)
 
 
 static func lit(season: String, weather: String, minute: int) -> Color:

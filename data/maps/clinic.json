@@ -1,0 +1,106 @@
+{
+  "id": "clinic",
+  "name": "芦苇渡诊所",
+  "width": 30,
+  "height": 19,
+  "tile_size": 32,
+  "background": "clinic_background",
+  "spawn": [
+    464,
+    464
+  ],
+  "obstacles": [
+    [
+      1,
+      1,
+      28,
+      3
+    ],
+    [
+      1,
+      4,
+      3,
+      14
+    ],
+    [
+      25,
+      4,
+      4,
+      14
+    ],
+    [
+      4,
+      16,
+      21,
+      2
+    ],
+    [
+      9,
+      5,
+      12,
+      2
+    ],
+    [
+      4,
+      10,
+      3,
+      2
+    ],
+    [
+      21,
+      10,
+      3,
+      2
+    ],
+    [
+      4,
+      4,
+      1,
+      2
+    ],
+    [
+      4,
+      14,
+      3,
+      1
+    ],
+    [
+      24,
+      4,
+      1,
+      2
+    ]
+  ],
+  "trees": [],
+  "props": [],
+  "stations": [
+    {
+      "id": "counter",
+      "name": "安布罗斯的诊台",
+      "kind": "shop",
+      "cell": [
+        14,
+        7
+      ],
+      "shop_id": "clinic"
+    },
+    {
+      "id": "to_market",
+      "name": "回到集市街",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "market",
+      "arrival": [
+        2128,
+        880
+      ]
+    }
+  ],
+  "gather": [],
+  "debris": [],
+  "paths": [],
+  "water": []
+}

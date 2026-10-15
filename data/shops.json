@@ -1,0 +1,171 @@
+{
+  "shops": {
+    "seeds": {
+      "name": "黑兹尔的种子摊",
+      "open": 8,
+      "close": 18,
+      "closed_weekdays": [],
+      "seeds": "season",
+      "goods": {},
+      "buys": [
+        "produce"
+      ]
+    },
+    "general": {
+      "name": "霍克杂货店",
+      "open": 9,
+      "close": 17,
+      "closed_weekdays": [
+        6
+      ],
+      "seeds": "season",
+      "goods": {
+        "hay": 8,
+        "bait": 4,
+        "bandage": 15
+      },
+      "buys": [
+        "produce",
+        "forage",
+        "dish"
+      ]
+    },
+    "smith": {
+      "name": "布兰尼根铁匠铺",
+      "open": 9,
+      "close": 17,
+      "closed_weekdays": [
+        6
+      ],
+      "goods": {
+        "coal": 40
+      },
+      "smelt": true,
+      "upgrade": true,
+      "buys": [
+        "mineral"
+      ]
+    },
+    "clinic": {
+      "name": "芦苇渡诊所",
+      "open": 9,
+      "close": 17,
+      "closed_weekdays": [
+        6
+      ],
+      "goods": {
+        "medicine": 60,
+        "bandage": 15
+      },
+      "heal": true,
+      "buys": []
+    },
+    "tackle": {
+      "name": "托比渔具店",
+      "open": 6,
+      "close": 18,
+      "closed_weekdays": [],
+      "goods": {
+        "bait": 4
+      },
+      "rods": true,
+      "buys": [
+        "fish"
+      ]
+    },
+    "ranch": {
+      "name": "罗西的牧场",
+      "open": 8,
+      "close": 17,
+      "closed_weekdays": [],
+      "goods": {
+        "hay": 8
+      },
+      "animals": true,
+      "buys": [
+        "produce",
+        "dish"
+      ]
+    },
+    "builder": {
+      "name": "卡弗木工坊 · 建造台",
+      "open": 9,
+      "close": 17,
+      "closed_weekdays": [
+        6
+      ],
+      "goods": {},
+      "build": true,
+      "buys": []
+    },
+    "tea": {
+      "name": "铜壶茶室",
+      "open": 10,
+      "close": 22,
+      "closed_weekdays": [],
+      "goods": {
+        "honey_tea": 90,
+        "grape_juice": 88,
+        "scone_wheat": 70,
+        "apple_pie": 130
+      },
+      "buys": [
+        "dish"
+      ]
+    }
+  },
+  "rods": [
+    {
+      "name": "竹竿",
+      "price": 0,
+      "speed": 0,
+      "window": 0
+    },
+    {
+      "name": "玻璃纤维竿",
+      "price": 400,
+      "speed": 1,
+      "window": 1
+    },
+    {
+      "name": "铁竿",
+      "price": 1200,
+      "speed": 2,
+      "window": 2
+    },
+    {
+      "name": "金竿",
+      "price": 3600,
+      "speed": 3,
+      "window": 3
+    }
+  ],
+  "tool_tiers": [
+    {
+      "name": "铜",
+      "bar": "copper_bar",
+      "gold": 200
+    },
+    {
+      "name": "铁",
+      "bar": "iron_bar",
+      "gold": 600
+    },
+    {
+      "name": "银",
+      "bar": "silver_bar",
+      "gold": 1800
+    },
+    {
+      "name": "金",
+      "bar": "gold_bar",
+      "gold": 5000
+    }
+  ],
+  "smelting": {
+    "copper_ore": "copper_bar",
+    "iron_ore": "iron_bar",
+    "silver_ore": "silver_bar",
+    "gold_ore": "gold_bar"
+  }
+}

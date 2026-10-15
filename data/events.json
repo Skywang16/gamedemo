@@ -1,0 +1,345 @@
+[
+  {
+    "id": "fog_night",
+    "name": "河雾夜",
+    "when": {
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "prev_weather": [
+        "cloudy",
+        "rain"
+      ],
+      "chance": 8
+    },
+    "effect": {
+      "items": {
+        "lamp_note": 1
+      }
+    },
+    "text": "夜里河面起了雾，岸边留下一页灯信残页。"
+  },
+  {
+    "id": "firefly_tide",
+    "name": "萤火潮",
+    "when": {
+      "seasons": [
+        "summer"
+      ],
+      "prev_weather": [
+        "sunny"
+      ],
+      "chance": 10
+    },
+    "effect": {
+      "items": {
+        "firefly": 1
+      },
+      "boost": 3
+    },
+    "text": "昨夜农场被萤火虫包围，几株作物长得格外快。"
+  },
+  {
+    "id": "drifting_lanterns",
+    "name": "漂灯夜",
+    "when": {
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "prev_weather": [
+        "rain"
+      ],
+      "chance": 10
+    },
+    "effect": {
+      "items": {
+        "lamp_note": 1
+      }
+    },
+    "text": "雨后一串小灯顺水漂过，岸边留下了一张匿名字条。"
+  },
+  {
+    "id": "heron",
+    "name": "白鹭落田",
+    "when": {
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "chance": 6
+    },
+    "effect": {
+      "items": {
+        "feather": 1
+      }
+    },
+    "text": "一只白鹭在农场停了一夜，留下一根白羽。"
+  },
+  {
+    "id": "frost_flowers",
+    "name": "霜花夜",
+    "when": {
+      "seasons": [
+        "winter"
+      ],
+      "chance": 8
+    },
+    "effect": {
+      "items": {
+        "snowdrop": 1
+      }
+    },
+    "text": "窗上结了霜花，院角探出一朵雪花莲。"
+  },
+  {
+    "id": "rainbow",
+    "name": "彩虹日",
+    "when": {
+      "weather": [
+        "sunny"
+      ],
+      "prev_weather": [
+        "rain",
+        "storm"
+      ],
+      "chance": 15
+    },
+    "effect": {
+      "friends": 2
+    },
+    "text": "雨过天晴，天上挂起彩虹，大家的心情都特别好。"
+  },
+  {
+    "id": "windy_flowers",
+    "name": "风吹来的花",
+    "when": {
+      "weather": [
+        "wind"
+      ],
+      "chance": 25
+    },
+    "effect": {
+      "items": {
+        "primrose": 2
+      }
+    },
+    "text": "大风把野花吹进了农场。"
+  },
+  {
+    "id": "lightning_oak",
+    "name": "雷击老树",
+    "when": {
+      "weather": [
+        "storm"
+      ],
+      "chance": 20
+    },
+    "effect": {
+      "items": {
+        "wood": 6
+      }
+    },
+    "text": "昨夜一棵老树被雷劈断，落了一地好木头。"
+  },
+  {
+    "id": "bee_swarm",
+    "name": "蜂群安家",
+    "when": {
+      "seasons": [
+        "summer"
+      ],
+      "chance": 5
+    },
+    "effect": {
+      "items": {
+        "honey": 3
+      }
+    },
+    "text": "一群野蜂在农场的树上安了家，留下了几罐蜜。"
+  },
+  {
+    "id": "wild_apples",
+    "name": "野果落地",
+    "when": {
+      "seasons": [
+        "autumn"
+      ],
+      "chance": 6
+    },
+    "effect": {
+      "items": {
+        "crab_apple": 3
+      }
+    },
+    "text": "风吹落了一地野苹果。"
+  },
+  {
+    "id": "buried_coin",
+    "name": "旧物浮现",
+    "when": {
+      "prev_weather": [
+        "rain",
+        "storm"
+      ],
+      "chance": 10
+    },
+    "effect": {
+      "items": {
+        "old_coin": 1
+      }
+    },
+    "text": "大雨冲开了泥土，露出一枚旧铜币。"
+  },
+  {
+    "id": "quail_nest",
+    "name": "鹌鹑窝",
+    "when": {
+      "seasons": [
+        "spring"
+      ],
+      "chance": 5
+    },
+    "effect": {
+      "items": {
+        "quail_egg": 2
+      }
+    },
+    "text": "田埂边有个鹌鹑窝，里面躺着两颗小蛋。"
+  },
+  {
+    "id": "snow_day",
+    "name": "雪天的红果",
+    "when": {
+      "weather": [
+        "snow"
+      ],
+      "chance": 20
+    },
+    "effect": {
+      "items": {
+        "holly_berry": 2
+      }
+    },
+    "text": "雪压弯了院角的冬青枝，红果子掉在雪里。"
+  },
+  {
+    "id": "after_rain_mushrooms",
+    "name": "雨后蘑菇",
+    "when": {
+      "seasons": [
+        "autumn"
+      ],
+      "prev_weather": [
+        "rain"
+      ],
+      "chance": 30
+    },
+    "effect": {
+      "items": {
+        "mushroom": 3
+      }
+    },
+    "text": "雨后树根边冒出一圈蘑菇。"
+  },
+  {
+    "id": "storm_catfish",
+    "name": "冲上岸的鲶鱼",
+    "when": {
+      "seasons": [
+        "summer"
+      ],
+      "weather": [
+        "storm"
+      ],
+      "chance": 25
+    },
+    "effect": {
+      "items": {
+        "catfish": 1
+      }
+    },
+    "text": "暴雨把一条鲶鱼冲到了水塘边。"
+  },
+  {
+    "id": "wandering_painter",
+    "name": "云游画师",
+    "when": {
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "chance": 4
+    },
+    "effect": {
+      "gold": 80
+    },
+    "text": "一位云游画师为农场画了张速写，付了你 80 金币。"
+  },
+  {
+    "id": "swallow_nest",
+    "name": "屋檐下的燕巢",
+    "when": {
+      "seasons": [
+        "spring"
+      ],
+      "chance": 5
+    },
+    "effect": {
+      "items": {
+        "feather": 1
+      }
+    },
+    "text": "屋檐下来了一窝燕子，地上落了一根细羽。"
+  },
+  {
+    "id": "neighbour_basket",
+    "name": "邻居的篮子",
+    "when": {
+      "chance": 6
+    },
+    "effect": {
+      "items": {
+        "berry": 3
+      }
+    },
+    "text": "门口放着一篮野莓，没有留名字。"
+  },
+  {
+    "id": "morning_dew",
+    "name": "清晨露水",
+    "when": {
+      "seasons": [
+        "spring"
+      ],
+      "weather": [
+        "sunny"
+      ],
+      "chance": 10
+    },
+    "effect": {
+      "boost": 2
+    },
+    "text": "清晨的露水很足，几株作物精神了不少。"
+  },
+  {
+    "id": "autumn_gust",
+    "name": "秋风送礼",
+    "when": {
+      "seasons": [
+        "autumn"
+      ],
+      "weather": [
+        "wind"
+      ],
+      "chance": 20
+    },
+    "effect": {
+      "items": {
+        "hazelnut": 3
+      }
+    },
+    "text": "秋风摇落了榛子。"
+  }
+]

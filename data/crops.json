@@ -1,4 +1,1105 @@
 {
-  "turnip": {"name": "萝卜", "seed_item": "turnip_seed", "harvest_item": "turnip", "seasons": ["spring", "summer", "autumn", "winter"], "growth_days": 3, "yield": 1, "stages": ["turnip_seeds", "turnip_sprout", "turnip_young", "turnip_mature"]},
-  "carrot": {"name": "胡萝卜", "seed_item": "carrot_seed", "harvest_item": "carrot", "seasons": ["spring", "summer", "autumn", "winter"], "growth_days": 4, "yield": 1, "stages": ["carrot_seeds", "carrot_sprout", "carrot_young", "carrot_mature"]}
+  "turnip": {
+    "name": "萝卜",
+    "seed_item": "turnip_seed",
+    "harvest_item": "turnip",
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter"
+    ],
+    "growth_days": 3,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "turnip_seeds",
+      "turnip_sprout",
+      "turnip_young",
+      "turnip_mature"
+    ]
+  },
+  "carrot": {
+    "name": "胡萝卜",
+    "seed_item": "carrot_seed",
+    "harvest_item": "carrot",
+    "seasons": [
+      "spring",
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "carrot_seeds",
+      "carrot_sprout",
+      "carrot_young",
+      "carrot_mature"
+    ]
+  },
+  "pea": {
+    "name": "豌豆",
+    "seed_item": "pea_seed",
+    "harvest_item": "pea",
+    "seasons": [
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "pea_seeds",
+      "pea_sprout",
+      "pea_young",
+      "pea_mature"
+    ]
+  },
+  "spinach": {
+    "name": "菠菜",
+    "seed_item": "spinach_seed",
+    "harvest_item": "spinach",
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "growth_days": 3,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "spinach_seeds",
+      "spinach_sprout",
+      "spinach_young",
+      "spinach_mature"
+    ]
+  },
+  "potato": {
+    "name": "土豆",
+    "seed_item": "potato_seed",
+    "harvest_item": "potato",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "potato_seeds",
+      "potato_sprout",
+      "potato_young",
+      "potato_mature"
+    ]
+  },
+  "strawberry": {
+    "name": "草莓",
+    "seed_item": "strawberry_seed",
+    "harvest_item": "strawberry",
+    "seasons": [
+      "spring"
+    ],
+    "growth_days": 8,
+    "regrow": 4,
+    "yield": 1,
+    "stages": [
+      "strawberry_seeds",
+      "strawberry_sprout",
+      "strawberry_young",
+      "strawberry_mature"
+    ]
+  },
+  "rhubarb": {
+    "name": "大黄",
+    "seed_item": "rhubarb_seed",
+    "harvest_item": "rhubarb",
+    "seasons": [
+      "spring"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "rhubarb_seeds",
+      "rhubarb_sprout",
+      "rhubarb_young",
+      "rhubarb_mature"
+    ]
+  },
+  "tomato": {
+    "name": "番茄",
+    "seed_item": "tomato_seed",
+    "harvest_item": "tomato",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "tomato_seeds",
+      "tomato_sprout",
+      "tomato_young",
+      "tomato_mature"
+    ]
+  },
+  "corn": {
+    "name": "玉米",
+    "seed_item": "corn_seed",
+    "harvest_item": "corn",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 8,
+    "regrow": 4,
+    "yield": 1,
+    "stages": [
+      "corn_seeds",
+      "corn_sprout",
+      "corn_young",
+      "corn_mature"
+    ]
+  },
+  "watermelon": {
+    "name": "西瓜",
+    "seed_item": "watermelon_seed",
+    "harvest_item": "watermelon",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 9,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "watermelon_seeds",
+      "watermelon_sprout",
+      "watermelon_young",
+      "watermelon_mature"
+    ]
+  },
+  "cucumber": {
+    "name": "黄瓜",
+    "seed_item": "cucumber_seed",
+    "harvest_item": "cucumber",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "cucumber_seeds",
+      "cucumber_sprout",
+      "cucumber_young",
+      "cucumber_mature"
+    ]
+  },
+  "eggplant": {
+    "name": "茄子",
+    "seed_item": "eggplant_seed",
+    "harvest_item": "eggplant",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "eggplant_seeds",
+      "eggplant_sprout",
+      "eggplant_young",
+      "eggplant_mature"
+    ]
+  },
+  "chili": {
+    "name": "辣椒",
+    "seed_item": "chili_seed",
+    "harvest_item": "chili",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "chili_seeds",
+      "chili_sprout",
+      "chili_young",
+      "chili_mature"
+    ]
+  },
+  "sunflower": {
+    "name": "向日葵",
+    "seed_item": "sunflower_seed",
+    "harvest_item": "sunflower",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 7,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "sunflower_seeds",
+      "sunflower_sprout",
+      "sunflower_young",
+      "sunflower_mature"
+    ]
+  },
+  "pumpkin": {
+    "name": "南瓜",
+    "seed_item": "pumpkin_seed",
+    "harvest_item": "pumpkin",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 9,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "pumpkin_seeds",
+      "pumpkin_sprout",
+      "pumpkin_young",
+      "pumpkin_mature"
+    ]
+  },
+  "sweetpotato": {
+    "name": "红薯",
+    "seed_item": "sweetpotato_seed",
+    "harvest_item": "sweetpotato",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "sweetpotato_seeds",
+      "sweetpotato_sprout",
+      "sweetpotato_young",
+      "sweetpotato_mature"
+    ]
+  },
+  "parsnip": {
+    "name": "欧防风",
+    "seed_item": "parsnip_seed",
+    "harvest_item": "parsnip",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "parsnip_seeds",
+      "parsnip_sprout",
+      "parsnip_young",
+      "parsnip_mature"
+    ]
+  },
+  "buckwheat": {
+    "name": "荞麦",
+    "seed_item": "buckwheat_seed",
+    "harvest_item": "buckwheat",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "buckwheat_seeds",
+      "buckwheat_sprout",
+      "buckwheat_young",
+      "buckwheat_mature"
+    ]
+  },
+  "rutabaga": {
+    "name": "芜菁甘蓝",
+    "seed_item": "rutabaga_seed",
+    "harvest_item": "rutabaga",
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "growth_days": 7,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "rutabaga_seeds",
+      "rutabaga_sprout",
+      "rutabaga_young",
+      "rutabaga_mature"
+    ]
+  },
+  "grape": {
+    "name": "葡萄",
+    "seed_item": "grape_seed",
+    "harvest_item": "grape",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 9,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "grape_seeds",
+      "grape_sprout",
+      "grape_young",
+      "grape_mature"
+    ]
+  },
+  "cabbage": {
+    "name": "卷心菜",
+    "seed_item": "cabbage_seed",
+    "harvest_item": "cabbage",
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "cabbage_seeds",
+      "cabbage_sprout",
+      "cabbage_young",
+      "cabbage_mature"
+    ]
+  },
+  "brussels": {
+    "name": "抱子甘蓝",
+    "seed_item": "brussels_seed",
+    "harvest_item": "brussels",
+    "seasons": [
+      "winter"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "brussels_seeds",
+      "brussels_sprout",
+      "brussels_young",
+      "brussels_mature"
+    ]
+  },
+  "scallion": {
+    "name": "小葱",
+    "seed_item": "scallion_seed",
+    "harvest_item": "scallion",
+    "seasons": [
+      "winter"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "scallion_seeds",
+      "scallion_sprout",
+      "scallion_young",
+      "scallion_mature"
+    ]
+  },
+  "winterradish": {
+    "name": "冬萝卜",
+    "seed_item": "winterradish_seed",
+    "harvest_item": "winterradish",
+    "seasons": [
+      "winter"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "winterradish_seeds",
+      "winterradish_sprout",
+      "winterradish_young",
+      "winterradish_mature"
+    ]
+  },
+  "rosemary": {
+    "name": "迷迭香",
+    "seed_item": "rosemary_seed",
+    "harvest_item": "rosemary",
+    "seasons": [
+      "winter"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "rosemary_seeds",
+      "rosemary_sprout",
+      "rosemary_young",
+      "rosemary_mature"
+    ]
+  },
+  "lettuce": {
+    "name": "生菜",
+    "seed_item": "lettuce_seed",
+    "harvest_item": "lettuce",
+    "seasons": [
+      "spring",
+      "autumn"
+    ],
+    "growth_days": 3,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "lettuce_seeds",
+      "lettuce_sprout",
+      "lettuce_young",
+      "lettuce_mature"
+    ]
+  },
+  "celery": {
+    "name": "芹菜",
+    "seed_item": "celery_seed",
+    "harvest_item": "celery",
+    "seasons": [
+      "spring",
+      "winter"
+    ],
+    "growth_days": 4,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "celery_seeds",
+      "celery_sprout",
+      "celery_young",
+      "celery_mature"
+    ]
+  },
+  "leek": {
+    "name": "韭葱",
+    "seed_item": "leek_seed",
+    "harvest_item": "leek",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 4,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "leek_seeds",
+      "leek_sprout",
+      "leek_young",
+      "leek_mature"
+    ]
+  },
+  "onion": {
+    "name": "洋葱",
+    "seed_item": "onion_seed",
+    "harvest_item": "onion",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "onion_seeds",
+      "onion_sprout",
+      "onion_young",
+      "onion_mature"
+    ]
+  },
+  "asparagus": {
+    "name": "芦笋",
+    "seed_item": "asparagus_seed",
+    "harvest_item": "asparagus",
+    "seasons": [
+      "spring"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "asparagus_seeds",
+      "asparagus_sprout",
+      "asparagus_young",
+      "asparagus_mature"
+    ]
+  },
+  "broadbean": {
+    "name": "蚕豆",
+    "seed_item": "broadbean_seed",
+    "harvest_item": "broadbean",
+    "seasons": [
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "broadbean_seeds",
+      "broadbean_sprout",
+      "broadbean_young",
+      "broadbean_mature"
+    ]
+  },
+  "radish": {
+    "name": "樱桃萝卜",
+    "seed_item": "radish_seed",
+    "harvest_item": "radish",
+    "seasons": [
+      "spring",
+      "winter"
+    ],
+    "growth_days": 3,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "radish_seeds",
+      "radish_sprout",
+      "radish_young",
+      "radish_mature"
+    ]
+  },
+  "butternut": {
+    "name": "奶油南瓜",
+    "seed_item": "butternut_seed",
+    "harvest_item": "butternut",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 8,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "butternut_seeds",
+      "butternut_sprout",
+      "butternut_young",
+      "butternut_mature"
+    ]
+  },
+  "jalapeno": {
+    "name": "墨西哥辣椒",
+    "seed_item": "jalapeno_seed",
+    "harvest_item": "jalapeno",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "jalapeno_seeds",
+      "jalapeno_sprout",
+      "jalapeno_young",
+      "jalapeno_mature"
+    ]
+  },
+  "greenbean": {
+    "name": "四季豆",
+    "seed_item": "greenbean_seed",
+    "harvest_item": "greenbean",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "greenbean_seeds",
+      "greenbean_sprout",
+      "greenbean_young",
+      "greenbean_mature"
+    ]
+  },
+  "okra": {
+    "name": "秋葵",
+    "seed_item": "okra_seed",
+    "harvest_item": "okra",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "okra_seeds",
+      "okra_sprout",
+      "okra_young",
+      "okra_mature"
+    ]
+  },
+  "zucchini": {
+    "name": "西葫芦",
+    "seed_item": "zucchini_seed",
+    "harvest_item": "zucchini",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "zucchini_seeds",
+      "zucchini_sprout",
+      "zucchini_young",
+      "zucchini_mature"
+    ]
+  },
+  "peanut": {
+    "name": "花生",
+    "seed_item": "peanut_seed",
+    "harvest_item": "peanut",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "peanut_seeds",
+      "peanut_sprout",
+      "peanut_young",
+      "peanut_mature"
+    ]
+  },
+  "bellpepper": {
+    "name": "彩椒",
+    "seed_item": "bellpepper_seed",
+    "harvest_item": "bellpepper",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "bellpepper_seeds",
+      "bellpepper_sprout",
+      "bellpepper_young",
+      "bellpepper_mature"
+    ]
+  },
+  "wheat": {
+    "name": "小麦",
+    "seed_item": "wheat_seed",
+    "harvest_item": "wheat",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 7,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "wheat_seeds",
+      "wheat_sprout",
+      "wheat_young",
+      "wheat_mature"
+    ]
+  },
+  "basil": {
+    "name": "罗勒",
+    "seed_item": "basil_seed",
+    "harvest_item": "basil",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 3,
+    "regrow": 2,
+    "yield": 1,
+    "stages": [
+      "basil_seeds",
+      "basil_sprout",
+      "basil_young",
+      "basil_mature"
+    ]
+  },
+  "mint": {
+    "name": "薄荷",
+    "seed_item": "mint_seed",
+    "harvest_item": "mint",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 3,
+    "regrow": 2,
+    "yield": 1,
+    "stages": [
+      "mint_seeds",
+      "mint_sprout",
+      "mint_young",
+      "mint_mature"
+    ]
+  },
+  "blueberry": {
+    "name": "蓝莓",
+    "seed_item": "blueberry_seed",
+    "harvest_item": "blueberry",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 7,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "blueberry_seeds",
+      "blueberry_sprout",
+      "blueberry_young",
+      "blueberry_mature"
+    ]
+  },
+  "raspberry": {
+    "name": "覆盆子",
+    "seed_item": "raspberry_seed",
+    "harvest_item": "raspberry",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 7,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "raspberry_seeds",
+      "raspberry_sprout",
+      "raspberry_young",
+      "raspberry_mature"
+    ]
+  },
+  "cantaloupe": {
+    "name": "哈密瓜",
+    "seed_item": "cantaloupe_seed",
+    "harvest_item": "cantaloupe",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 8,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "cantaloupe_seeds",
+      "cantaloupe_sprout",
+      "cantaloupe_young",
+      "cantaloupe_mature"
+    ]
+  },
+  "honeydew": {
+    "name": "蜜瓜",
+    "seed_item": "honeydew_seed",
+    "harvest_item": "honeydew",
+    "seasons": [
+      "summer"
+    ],
+    "growth_days": 9,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "honeydew_seeds",
+      "honeydew_sprout",
+      "honeydew_young",
+      "honeydew_mature"
+    ]
+  },
+  "cauliflower": {
+    "name": "花菜",
+    "seed_item": "cauliflower_seed",
+    "harvest_item": "cauliflower",
+    "seasons": [
+      "autumn",
+      "spring"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "cauliflower_seeds",
+      "cauliflower_sprout",
+      "cauliflower_young",
+      "cauliflower_mature"
+    ]
+  },
+  "broccoli": {
+    "name": "西兰花",
+    "seed_item": "broccoli_seed",
+    "harvest_item": "broccoli",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 6,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "broccoli_seeds",
+      "broccoli_sprout",
+      "broccoli_young",
+      "broccoli_mature"
+    ]
+  },
+  "beet": {
+    "name": "甜菜",
+    "seed_item": "beet_seed",
+    "harvest_item": "beet",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "beet_seeds",
+      "beet_sprout",
+      "beet_young",
+      "beet_mature"
+    ]
+  },
+  "ginger": {
+    "name": "生姜",
+    "seed_item": "ginger_seed",
+    "harvest_item": "ginger",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 7,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "ginger_seeds",
+      "ginger_sprout",
+      "ginger_young",
+      "ginger_mature"
+    ]
+  },
+  "garlic": {
+    "name": "大蒜",
+    "seed_item": "garlic_seed",
+    "harvest_item": "garlic",
+    "seasons": [
+      "autumn",
+      "winter"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "garlic_seeds",
+      "garlic_sprout",
+      "garlic_young",
+      "garlic_mature"
+    ]
+  },
+  "barley": {
+    "name": "大麦",
+    "seed_item": "barley_seed",
+    "harvest_item": "barley",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 8,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "barley_seeds",
+      "barley_sprout",
+      "barley_young",
+      "barley_mature"
+    ]
+  },
+  "oats": {
+    "name": "燕麦",
+    "seed_item": "oats_seed",
+    "harvest_item": "oats",
+    "seasons": [
+      "summer",
+      "autumn"
+    ],
+    "growth_days": 6,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "oats_seeds",
+      "oats_sprout",
+      "oats_young",
+      "oats_mature"
+    ]
+  },
+  "cranberry": {
+    "name": "蔓越莓",
+    "seed_item": "cranberry_seed",
+    "harvest_item": "cranberry",
+    "seasons": [
+      "autumn"
+    ],
+    "growth_days": 7,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "cranberry_seeds",
+      "cranberry_sprout",
+      "cranberry_young",
+      "cranberry_mature"
+    ]
+  },
+  "kohlrabi": {
+    "name": "苤蓝",
+    "seed_item": "kohlrabi_seed",
+    "harvest_item": "kohlrabi",
+    "seasons": [
+      "autumn",
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "kohlrabi_seeds",
+      "kohlrabi_sprout",
+      "kohlrabi_young",
+      "kohlrabi_mature"
+    ]
+  },
+  "artichoke": {
+    "name": "洋蓟",
+    "seed_item": "artichoke_seed",
+    "harvest_item": "artichoke",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 8,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "artichoke_seeds",
+      "artichoke_sprout",
+      "artichoke_young",
+      "artichoke_mature"
+    ]
+  },
+  "chard": {
+    "name": "瑞士甜菜",
+    "seed_item": "chard_seed",
+    "harvest_item": "chard",
+    "seasons": [
+      "spring",
+      "summer"
+    ],
+    "growth_days": 3,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "chard_seeds",
+      "chard_sprout",
+      "chard_young",
+      "chard_mature"
+    ]
+  },
+  "kale": {
+    "name": "羽衣甘蓝",
+    "seed_item": "kale_seed",
+    "harvest_item": "kale",
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "kale_seeds",
+      "kale_sprout",
+      "kale_young",
+      "kale_mature"
+    ]
+  },
+  "snowpea": {
+    "name": "雪豌豆",
+    "seed_item": "snowpea_seed",
+    "harvest_item": "snowpea",
+    "seasons": [
+      "winter"
+    ],
+    "growth_days": 5,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "snowpea_seeds",
+      "snowpea_sprout",
+      "snowpea_young",
+      "snowpea_mature"
+    ]
+  },
+  "blackradish": {
+    "name": "黑萝卜",
+    "seed_item": "blackradish_seed",
+    "harvest_item": "blackradish",
+    "seasons": [
+      "winter",
+      "autumn"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "blackradish_seeds",
+      "blackradish_sprout",
+      "blackradish_young",
+      "blackradish_mature"
+    ]
+  },
+  "turnip_purple": {
+    "name": "紫芜菁",
+    "seed_item": "turnip_purple_seed",
+    "harvest_item": "turnip_purple",
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "turnip_purple_seeds",
+      "turnip_purple_sprout",
+      "turnip_purple_young",
+      "turnip_purple_mature"
+    ]
+  },
+  "chicory": {
+    "name": "菊苣",
+    "seed_item": "chicory_seed",
+    "harvest_item": "chicory",
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "growth_days": 5,
+    "regrow": 0,
+    "yield": 1,
+    "stages": [
+      "chicory_seeds",
+      "chicory_sprout",
+      "chicory_young",
+      "chicory_mature"
+    ]
+  },
+  "watercress": {
+    "name": "豆瓣菜",
+    "seed_item": "watercress_seed",
+    "harvest_item": "watercress",
+    "seasons": [
+      "winter",
+      "spring"
+    ],
+    "growth_days": 4,
+    "regrow": 3,
+    "yield": 1,
+    "stages": [
+      "watercress_seeds",
+      "watercress_sprout",
+      "watercress_young",
+      "watercress_mature"
+    ]
+  }
 }

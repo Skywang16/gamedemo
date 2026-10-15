@@ -1,0 +1,617 @@
+{
+ "home_farm/hazel_house": [
+  30,
+  17,
+  true
+ ],
+ "home_farm/stall": [
+  52,
+  19,
+  false
+ ],
+ "home_farm/stall_side": [
+  55,
+  19,
+  false
+ ],
+ "home_farm/field_a": [
+  34,
+  22,
+  false
+ ],
+ "home_farm/field_b": [
+  44,
+  24,
+  false
+ ],
+ "home_farm/well": [
+  35,
+  17,
+  false
+ ],
+ "home_farm/shipping": [
+  46,
+  19,
+  false
+ ],
+ "home_farm/east_road": [
+  70,
+  17,
+  false
+ ],
+ "home_farm/south_road": [
+  40,
+  56,
+  false
+ ],
+ "town/fountain_n": [
+  40,
+  32,
+  false
+ ],
+ "town/fountain_s": [
+  40,
+  36,
+  false
+ ],
+ "town/bench_w": [
+  30,
+  36,
+  false
+ ],
+ "town/bench_e": [
+  49,
+  36,
+  false
+ ],
+ "town/board": [
+  35,
+  31,
+  false
+ ],
+ "town/crossroads": [
+  47,
+  30,
+  false
+ ],
+ "town/bridge": [
+  72,
+  30,
+  false
+ ],
+ "town/south_w": [
+  30,
+  41,
+  false
+ ],
+ "town/south_e": [
+  50,
+  41,
+  false
+ ],
+ "town/west_gate": [
+  5,
+  30,
+  false
+ ],
+ "town/north_road": [
+  40,
+  8,
+  false
+ ],
+ "town/inn_door": [
+  24,
+  22,
+  true
+ ],
+ "town/workshop_door": [
+  54,
+  22,
+  true
+ ],
+ "town/school_door": [
+  12,
+  23,
+  true
+ ],
+ "town/school_yard": [
+  12,
+  26,
+  false
+ ],
+ "town/hall_door": [
+  30,
+  14,
+  true
+ ],
+ "town/hall_steps": [
+  30,
+  17,
+  false
+ ],
+ "town/garden_w": [
+  13,
+  48,
+  false
+ ],
+ "town/garden_e": [
+  67,
+  48,
+  false
+ ],
+ "market/plaza_w": [
+  44,
+  31,
+  false
+ ],
+ "market/plaza_e": [
+  52,
+  31,
+  false
+ ],
+ "market/plaza_n": [
+  47,
+  27,
+  false
+ ],
+ "market/fountain": [
+  45,
+  34,
+  false
+ ],
+ "market/bench_w": [
+  40,
+  38,
+  false
+ ],
+ "market/bench_e": [
+  56,
+  38,
+  false
+ ],
+ "market/store_door": [
+  14,
+  27,
+  true
+ ],
+ "market/smith_door": [
+  28,
+  27,
+  true
+ ],
+ "market/clinic_door": [
+  66,
+  27,
+  true
+ ],
+ "market/tea_door": [
+  80,
+  27,
+  true
+ ],
+ "market/home_10": [
+  10,
+  22,
+  true
+ ],
+ "market/home_24": [
+  24,
+  22,
+  true
+ ],
+ "market/home_36": [
+  36,
+  22,
+  true
+ ],
+ "market/home_60": [
+  60,
+  22,
+  true
+ ],
+ "market/home_72": [
+  72,
+  22,
+  true
+ ],
+ "market/home_84": [
+  84,
+  22,
+  true
+ ],
+ "market/back_w": [
+  14,
+  21,
+  false
+ ],
+ "market/back_e": [
+  76,
+  21,
+  false
+ ],
+ "market/stall_a": [
+  9,
+  36,
+  false
+ ],
+ "market/stall_b": [
+  17,
+  36,
+  false
+ ],
+ "market/stall_c": [
+  25,
+  36,
+  false
+ ],
+ "market/stall_d": [
+  33,
+  36,
+  false
+ ],
+ "market/stall_e": [
+  63,
+  36,
+  false
+ ],
+ "market/stall_f": [
+  71,
+  36,
+  false
+ ],
+ "market/stall_g": [
+  79,
+  36,
+  false
+ ],
+ "market/stall_h": [
+  87,
+  36,
+  false
+ ],
+ "market/north_road": [
+  47,
+  8,
+  false
+ ],
+ "market/south_road": [
+  47,
+  56,
+  false
+ ],
+ "market/west_end": [
+  5,
+  31,
+  false
+ ],
+ "market/east_end": [
+  90,
+  31,
+  false
+ ],
+ "ranch/barn": [
+  38,
+  17,
+  false
+ ],
+ "ranch/home": [
+  14,
+  18,
+  true
+ ],
+ "ranch/paddock_a": [
+  50,
+  14,
+  false
+ ],
+ "ranch/paddock_b": [
+  56,
+  38,
+  false
+ ],
+ "ranch/road_w": [
+  10,
+  25,
+  false
+ ],
+ "ranch/road_e": [
+  60,
+  25,
+  false
+ ],
+ "ranch/pond": [
+  12,
+  32,
+  false
+ ],
+ "ranch/farm_road": [
+  10,
+  8,
+  false
+ ],
+ "seaside/dock_end": [
+  47,
+  52,
+  false
+ ],
+ "seaside/dock_mid": [
+  47,
+  40,
+  false
+ ],
+ "seaside/promenade_w": [
+  12,
+  13,
+  false
+ ],
+ "seaside/promenade_e": [
+  80,
+  13,
+  false
+ ],
+ "seaside/lighthouse": [
+  85,
+  25,
+  false
+ ],
+ "seaside/tackle_door": [
+  20,
+  12,
+  false
+ ],
+ "seaside/maeve_house": [
+  70,
+  11,
+  true
+ ],
+ "seaside/beach_w": [
+  20,
+  30,
+  false
+ ],
+ "seaside/beach_e": [
+  70,
+  28,
+  false
+ ],
+ "forest/camp": [
+  46,
+  32,
+  false
+ ],
+ "forest/crossing": [
+  38,
+  21,
+  false
+ ],
+ "forest/stump": [
+  60,
+  43,
+  false
+ ],
+ "forest/stream": [
+  20,
+  34,
+  false
+ ],
+ "forest/glade": [
+  30,
+  46,
+  false
+ ],
+ "forest/lodge": [
+  46,
+  50,
+  true
+ ],
+ "forest/gate": [
+  38,
+  10,
+  false
+ ],
+ "forest/south_road": [
+  38,
+  58,
+  false
+ ],
+ "forest/herbs": [
+  52,
+  36,
+  false
+ ],
+ "lake/lantern": [
+  36,
+  32,
+  false
+ ],
+ "lake/pier": [
+  37,
+  34,
+  false
+ ],
+ "lake/bench_w": [
+  26,
+  45,
+  false
+ ],
+ "lake/bench_e": [
+  48,
+  45,
+  false
+ ],
+ "lake/shore_w": [
+  20,
+  44,
+  false
+ ],
+ "lake/hut": [
+  10,
+  36,
+  true
+ ],
+ "lake/west_gate": [
+  4,
+  29,
+  false
+ ],
+ "mine_1/entrance": [
+  32,
+  44,
+  false
+ ],
+ "mine_1/cart": [
+  30,
+  40,
+  false
+ ],
+ "mine_1/deep": [
+  31,
+  36,
+  false
+ ],
+ "general_store/behind": [
+  14,
+  4,
+  false
+ ],
+ "general_store/behind_r": [
+  17,
+  4,
+  false
+ ],
+ "general_store/front": [
+  12,
+  8,
+  false
+ ],
+ "general_store/shelf": [
+  6,
+  8,
+  false
+ ],
+ "general_store/table": [
+  8,
+  12,
+  false
+ ],
+ "blacksmith/behind": [
+  14,
+  4,
+  false
+ ],
+ "blacksmith/forge": [
+  10,
+  4,
+  false
+ ],
+ "blacksmith/front": [
+  12,
+  8,
+  false
+ ],
+ "blacksmith/table": [
+  20,
+  12,
+  false
+ ],
+ "clinic/behind": [
+  14,
+  4,
+  false
+ ],
+ "clinic/behind_r": [
+  18,
+  4,
+  false
+ ],
+ "clinic/front": [
+  12,
+  8,
+  false
+ ],
+ "clinic/bed": [
+  22,
+  12,
+  false
+ ],
+ "tea_house/behind": [
+  14,
+  4,
+  false
+ ],
+ "tea_house/behind_r": [
+  18,
+  4,
+  false
+ ],
+ "tea_house/front": [
+  12,
+  8,
+  false
+ ],
+ "tea_house/table_a": [
+  8,
+  12,
+  false
+ ],
+ "tea_house/table_b": [
+  20,
+  12,
+  false
+ ],
+ "tackle_shop/behind": [
+  14,
+  4,
+  false
+ ],
+ "tackle_shop/behind_l": [
+  11,
+  4,
+  false
+ ],
+ "tackle_shop/front": [
+  12,
+  8,
+  false
+ ],
+ "tackle_shop/table": [
+  20,
+  12,
+  false
+ ],
+ "inn/counter": [
+  14,
+  5,
+  false
+ ],
+ "inn/table_a": [
+  8,
+  8,
+  false
+ ],
+ "inn/table_b": [
+  16,
+  9,
+  false
+ ],
+ "inn/window": [
+  6,
+  12,
+  false
+ ],
+ "workshop/bench": [
+  14,
+  9,
+  false
+ ],
+ "workshop/loom": [
+  8,
+  11,
+  false
+ ],
+ "workshop/table": [
+  16,
+  12,
+  false
+ ]
+}

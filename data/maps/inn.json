@@ -1,6 +1,6 @@
 {
   "id": "inn",
-  "name": "米朵的小馆",
+  "name": "玛戈的小酒馆",
   "width": 30,
   "height": 19,
   "tile_size": 32,
@@ -51,8 +51,17 @@
   "props": [],
   "stations": [
     {
-      "id": "town",
-      "name": "回到青苇镇",
+      "id": "kitchen",
+      "name": "灶台 / 烹饪",
+      "kind": "kitchen",
+      "cell": [
+        20,
+        8
+      ]
+    },
+    {
+      "id": "to_town",
+      "name": "回到镇上",
       "kind": "exit",
       "cell": [
         14,
@@ -62,15 +71,6 @@
       "arrival": [
         784,
         720
-      ]
-    },
-    {
-      "id": "kitchen",
-      "name": "灶台 / 烹饪",
-      "kind": "kitchen",
-      "cell": [
-        20,
-        8
       ]
     }
   ],

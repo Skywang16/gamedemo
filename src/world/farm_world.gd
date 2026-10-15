@@ -30,14 +30,16 @@ var background: Texture2D
 var region: Dictionary
 var npc_nodes: Dictionary = {}
 var map_font: Font
-var last_period: int = -1
+var planner: NpcPlanner
+var clock_fraction: float = 0.0
 var camera: Camera2D
 var debris_nodes: Dictionary = {}
 
 
-func configure(content: ContentCatalog, initial_state: FarmState) -> void:
+func configure(content: ContentCatalog, initial_state: FarmState, day_planner: NpcPlanner) -> void:
 	catalog = content
 	state = initial_state
+	planner = day_planner
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	region = catalog.region(state.current_map)
 	background = tex(region.background)
@@ -107,11 +109,20 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 			anchor.add_child(obstacle)
 			add_collider(obstacle, Vector2(0, -6), Vector2(24, 20))
 		debris_nodes[node.id] = anchor
-	for id in catalog.story.npcs:
-		var npc = catalog.story.npcs[id]
-		if npc.map == state.current_map:
-			var at = Vector2(catalog.npc_cell(id, state.minute)) * 32 + Vector2(16, 16)
-			npc_nodes[id] = add_prop(npc.sprite, at, Vector2(-16, -44))
+	for id in planner.visitors(state.current_map):
+		var node = Node2D.new()
+		var sprite = Sprite2D.new()
+		sprite.texture = tex(catalog.story.npcs[id].sprite)
+		sprite.centered = false
+		sprite.position = Vector2(-16, -44)
+		sprite.region_enabled = true
+		sprite.region_rect = Rect2(0, 0, 32, 48)
+		node.add_child(sprite)
+		node.visible = false
+		actors.add_child(node)
+		npc_nodes[id] = node
+	if state.current_map == "home_farm":
+		_place_building_sites()
 	effects = WorldEffects.new()
 	effects.z_index = 2
 	add_child(effects)
@@ -166,9 +177,10 @@ func set_season_look(weights: Dictionary) -> void:
 
 ## The colour the whole world is multiplied by: season, weather and evening dusk.
 func light_color() -> Color:
+	var minute = int(float(state.minute) + clock_fraction)
 	if outdoors:
-		return WorldAtmosphere.lit(season, weather, state.minute)
-	return WorldAtmosphere.lit("spring", "sunny", state.minute)
+		return WorldAtmosphere.lit(season, weather, minute)
+	return WorldAtmosphere.lit("spring", "sunny", minute)
 
 
 func add_collider(body: StaticBody2D, at: Vector2, size: Vector2) -> void:
@@ -256,17 +268,7 @@ func strike_tree(id: String, hits: int) -> void:
 
 func _process(delta: float) -> void:
 	ambient_time += delta
-	if state != null and int(state.minute / 840) != last_period:
-		last_period = int(state.minute / 840)
-		for id in npc_nodes:
-			npc_nodes[id].position = (
-				Vector2(catalog.npc_cell(id, state.minute)) * 32 + Vector2(16, 16)
-			)
-	for id in npc_nodes:
-		var sprite: Sprite2D = npc_nodes[id].get_child(0)
-		sprite.position.y = (
-			-44 + (1 if sin(ambient_time * 2.2 + npc_nodes[id].position.x) > 0.6 else 0)
-		)
+	_update_villagers()
 	for id in debris_nodes:
 		var anchor: Node2D = debris_nodes[id]
 		if anchor.position.distance_squared_to(player.position) < 500000:
@@ -307,26 +309,83 @@ func _draw() -> void:
 func available_stations() -> Array:
 	var stations: Array = region.stations.duplicate(true)
 	for id in npc_nodes:
-		var npc = catalog.story.npcs[id]
-		var cell = catalog.npc_cell(id, state.minute)
-		stations.append({"id": id, "name": npc.name, "kind": "npc", "cell": [cell.x, cell.y]})
+		if npc_nodes[id].visible:
+			var cell = Vector2i((npc_nodes[id].position / 32.0).floor())
+			stations.append(
+				{
+					"id": id,
+					"name": catalog.story.npcs[id].name,
+					"kind": "npc",
+					"cell": [cell.x, cell.y]
+				}
+			)
+	if state.current_map == "home_farm":
+		for id in region.building_sites:
+			if _built(id):
+				var door = region.building_sites[id].door
+				stations.append(
+					{"id": id, "name": catalog.buildings[id].name, "kind": "animals", "cell": door}
+				)
 	for node in region.get("gather", []):
 		if not state.daily.gathered.has(node.id):
 			stations.append(
-				{
-					"id": node.id,
-					"name": "采集" + catalog.items[node.item].name,
-					"kind": "gather",
-					"cell": node.cell
-				}
+				{"id": node.id, "name": gather_label(node), "kind": "gather", "cell": node.cell}
 			)
 	return stations
+
+
+func gather_label(node: Dictionary) -> String:
+	if GatherRules.is_mine(node):
+		return "敲开矿石"
+	return "采集" + catalog.items[GatherRules.item_for(catalog, state, node)].name
+
+
+func gather_texture(node: Dictionary) -> Texture2D:
+	if GatherRules.is_mine(node):
+		return tex("ore_node")
+	return tex(catalog.items[GatherRules.item_for(catalog, state, node)].icon)
+
+
+func _built(id: String) -> bool:
+	return state.buildings.has(id) and state.day >= int(state.buildings[id].ready_day)
+
+
+func _place_building_sites() -> void:
+	for id in region.building_sites:
+		var site = region.building_sites[id]
+		var door = Vector2(site.door[0] * 32 + 16, site.door[1] * 32 + 16)
+		if _built(id):
+			add_prop(site.texture, door, Vector2(site.offset[0], site.offset[1]))
+		else:
+			var rect = site.rect
+			var ground = Vector2((rect[0] + rect[2] / 2.0) * 32, (rect[1] + rect[3]) * 32 - 4)
+			add_prop("lot_sign", ground, Vector2(-32, -56))
+
+
+## Moves every villager to where today's schedule says they are at the current minute.
+func _update_villagers() -> void:
+	var minute = float(state.minute) + clock_fraction
+	for id in npc_nodes:
+		var info = planner.where(id, minute)
+		var node: Node2D = npc_nodes[id]
+		node.visible = info.present and info.map == state.current_map and not info.hidden
+		if not node.visible:
+			continue
+		node.position = info.position * 32.0 + Vector2(16, 16)
+		var sprite: Sprite2D = node.get_child(0)
+		var row = [Vector2i.DOWN, Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT].find(info.facing)
+		var frame = int(ambient_time * 9.0) % 4 if info.moving else 0
+		sprite.region_rect = Rect2(frame * 32, maxi(row, 0) * 48, 32, 48)
+		var breath = (
+			0 if info.moving else (1 if sin(ambient_time * 2.2 + node.position.x) > 0.6 else 0)
+		)
+		sprite.position.y = -44 + breath
 
 
 func _draw_landmarks() -> void:
 	for node in region.get("gather", []):
 		if not state.daily.gathered.has(node.id):
-			draw_texture(tex(node.item), Vector2(node.cell[0] * 32, node.cell[1] * 32))
+			draw_texture(gather_texture(node), Vector2(node.cell[0] * 32, node.cell[1] * 32))
 	for station in region.stations:
 		var at = Vector2(station.cell[0] * 32 + 16, station.cell[1] * 32 + 16)
 		if station.kind in ["exit", "bridge"]:
@@ -339,8 +398,15 @@ func _draw_landmarks() -> void:
 			if player.position.distance_to(at) > 72:
 				map_label(label, at + Vector2(0, 29), 14)
 	for id in npc_nodes:
-		var at = npc_nodes[id].position
-		map_label(catalog.story.npcs[id].name, at + Vector2(0, -48), 15)
+		if npc_nodes[id].visible:
+			map_label(catalog.story.npcs[id].name, npc_nodes[id].position + Vector2(0, -48), 15)
+	if state.current_map == "home_farm":
+		for id in region.building_sites:
+			if state.buildings.has(id) and not _built(id):
+				var rect = region.building_sites[id].rect
+				var at = Vector2((rect[0] + rect[2] / 2.0) * 32, rect[1] * 32 - 12)
+				var days = int(state.buildings[id].ready_day) - state.day
+				map_label("%s施工中 · %d 天后完工" % [catalog.buildings[id].name, days], at, 15)
 	if state.current_map == "town" and state.narrative.stage >= 3:
 		var bridge = region.bridge_rect
 		for y in range(int(bridge[1]) * 32, int(bridge[1] + bridge[3]) * 32, 12):

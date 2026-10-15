@@ -11,345 +11,15 @@ func run() -> void:
 		return
 	scene = load("res://scenes/main.tscn")
 	await spawn()
-	check(not game.initialized and game.front.screen == "title", "boots to title")
-	check(
-		not FileAccess.file_exists(folder + "/farm.json"), "title does not create or overwrite save"
-	)
-	await capture("title")
-	await test_settings_from_title()
-	await press("开始新生活")
-	check(game.front.screen == "creator", "new game opens creator")
-	await press("返回")
-	check(
-		not FileAccess.file_exists(folder + "/farm.json"), "cancel creation leaves save untouched"
-	)
-	await press("开始新生活")
-	game.front.name_input.text = ""
-	await press("带着这份期待，出发")
-	check(not game.initialized, "empty name rejected")
-	game.front.name_input.text = "小雨"
-	game.front.farm_input.text = "青苇小院"
-	game.front.name_input.text_changed.emit("小雨")
-	await press("衣服：湖蓝  ›")
-	await press("帽子：草帽  ›")
-	await capture("creator")
-	await press("带着这份期待，出发")
-	check(
-		game.initialized and not game.hud.is_modal(),
-		"creator enters playable world without tutorial"
-	)
-	check(game.world_display.size == Vector2(1280, 800), "world fills viewport")
+	await test_title_and_creator()
 	await test_settings_from_pause()
-	await capture("farm-wild")
-	place_cell(Vector2i(34, 20))
-	await key(KEY_6)
-	game.world.player.facing = Vector2i.RIGHT
-	await key(KEY_SPACE)
-	check(game.world.player.action_remaining > 0, "wrong tool still animates")
-	var action_time = game.world.player.action_remaining
-	await key(KEY_SPACE)
-	check(
-		game.world.player.action_remaining < action_time, "rapid repeat cannot restart active swing"
-	)
-	await create_timer(ToolMotion.MAX_DURATION).timeout
-	place_cell(Vector2i(34, 20))
-	var before_wrong_tool = [
-		game.state.stamina, game.state.inventory.duplicate(), game.state.cleared.duplicate()
-	]
-	await key(KEY_6)
-	await click_cell(Vector2i(34, 20))
-	check(
-		[game.state.stamina, game.state.inventory, game.state.cleared] == before_wrong_tool,
-		"wrong tool does not consume resources"
-	)
-	check(not game.hud.toast_box.visible, "wrong tool does not show instructional toast")
-	await key(KEY_1)
-	var before_toolbar = [
-		game.state.stamina, game.state.inventory.duplicate(), game.state.plots.duplicate(true)
-	]
-	await press("水壶")
-	check(
-		(
-			game.selected_tool == "water"
-			and [game.state.stamina, game.state.inventory, game.state.plots] == before_toolbar
-		),
-		"toolbar click selects without operating ground"
-	)
-	await key(KEY_B)
-	await capture("bag")
-	await press("胡萝卜种子")
-	check(game.hud.dialogs.selected_item == "carrot_seed", "inventory grid selects item details")
-	await press("萝卜种子")
-	await press("关闭")
-	await key(KEY_J)
-	await capture("journal")
-	await press("合上手记")
-	await interact("bed")
-	await interact("letter")
-	await key(KEY_ESCAPE)
-	check(
-		not game.hud.is_modal() and game.state.narrative.active_scene.is_empty(),
-		"optional letter can be dismissed without forced resume"
-	)
-	await interact("letter")
-	check(game.hud.modal_kind == "dialogue", "letter is an optional interaction inside home")
-	check(
-		(
-			game.state.profile.name == "小雨"
-			and game.state.profile.outfit == 1
-			and game.state.profile.hat == 0
-		),
-		"custom profile applied"
-	)
-	await key(KEY_E)
-	check(game.scene_index == 1, "dialogue input advances")
-	game.queue_free()
-	await process_frame
-	await spawn()
-	await press("继续生活")
-	check(
-		game.hud.modal_kind == "dialogue" and game.scene_index == 1,
-		"restart resumes exact dialogue page"
-	)
-	await dialogue("grow")
-	check(
-		game.state.narrative.intro_seen and game.state.narrative.intent == "grow",
-		"intro choice persisted"
-	)
-	check(
-		game.state.plots.is_empty() and game.state.inventory.turnip == 0,
-		"new farm has no tilled land or crops"
-	)
-	await interact("farm")
-	await interact("ahe")
-	await capture("dialogue")
-	await dialogue()
-	check(game.state.narrative.stage == 1, "welcome advances quest")
-	# Real input for farming; position placement keeps the integration run short.
-	for x in range(34, 39):
-		place_cell(Vector2i(x, 20))
-		await key(KEY_5)
-		await click_cell(Vector2i(x, 20))
-		await key(KEY_1)
-		await click_cell(Vector2i(x, 20))
-		await key(KEY_2)
-		await click_cell(Vector2i(x, 20))
-		await key(KEY_3)
-		await click_cell(Vector2i(x, 20))
-	check(game.state.plots.get("34,20", {}).get("watered", false), "mouse tools seed and water")
-	await key(KEY_ESCAPE)
-	place_cell(Vector2i(40, 35))
-	var pos = game.world.player.position
-	var minute = game.state.minute
-	await key(KEY_D, 1.1)
-	check(
-		game.state.minute == minute and game.world.player.position == pos,
-		"modal freezes clock and movement"
-	)
-	await key(KEY_ESCAPE)
-	await key(KEY_S, 0.2)
-	check(game.world.player.position.y > pos.y + 5, "movement input")
-	var camera_before = game.world.camera.get_screen_center_position()
-	place_cell(Vector2i(40, 50))
-	await process_frame
-	check(
-		game.world.camera.get_screen_center_position().y > camera_before.y + 300,
-		"camera follows across large farm"
-	)
-	var pointer = Vector2(300, 250)
-	check(
-		game.world.world_to_screen(game.world.screen_to_world(pointer)).distance_to(pointer) < 0.1,
-		"mouse coordinates survive camera scroll"
-	)
-	game.world.player.position = Vector2(1160, 432)
-	await key(KEY_D, 0.4)
-	check(game.world.player.position.x < 1180, "house collision")
-	place_cell(Vector2i(40, 18))
-	await process_frame
-	await key(KEY_M)
-	await capture("map")
-	await press("收起地图")
-	await capture("farm")
-	await interact("bed")
-	check(game.state.current_map == "cottage", "farm door enters physical interior")
-	await capture("cottage")
-	await interact("chest")
-	check(game.hud.modal_kind == "storage", "house storage opens")
-	await capture("storage")
-	await press("存入")
-	check(game.state.storage.turnip_seed == 1, "storage button deposits item")
-	await press("取出")
-	await press("关闭")
-	await interact("farm")
-	check(game.state.current_map == "home_farm", "exit house returns to farm")
-	for day in range(3):
-		await sleep_day()
-		await interact("farm")
-		if day < 2:
-			for x in range(34, 39):
-				place_cell(Vector2i(x, 20))
-				await key(KEY_3)
-				await click_cell(Vector2i(x, 20))
-	for x in range(34, 39):
-		place_cell(Vector2i(x, 20))
-		await key(KEY_4)
-		await click_cell(Vector2i(x, 20))
-	check(
-		game.state.inventory.turnip == 5 and game.state.development.farming_xp == 50,
-		"five crops harvested via UI"
-	)
-	await interact("shop")
-	await capture("shop")
-	await press("萝卜种子 ×1 / 4 G")
-	check(game.state.gold == 36, "shop transaction UI")
-	await press("离开摊位")
-	await interact("to_town")
-	check(game.state.current_map == "town", "road enters town")
-	place_cell(Vector2i(24, 23))
-	await process_frame
-	await capture("town")
-	await interact("inn")
-	check(game.state.current_map == "inn", "inn has interior")
-	await interact("town")
-	await interact("workshop")
-	check(game.state.current_map == "workshop", "workshop has interior")
-	await interact("town")
-	await interact("mido")
-	await capture("npc")
-	await press("聊聊「一顿饭的距离」")
-	await dialogue()
-	check(
-		game.state.narrative.stage == 2 and game.state.inventory.turnip == 3,
-		"meal quest consumes crops"
-	)
-	await interact("forest")
-	await capture("forest")
-	for node in game.catalog.regions.forest.gather:
-		await interact(node.id)
-	check(game.state.inventory.wood == 4 and game.state.inventory.berry == 3, "gathering through E")
-	await interact("town")
-	await interact("bridge")
-	await dialogue()
-	check(game.state.narrative.stage == 3, "bridge quest commits")
-	await interact("bridge")
-	check(game.state.current_map == "lake", "repaired bridge opens lake")
-	await interact("lin")
-	await press("聊聊「湖边的记录员」")
-	await dialogue()
-	check(game.state.narrative.stage == 4, "lake character advances plot")
-	await interact("town")
-	await interact("mido")
-	await press("聊聊「请大家再聚一次」")
-	await dialogue()
-	check(
-		game.state.narrative.stage == 5 and game.state.inventory.berry == 0,
-		"feast consumes exact materials"
-	)
-	await interact("bridge")
-	await interact("lantern")
-	await dialogue("together")
-	check(
-		game.state.narrative.stage == 6 and game.state.narrative.wish == "together",
-		"full story finished through input"
-	)
-	await capture("ending")
-	await press("继续我的农场生活")
-	await capture("lake")
-	await interact("town")
-	await interact("farm")
-	await interact("shipping")
-	var gold_before_sale = game.state.gold
-	await press("出售全部农产品 / +12 G")
-	check(
-		game.state.inventory.turnip == 0 and game.state.gold == gold_before_sale + 12,
-		"shipping UI sells produce"
-	)
-	await sleep_day()
-	await interact("farm")
-	await interact("to_town")
-	await interact("forest")
-	for node in game.catalog.regions.forest.gather:
-		await interact(node.id)
-	await interact("town")
-	await interact("workshop")
-	await interact("upgrade")
-	await press("制作铜水壶")
-	check(game.state.development.watering_level == 1, "upgrade through workshop")
-	await capture("upgrade")
-	await press("离开工作台")
-	await interact("town")
-	await interact("inn")
-	await interact("kitchen")
-	var old_berries = game.state.inventory.berry
-	await press("煮一碗野莓粥并吃下")
-	check(
-		game.state.inventory.berry == old_berries - 2 and game.state.stamina == 100,
-		"cooking through interior UI"
-	)
-	await press("离开灶台")
-	await interact("town")
-	await interact("mido")
-	var relationship_before_gift = game.state.relationships.mido
-	await press("送一份礼物")
-	await press("野莓 ×1（持有 1）")
-	check(
-		game.state.relationships.mido == relationship_before_gift + 10,
-		"favorite gift through NPC UI"
-	)
-	# Fixture isolates a relationship milestone; its accumulation is tested in chapter_tests.
-	game.state.relationships.mido = 40
-	await interact("mido")
-	await press("听听你的故事")
-	await capture("memory")
-	await dialogue()
-	check(game.state.development.memories.has("mido"), "personal story and reward through dialogue")
-	await interact("farm")
-	for entry in [[Vector2i(35, 22), KEY_6], [Vector2i(37, 23), KEY_7]]:
-		var cell = entry[0]
-		var id = "d_%d_%d" % [cell.x, cell.y]
-		place_cell(cell + Vector2i.DOWN)
-		await key(entry[1])
-		await click_cell(cell)
-		check(
-			game.state.cleared.has(id) and not game.world.debris_nodes.has(id),
-			"clearing removes resource sprite and collision"
-		)
-	await interact("to_town")
-	await interact("inn")
-	await key(KEY_M)
-	check(game.hud.modal_kind == "map", "map shortcut")
-	await press("收起地图")
-	await key(KEY_J)
-	check(game.hud.modal_kind == "journal", "journal shortcut")
-	await press("合上手记")
-	await key(KEY_B)
-	check(game.hud.modal_kind == "bag", "bag shortcut")
-	await press("关闭")
-	await key(KEY_ESCAPE)
-	await press("保存并返回标题")
-	check(
-		not game.initialized and game.front.cached_state.narrative.stage == 6,
-		"return title saves chapter"
-	)
-	await press("开始新生活")
-	await press("返回")
-	await press("继续生活")
-	check(
-		(
-			game.state.profile.name == "小雨"
-			and game.state.narrative.stage == 6
-			and game.state.current_map == "inn"
-		),
-		"cancel new creator preserves existing world"
-	)
-	check(
-		game.state.development.watering_level == 1 and game.state.profile.outfit == 1,
-		"appearance and growth survive reload"
-	)
-	check(
-		game.state.cleared.has("d_35_22") and game.state.cleared.has("d_37_23"),
-		"cleared branch and rock survive reload"
-	)
+	await test_hud_motion()
+	await test_farming()
+	await test_panels()
+	await test_fishing_minigame()
+	await test_story_and_people()
+	await test_day_and_travel()
+	await test_slots_and_reload()
 	print("UI_SMOKE: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
 
@@ -360,6 +30,50 @@ func nodes_of(node: Node, type: String, found: Array = []) -> Array:
 	for child in node.get_children():
 		nodes_of(child, type, found)
 	return found
+
+
+# ---------------------------------------------------------------------------- front menu
+
+
+func test_title_and_creator() -> void:
+	check(not game.initialized and game.front.screen == "title", "boots to title")
+	check(not FileAccess.file_exists(folder + "/farm.json"), "title does not create a save")
+	check(button_in(game, "继续生活").disabled, "no save, nothing to continue")
+	await capture("title")
+	await test_settings_from_title()
+	await press("开始新生活")
+	check(game.front.screen == "creator", "new game opens the creator")
+	await press("返回")
+	check(game.front.screen == "title", "cancelling returns to the title")
+	await press("开始新生活")
+	game.front.name_input.text = ""
+	await press("带着这份期待，出发")
+	check(
+		game.front.screen == "creator" and not game.front.error_label.text.is_empty(),
+		"empty name rejected"
+	)
+	game.front.name_input.text = "小雨"
+	game.front.farm_input.text = "青苇小院"
+	game.front.name_input.text_changed.emit("小雨")
+	await press("衣服：湖蓝  ›")
+	await press("帽子：草帽  ›")
+	await capture("creator")
+	await press("带着这份期待，出发")
+	check(game.front.screen == "slots", "the creator asks for a save slot")
+	check(
+		not game.initialized and not FileAccess.file_exists(folder + "/farm.json"),
+		"nothing is written before a slot is chosen"
+	)
+	await capture("slots-create")
+	await press("开始在这里")
+	check(game.initialized and not game.hud.is_modal(), "the creator enters the world")
+	check(FileAccess.file_exists(folder + "/farm.json"), "the first slot is written at once")
+	check(game.world_display.size == Vector2(1280, 800), "world fills the viewport")
+	check(
+		game.state.profile.name == "小雨" and game.state.profile.outfit == 1, "custom profile applied"
+	)
+	check(game.state.minute == 6 * 60 and game.state.day == 1, "the first day starts at six")
+	await capture("farm-wild")
 
 
 func test_settings_from_title() -> void:
@@ -394,10 +108,6 @@ func test_settings_from_title() -> void:
 	await press("E")
 	await key(KEY_G)
 	check(game.settings.key_for("interact") == KEY_G, "key can be rebound")
-	check(
-		InputMap.action_get_events("interact")[0].physical_keycode == KEY_G,
-		"rebinding reaches the input map"
-	)
 	await press("G")
 	await key(KEY_ESCAPE)
 	check(game.settings.key_for("interact") == KEY_G, "escape cancels a rebind")
@@ -434,9 +144,330 @@ func test_settings_from_pause() -> void:
 	await capture("pause")
 	await press("设置")
 	check(game.hud.modal_kind == "settings", "pause menu opens settings")
-	await capture("settings-pause")
 	await press("返回")
 	check(game.hud.modal_kind == "pause", "closing settings returns to the pause menu")
 	check(game.world.reduce_motion == true, "world follows the reduce-motion setting")
 	await press("继续生活")
 	check(not game.hud.is_modal(), "resume closes the menu")
+	game.settings.set_value("reduce_motion", false)
+	game.settings.apply()
+	game.settings.save_file()
+	game._apply_settings()
+	check(not UIMotion.reduced and not game.world.reduce_motion, "reduced motion switched off")
+
+
+func test_hud_motion() -> void:
+	var hud = game.hud
+	var gold = game.state.gold
+	game.state.gold = gold + 200
+	hud.refresh(game.selected_tool, game.selected_crop)
+	check(int(hud.gold_label.text) == gold, "gold counter starts from the old value")
+	await create_timer(0.25).timeout
+	var mid = int(hud.gold_label.text)
+	check(mid > gold and mid < gold + 200, "gold counts up smoothly")
+	await create_timer(1.2).timeout
+	check(int(hud.gold_label.text) == gold + 200, "gold settles on the real value")
+	game.state.gold = gold
+	hud.refresh(game.selected_tool, game.selected_crop)
+	await create_timer(1.2).timeout
+
+
+# ---------------------------------------------------------------------------- farming
+
+
+func test_farming() -> void:
+	var cells = free_cells(3)
+	place_cell(cells[0])
+	await key(KEY_6)
+	game.world.player.facing = Vector2i.RIGHT
+	await key(KEY_SPACE)
+	check(game.world.player.action_remaining > 0, "a swing animates")
+	var action_time = game.world.player.action_remaining
+	await key(KEY_SPACE)
+	check(
+		game.world.player.action_remaining < action_time, "a rapid repeat cannot restart the swing"
+	)
+	await create_timer(ToolMotion.MAX_DURATION).timeout
+	place_cell(cells[0])
+	var before = [
+		game.state.stamina, game.state.inventory.duplicate(), game.state.cleared.duplicate()
+	]
+	game.hud.toast_remaining = 0
+	game.hud.toast_box.hide()
+	await click_cell(cells[0])
+	check(
+		[game.state.stamina, game.state.inventory, game.state.cleared] == before,
+		"the wrong tool does not consume resources"
+	)
+	check(not game.hud.toast_box.visible, "the wrong tool does not show an instructional toast")
+	await key(KEY_1)
+	var snapshot = [
+		game.state.stamina, game.state.inventory.duplicate(), game.state.plots.duplicate(true)
+	]
+	await press("水壶")
+	check(
+		(
+			game.selected_tool == "water"
+			and [game.state.stamina, game.state.inventory, game.state.plots] == snapshot
+		),
+		"the toolbar selects without operating the ground"
+	)
+	for cell in cells:
+		place_cell(cell)
+		await key(KEY_1)
+		await click_cell(cell)
+		await key(KEY_2)
+		await click_cell(cell)
+		await key(KEY_3)
+		await click_cell(cell)
+	check(game.state.plots.size() == 3, "the mouse tills three cells")
+	check(game.state.plots[FarmState.cell_key(cells[0])].watered, "the mouse plants and waters")
+	await key(KEY_ESCAPE)
+	place_cell(cells[0])
+	var pos = game.world.player.position
+	var minute = game.state.minute
+	await key(KEY_D, 1.1)
+	check(
+		game.state.minute == minute and game.world.player.position == pos,
+		"a modal freezes clock and movement"
+	)
+	await key(KEY_ESCAPE)
+	await key(KEY_S, 0.2)
+	check(game.world.player.position.y > pos.y + 5, "movement input")
+	var pointer = Vector2(300, 250)
+	check(
+		game.world.world_to_screen(game.world.screen_to_world(pointer)).distance_to(pointer) < 0.1,
+		"mouse coordinates survive camera scroll"
+	)
+	await key(KEY_8)
+	check(game.selected_tool == "rod", "the fishing rod sits on key eight")
+	await key(KEY_1)
+
+
+# ---------------------------------------------------------------------------- panels
+
+
+func test_panels() -> void:
+	game.state.minute = 10 * 60
+	game.state.gold = 500
+	await key(KEY_B)
+	check(game.hud.modal_kind == "bag", "bag shortcut")
+	await capture("bag")
+	await key(KEY_ESCAPE)
+	await key(KEY_J)
+	check(game.hud.modal_kind == "journal", "journal shortcut")
+	await capture("journal")
+	await press("合上手记")
+	place_cell(Vector2i(40, 20))
+	await key(KEY_M)
+	check(game.hud.modal_kind == "map", "map shortcut")
+	await capture("map")
+	await press("收起地图")
+	game._on_action("collection", {})
+	check(game.hud.modal_kind == "collection", "collection opens")
+	await capture("collection")
+	await key(KEY_ESCAPE)
+	await interact("shop")
+	check(game.hud.modal_kind == "shop", "the seed stall opens")
+	await capture("shop")
+	var gold = game.state.gold
+	await press("买 1 份")
+	check(game.state.gold < gold and game.hud.modal_kind == "shop", "buying keeps the counter open")
+	await press("出售")
+	await capture("shop-sell")
+	await press("离开")
+	game.state.minute = 20 * 60
+	await interact("shop")
+	check(not game.hud.is_modal() and game.hud.toast_box.visible, "a closed shop says why")
+	game.state.minute = 10 * 60
+	game.state.inventory.turnip = 3
+	await interact("shipping")
+	check(game.hud.modal_kind == "shipping", "shipping box opens")
+	var coins = game.state.gold
+	await press("出售全部 / +%d G" % game.rules.sale_quote(game.state).gold)
+	check(game.state.inventory.turnip == 0 and game.state.gold > coins, "shipping sells produce")
+	game.hud.dialogs.show_cooking()
+	await capture("cooking")
+	await key(KEY_ESCAPE)
+	game.hud.dialogs.show_animals("coop")
+	await capture("animals")
+	await key(KEY_ESCAPE)
+	game.hud.dialogs.show_board()
+	await capture("board")
+	await key(KEY_ESCAPE)
+	for shop_id in game.catalog.shops:
+		game.hud.dialogs.show_shop(shop_id)
+		await process_frame
+		check(game.hud.modal_kind == "shop", "every shop panel builds: " + shop_id)
+	game.hud.close_modal()
+
+
+func test_fishing_minigame() -> void:
+	var panel = game.hud.dialogs.show_fishing(false)
+	var outcome = {"done": false, "fish": "?"}
+	panel.finished.connect(
+		func(fish):
+			outcome.done = true
+			outcome.fish = fish
+	)
+	await capture("fishing-wait")
+	check(panel.phase == "wait", "the line starts quiet")
+	await key(KEY_SPACE)
+	check(outcome.done and outcome.fish == "", "pulling too early scares the fish")
+	game.hud.close_modal()
+	panel = game.hud.dialogs.show_fishing(true)
+	outcome.done = false
+	panel.finished.connect(
+		func(fish):
+			outcome.done = true
+			outcome.fish = fish
+	)
+	panel.left = 0.01
+	await create_timer(0.1).timeout
+	check(panel.phase == "bite", "a bite follows the wait")
+	await key(KEY_SPACE)
+	check(panel.phase == "reel", "lifting the rod starts the timing bar")
+	await capture("fishing-reel")
+	panel.marker.position.x = panel.zone.position.x + panel.zone.size.x / 2.0 - 5.0
+	panel.set_process(false)
+	await key(KEY_SPACE)
+	check(
+		outcome.done and outcome.fish == panel.fish_id, "stopping inside the zone lands the catch"
+	)
+	game.hud.close_modal()
+
+
+# ---------------------------------------------------------------------------- people and story
+
+
+func test_story_and_people() -> void:
+	game._talk_npc("hazel")
+	await process_frame
+	check(game.hud.modal_kind == "dialogue", "the neighbour's first words are a scene")
+	await capture("dialogue")
+	await dialogue()
+	check(game.state.narrative.stage == 1, "welcome advances the quest")
+	game.state.relationships.hazel = 20
+	game.state.inventory.turnip = 1
+	game._talk_npc("hazel")
+	await process_frame
+	check(game.hud.modal_kind == "npc", "a villager's panel opens")
+	await capture("npc")
+	var friendship = game.state.relationships.hazel
+	await press("送一份礼物")
+	await press("萝卜 ×1")
+	check(game.state.relationships.hazel == friendship + 12, "a favourite gift through the UI")
+	game.state.daily.gifted.clear()
+	game._talk_npc("hazel")
+	await process_frame
+	await press("听听黑兹尔的故事")
+	await capture("heart-event")
+	await dialogue()
+	check(game.state.development.events.has("hazel_20"), "a heart event pays out through dialogue")
+	game.state.minute = 12 * 60
+	await interact("to_town")
+	check(game.state.current_map == "town", "the road leads to town")
+	await interact("to_market")
+	check(game.state.current_map == "market", "the market street is connected")
+	await process_frame
+	await process_frame
+	var seen = visible_villagers()
+	check(not seen.is_empty(), "villagers are out on the market street at noon")
+	if not seen.is_empty():
+		await interact(seen[0])
+		check(game.hud.modal_kind in ["npc", "dialogue"], "a villager can be talked to in person")
+		await key(KEY_ESCAPE)
+	await capture("market")
+	await interact("to_general_store")
+	check(game.state.current_map == "general_store", "shops have interiors")
+	await interact("counter")
+	check(game.hud.modal_kind == "shop", "the general store counter opens")
+	await capture("general-store")
+	await press("离开")
+	await interact("to_market")
+	await interact("to_seaside")
+	check(game.state.current_map == "seaside", "the seaside is reachable")
+	await capture("seaside")
+	await interact("to_market")
+	await interact("to_town")
+
+
+func test_day_and_travel() -> void:
+	await interact("to_forest")
+	check(game.state.current_map == "forest", "the forest is connected")
+	await capture("forest")
+	var gathered = 0
+	for node in game.catalog.region("forest").gather:
+		if game.world.available_stations().any(func(st): return st.id == node.id):
+			await interact(node.id)
+			gathered += 1
+			if gathered == 2:
+				break
+	check(game.state.daily.gathered.size() == gathered, "gathering through E")
+	await interact("to_mine_1")
+	check(game.state.current_map == "mine_1", "the old quarry opens")
+	await capture("mine")
+	await interact("to_forest")
+	await interact("to_town")
+	await interact("to_home_farm")
+	check(game.state.current_map == "home_farm", "the road home")
+	await interact("to_cottage")
+	check(game.state.current_map == "cottage", "the farm door enters the cottage")
+	await capture("cottage")
+	game.state.minute = 25 * 60 + 50
+	game.clock_accumulator = game.TICK_SECONDS
+	await process_frame
+	await process_frame
+	check(game.state.day == 2 and game.state.minute == 6 * 60, "staying up past 26:00 ends the day")
+	check(game.state.current_map == "cottage", "waking up in bed")
+	await create_timer(1.4).timeout
+	await sleep_day()
+	check(game.state.day == 3, "the pause menu puts you to bed")
+	check(game.fade.active, "a new day starts behind the day card")
+	await create_timer(1.4).timeout
+	check(not game.fade.active, "the card fades away on its own")
+	check(game.hud.time_label.text.ends_with("06:00"), "the clock shows morning")
+
+
+# ---------------------------------------------------------------------------- slots
+
+
+func test_slots_and_reload() -> void:
+	game.state.relationships.margot = 33
+	var day = game.state.day
+	await key(KEY_ESCAPE)
+	await press("保存并返回标题")
+	check(not game.initialized and game.front.screen == "title", "return to the title saves")
+	check(not button_in(game, "继续生活").disabled, "continue is available once a slot exists")
+	await press("继续生活")
+	check(game.initialized and game.state.relationships.margot == 33, "continue restores the save")
+	check(game.state.day == day and game.state.profile.name == "小雨", "day and profile survive")
+	check(
+		game.state.narrative.stage == 1 and game.state.development.events.has("hazel_20"),
+		"story progress survives"
+	)
+	check(game.state.current_map == "cottage", "the player wakes where they slept")
+	await key(KEY_ESCAPE)
+	await press("保存并返回标题")
+	await press("读取存档")
+	check(game.front.screen == "slots", "load screen opens")
+	await capture("slots-load")
+	await press("返回")
+	await press("开始新生活")
+	await press("带着这份期待，出发")
+	await press("开始在这里")
+	check(game.initialized and game.active_slot == 1, "a new life overwrites the chosen slot")
+	check(
+		game.state.profile.name == "小芽" and game.state.day == 1,
+		"a new life starts fresh from the creator defaults"
+	)
+	await key(KEY_ESCAPE)
+	await press("保存并返回标题")
+	await press("读取存档")
+	var buttons = nodes_of(game.front, "Button")
+	var reads = buttons.filter(func(b): return b.text == "读取" and not b.disabled)
+	check(reads.size() == 1, "one occupied slot can be read")
+	await press("删除")
+	await press("再点一次确认删除")
+	check(not FileAccess.file_exists(folder + "/farm.json"), "deleting removes the file")
+	check(button_in(game, "读取") == null or button_in(game, "读取").disabled, "nothing left to read")

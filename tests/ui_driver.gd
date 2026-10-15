@@ -107,6 +107,31 @@ func place_cell(cell: Vector2i) -> void:
 	game.world.camera.force_update_scroll()
 
 
+## `count` farm cells with no tree or debris, so tools act on them straight away.
+func free_cells(count: int) -> Array:
+	var out: Array = []
+	for y in range(18, 66):
+		for x in range(4, 90):
+			var cell = Vector2i(x, y)
+			if (
+				game.catalog.plantable(cell, game.state.tree_damage)
+				and game.catalog.tree_at(cell, game.state).is_empty()
+				and game.catalog.debris_at(cell, game.state).is_empty()
+			):
+				out.append(cell)
+				if out.size() == count:
+					return out
+	return out
+
+
+func visible_villagers() -> Array:
+	var out: Array = []
+	for id in game.world.npc_nodes:
+		if game.world.npc_nodes[id].visible:
+			out.append(id)
+	return out
+
+
 func dialogue(choice: String = "") -> void:
 	if game.hud.modal_kind != "dialogue":
 		check(false, "dialogue open")
@@ -131,6 +156,11 @@ func capture(name: String) -> void:
 	var ignore_file = FileAccess.open("res://build/.gdignore", FileAccess.WRITE)
 	ignore_file.close()
 	await process_frame
+	# Screenshots must show the settled UI, not a fade or a panel sliding in.
+	await create_timer(0.3).timeout
+	while is_instance_valid(game.get("fade")) and game.fade.active:
+		await process_frame
+	await create_timer(0.05).timeout
 	# macOS can skip window draws while occluded; capture must not wait for visibility.
 	RenderingServer.force_draw()
 	var path = ProjectSettings.globalize_path(output_dir.path_join(name + ".png"))
@@ -141,6 +171,7 @@ func capture(name: String) -> void:
 
 func spawn() -> void:
 	game = scene.instantiate()
+	game.fixed_seed = 0
 	root.add_child(game)
 	await process_frame
 	await process_frame

@@ -1,0 +1,92 @@
+{
+  "chicken": {
+    "name": "小鸡",
+    "building": "coop",
+    "price": 300,
+    "product": "egg",
+    "special": "large_egg",
+    "interval": 1,
+    "adult_days": 3,
+    "hint": "每天下一个蛋。"
+  },
+  "brown_hen": {
+    "name": "芦花鸡",
+    "building": "coop",
+    "price": 420,
+    "product": "brown_egg",
+    "special": "large_egg",
+    "interval": 1,
+    "adult_days": 3,
+    "hint": "下的蛋个头大。"
+  },
+  "duck": {
+    "name": "鸭子",
+    "building": "coop",
+    "price": 600,
+    "product": "duck_egg",
+    "special": "duck_egg",
+    "interval": 2,
+    "adult_days": 4,
+    "hint": "隔天下一个青壳蛋。"
+  },
+  "quail": {
+    "name": "鹌鹑",
+    "building": "coop",
+    "price": 380,
+    "product": "quail_egg",
+    "special": "quail_egg",
+    "interval": 1,
+    "adult_days": 3,
+    "hint": "小小的鹌鹑蛋。"
+  },
+  "rabbit": {
+    "name": "兔子",
+    "building": "coop",
+    "price": 900,
+    "product": "rabbit_fur",
+    "special": "rabbit_fur",
+    "interval": 4,
+    "adult_days": 5,
+    "hint": "每四天可以剪一次兔毛。"
+  },
+  "cow": {
+    "name": "奶牛",
+    "building": "barn",
+    "price": 800,
+    "product": "milk",
+    "special": "large_milk",
+    "interval": 1,
+    "adult_days": 5,
+    "hint": "每天产奶。"
+  },
+  "goat": {
+    "name": "山羊",
+    "building": "barn",
+    "price": 1000,
+    "product": "goat_milk",
+    "special": "goat_milk",
+    "interval": 2,
+    "adult_days": 5,
+    "hint": "隔天产羊奶。"
+  },
+  "sheep": {
+    "name": "绵羊",
+    "building": "barn",
+    "price": 1200,
+    "product": "wool",
+    "special": "wool",
+    "interval": 3,
+    "adult_days": 5,
+    "hint": "三天剪一次毛。"
+  },
+  "pig": {
+    "name": "小猪",
+    "building": "barn",
+    "price": 1500,
+    "product": "truffle",
+    "special": "truffle",
+    "interval": 3,
+    "adult_days": 6,
+    "hint": "晴天会拱出松露。"
+  }
+}

@@ -244,7 +244,7 @@ func _build_controls() -> void:
 		)
 		rebind_buttons[action] = button
 	_label(
-		"点击按键后按下新的键即可改键；Esc 取消。已被占用的键会与对方互换。固定：Esc 菜单，1–7 选工具。",
+		"点击按键后按下新的键即可改键；Esc 取消。已被占用的键会与对方互换。固定：Esc 菜单，1–8 选工具。",
 		Rect2(40, 4.0 + half * 54.0 + 4, panel_size.x - 80, 52),
 		16,
 		MUTED,

@@ -1,0 +1,24 @@
+{
+  "coop": {
+    "name": "鸡舍",
+    "price": 600,
+    "materials": {
+      "wood": 20,
+      "stone": 10
+    },
+    "days": 2,
+    "capacity": 6,
+    "hint": "最多养 6 只家禽。"
+  },
+  "barn": {
+    "name": "谷仓",
+    "price": 1200,
+    "materials": {
+      "wood": 40,
+      "stone": 20
+    },
+    "days": 3,
+    "capacity": 6,
+    "hint": "最多养 6 头牲畜。"
+  }
+}

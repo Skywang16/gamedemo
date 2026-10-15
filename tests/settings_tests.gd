@@ -18,7 +18,7 @@ func check(condition: bool, message: String) -> void:
 
 func run() -> void:
 	test_defaults()
-	test_sanitize()
+	test_validate()
 	test_files()
 	test_rebinding()
 	test_apply()
@@ -47,39 +47,52 @@ func test_defaults() -> void:
 			seen.append(code)
 
 
-func test_sanitize() -> void:
-	for junk in [null, 5, "text", [], [1, 2]]:
-		check(GameSettings.sanitize(junk) == GameSettings.defaults(), "junk becomes defaults")
-	var clean = GameSettings.sanitize({"master": 250, "sfx": -20, "autosave": false})
-	check(clean.master == 100 and clean.sfx == 0, "volumes are clamped")
-	check(clean.autosave == false and clean.vsync == true, "valid fields kept, rest default")
-	clean = GameSettings.sanitize({"master": "loud", "fullscreen": "yes", "vsync": 1})
-	check(clean.master == 80 and clean.fullscreen == false and clean.vsync == true, "wrong types")
-	clean = GameSettings.sanitize({"master": INF})
-	check(clean.master == 80, "infinite volume rejected")
-	clean = GameSettings.sanitize({"master": 33.7})
-	check(clean.master == 33, "float volume truncated")
-	var bindings = {
-		"interact": KEY_G,
-		"use_tool": KEY_ESCAPE,
+func test_validate() -> void:
+	for junk in [null, 5, "text", [], [1, 2], {}]:
+		check(not GameSettings.validate(junk).is_empty(), "junk is rejected")
+	check(GameSettings.validate(GameSettings.defaults()).is_empty(), "defaults are valid")
+	var loud = GameSettings.defaults()
+	loud.master = 250
+	check(not GameSettings.validate(loud).is_empty(), "volume above 100 is rejected, not clamped")
+	loud.master = -1
+	check(not GameSettings.validate(loud).is_empty(), "negative volume is rejected")
+	loud.master = 33.7
+	check(not GameSettings.validate(loud).is_empty(), "fractional volume is rejected")
+	loud.master = INF
+	check(not GameSettings.validate(loud).is_empty(), "infinite volume is rejected")
+	loud.master = "loud"
+	check(not GameSettings.validate(loud).is_empty(), "wrong type is rejected")
+	var partial = GameSettings.defaults()
+	partial.erase("sfx")
+	check(not GameSettings.validate(partial).is_empty(), "a missing field is rejected")
+	var flags = GameSettings.defaults()
+	flags.fullscreen = "yes"
+	check(not GameSettings.validate(flags).is_empty(), "a switch must be a boolean")
+	var extra = GameSettings.defaults()
+	extra.bogus = 1
+	check(not GameSettings.validate(extra).is_empty(), "unknown fields are rejected")
+	var bad = {
+		"interact": KEY_ESCAPE,
 		"bag": KEY_3,
-		"map": KEY_G,
-		"journal": 999999999,
-		"sprint": "x",
+		"map": 999999999,
+		"journal": "x",
+		"use_tool": KEY_Q,
 		"menu": KEY_H,
-		"bogus": KEY_K
+		"move_up": KEY_LEFT,
 	}
-	clean = GameSettings.sanitize({"bindings": bindings})
-	check(clean.bindings.get("interact") == KEY_G, "valid binding kept")
-	for action in ["use_tool", "bag", "map", "journal", "sprint", "menu", "bogus"]:
-		check(not clean.bindings.has(action), "bad binding dropped: " + action)
-	clean = GameSettings.sanitize({"bindings": {"move_up": KEY_LEFT}})
-	check(clean.bindings.is_empty(), "cannot steal another action's built-in alternative key")
-	clean = GameSettings.sanitize({"bindings": {"move_up": KEY_Q}})
-	check(clean.bindings.is_empty(), "cannot steal an unmoved action's default key")
-	clean = GameSettings.sanitize({"bindings": {"move_up": KEY_Q, "cycle_seed": KEY_W}})
-	check(clean.bindings.size() == 2, "a consistent swap survives")
-	check(GameSettings.sanitize(clean) == clean, "sanitize is idempotent")
+	for action in bad:
+		var candidate = GameSettings.defaults()
+		candidate.bindings = {action: bad[action]}
+		check(not GameSettings.validate(candidate).is_empty(), "bad binding rejected: " + action)
+	var twice = GameSettings.defaults()
+	twice.bindings = {"interact": KEY_G, "map": KEY_G}
+	check(not GameSettings.validate(twice).is_empty(), "one key cannot serve two actions")
+	var swap = GameSettings.defaults()
+	swap.bindings = {"move_up": KEY_Q, "cycle_seed": KEY_W}
+	check(GameSettings.validate(swap).is_empty(), "a consistent swap is valid")
+	var steal = GameSettings.defaults()
+	steal.bindings = {"move_up": KEY_Q}
+	check(not GameSettings.validate(steal).is_empty(), "cannot steal an unmoved action's key")
 
 
 func test_files() -> void:
@@ -102,13 +115,13 @@ func test_files() -> void:
 	broken.close()
 	loaded = GameSettings.new(folder)
 	check(not loaded.load_file().is_empty(), "corrupt file is reported")
-	check(loaded.values == GameSettings.defaults(), "corrupt file falls back to defaults")
+	check(loaded.values == GameSettings.defaults(), "a corrupt file uses defaults for the session")
 	broken = FileAccess.open(folder + "/settings.json", FileAccess.WRITE)
 	broken.store_string(JSON.stringify({"version": 1, "values": {"master": 12, "bindings": 7}}))
 	broken.close()
 	loaded = GameSettings.new(folder)
-	check(loaded.load_file().is_empty() and loaded.get_value("master") == 12, "partial file")
-	check(loaded.get_value("bindings").is_empty(), "bad bindings field repaired")
+	check(not loaded.load_file().is_empty(), "an incomplete file is reported, not repaired")
+	check(loaded.values == GameSettings.defaults(), "an incomplete file uses defaults")
 	broken = FileAccess.open(folder + "/settings.json", FileAccess.WRITE)
 	broken.store_string("[1, 2, 3]")
 	broken.close()

@@ -1,9 +1,9 @@
 class_name GameSettings
 extends RefCounted
 
-## Player preferences. They live next to, but never inside, the save file, and are
-## always repaired rather than rejected: a damaged settings file must never stop the
-## game from starting.
+## Player preferences. They live next to, but never inside, the save file. A settings file that
+## fails validation is reported and the defaults are used for the session; nothing is repaired
+## silently.
 
 const FILE_VERSION = 1
 const SFX_BUS = "SFX"
@@ -38,6 +38,7 @@ const DEFAULT_KEYS = {
 	"tool_5": [KEY_5],
 	"tool_6": [KEY_6],
 	"tool_7": [KEY_7],
+	"tool_8": [KEY_8],
 	"sprint": [KEY_SHIFT],
 	"journal": [KEY_J],
 	"map": [KEY_M],
@@ -56,7 +57,7 @@ const REBINDABLE = [
 	"map",
 	"bag",
 ]
-const RESERVED_KEYS = [KEY_ESCAPE, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7]
+const RESERVED_KEYS = [KEY_ESCAPE, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8]
 const ACTION_NAMES = {
 	"move_up": "向上走",
 	"move_down": "向下走",
@@ -96,38 +97,39 @@ func path() -> String:
 	return directory + "/settings.json"
 
 
-## Returns a complete, well-typed settings dictionary no matter what `raw` contains.
-static func sanitize(raw: Variant) -> Dictionary:
-	var clean = defaults()
-	if not raw is Dictionary:
-		return clean
+## "" when `raw` is a complete, well-typed settings dictionary, otherwise what is wrong.
+static func validate(raw: Variant) -> String:
+	if not raw is Dictionary or raw.size() != DEFAULTS.size():
+		return "设置内容不完整"
 	for key in LEVELS:
 		var value = raw.get(key)
-		if (value is int or value is float) and is_finite(float(value)):
-			clean[key] = clampi(int(value), 0, 100)
+		if not (value is int or value is float) or float(value) != floor(float(value)):
+			return "音量必须是整数"
+		if value < 0 or value > 100:
+			return "音量必须在 0 到 100 之间"
 	for key in BOOLEANS:
-		if raw.get(key) is bool:
-			clean[key] = raw[key]
+		if not raw.get(key) is bool:
+			return "开关必须是真或假：" + key
 	var bindings = raw.get("bindings")
-	if bindings is Dictionary:
-		var used: Array = []
-		for action in REBINDABLE:
-			var code = bindings.get(action)
-			if not (code is int or code is float) or float(code) != floor(float(code)):
-				continue
-			var key = int(code)
-			if key in RESERVED_KEYS or key in used or not is_usable_key(key):
-				continue
-			used.append(key)
-			clean.bindings[action] = key
-		# An override must not steal a key that another action still uses by default.
-		for action in clean.bindings.keys():
-			for other in REBINDABLE:
-				if other != action and not clean.bindings.has(other):
-					if int(clean.bindings[action]) in DEFAULT_KEYS[other]:
-						clean.bindings.erase(action)
-						break
-	return clean
+	if not bindings is Dictionary:
+		return "按键设置无效"
+	var used: Array = []
+	for action in bindings:
+		if action not in REBINDABLE:
+			return "不能改键的操作：" + str(action)
+		var code = bindings[action]
+		if not (code is int or code is float) or float(code) != floor(float(code)):
+			return "按键必须是整数"
+		var key = int(code)
+		if key in RESERVED_KEYS or not is_usable_key(key):
+			return "不能使用的按键"
+		if key in used:
+			return "同一个按键被用了两次"
+		used.append(key)
+		for other in REBINDABLE:
+			if other != action and not bindings.has(other) and key in DEFAULT_KEYS[other]:
+				return "按键与「%s」冲突" % ACTION_NAMES[other]
+	return ""
 
 
 func load_file() -> String:
@@ -136,11 +138,22 @@ func load_file() -> String:
 		return ""
 	var file = FileAccess.open(path(), FileAccess.READ)
 	if file == null or file.get_length() > 64 * 1024:
-		return "设置文件无法读取，已使用默认设置。"
+		return "设置文件无法读取，本次使用默认设置。"
 	var parser = JSON.new()
-	var data = parser.data if parser.parse(file.get_as_text()) == OK else null
-	values = sanitize(data.get("values") if data is Dictionary else null)
-	return "" if data is Dictionary else "设置文件已损坏，已使用默认设置。"
+	if parser.parse(file.get_as_text()) != OK or not parser.data is Dictionary:
+		return "设置文件已损坏，本次使用默认设置。"
+	if not parser.data.get("values") is Dictionary:
+		return "设置文件格式不对，本次使用默认设置。"
+	var error = validate(parser.data.values)
+	if not error.is_empty():
+		return "设置无效（%s），本次使用默认设置。" % error
+	values = parser.data.values
+	# JSON has one number type; the validated whole numbers become ints again.
+	for key in LEVELS:
+		values[key] = int(values[key])
+	for action in values.bindings:
+		values.bindings[action] = int(values.bindings[action])
+	return ""
 
 
 func save_file() -> String:
@@ -171,8 +184,8 @@ func get_value(key: String) -> Variant:
 
 
 func set_value(key: String, value: Variant) -> void:
+	assert(DEFAULTS.has(key) and key != "bindings")
 	values[key] = value
-	values = sanitize(values)
 
 
 func reset_all() -> void:
@@ -211,7 +224,6 @@ func rebind(action: String, keycode: int) -> String:
 		elif keycode in DEFAULT_KEYS[other].slice(1) and not _key_taken(keycode, other):
 			return "%s 已是「%s」的备用按键。" % [OS.get_keycode_string(keycode), ACTION_NAMES[other]]
 	values.bindings[action] = keycode
-	values = sanitize(values)
 	return ""
 
 
@@ -236,6 +248,7 @@ func apply() -> void:
 		DisplayServer.window_set_mode(mode)
 		var vsync = DisplayServer.VSYNC_ENABLED if values.vsync else DisplayServer.VSYNC_DISABLED
 		DisplayServer.window_set_vsync_mode(vsync)
+	UIMotion.reduced = bool(values.reduce_motion)
 	apply_bindings()
 
 

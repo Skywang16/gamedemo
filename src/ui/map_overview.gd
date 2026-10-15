@@ -7,11 +7,13 @@ var region: Dictionary
 var background: Texture2D
 var map_rect: Rect2
 var ratio: float
+var villagers: Array = []
 
 
-func configure(content: ContentCatalog, initial_state: FarmState) -> void:
+func configure(content: ContentCatalog, initial_state: FarmState, positions: Array) -> void:
 	catalog = content
 	state = initial_state
+	villagers = positions
 	region = catalog.region(state.current_map)
 	background = load("res://assets/art/%s.png" % region.background)
 	ratio = minf(size.x / (region.width * 32), size.y / (region.height * 32))
@@ -42,13 +44,9 @@ func _draw() -> void:
 			+ Vector2(station.cell[0] * 32 + 16, station.cell[1] * 32 + 16) * ratio
 		)
 		draw_circle(at, 4, Color("f1e7c3"))
-	for id in catalog.story.npcs:
-		if catalog.story.npcs[id].map == state.current_map:
-			var at = (
-				map_rect.position
-				+ (Vector2(catalog.npc_cell(id, state.minute)) * 32 + Vector2(16, 16)) * ratio
-			)
-			draw_circle(at, 4, Color("e19e9f"))
+	for cell in villagers:
+		var at = map_rect.position + (cell * 32.0 + Vector2(16, 16)) * ratio
+		draw_circle(at, 4, Color("e19e9f"))
 	var player = map_rect.position + state.player_position * ratio
 	draw_circle(player, 7, Color("253e32"))
 	draw_circle(player, 4, Color("ffe18d"))

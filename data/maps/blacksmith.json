@@ -1,0 +1,106 @@
+{
+  "id": "blacksmith",
+  "name": "布兰尼根铁匠铺",
+  "width": 30,
+  "height": 19,
+  "tile_size": 32,
+  "background": "blacksmith_background",
+  "spawn": [
+    464,
+    464
+  ],
+  "obstacles": [
+    [
+      1,
+      1,
+      28,
+      3
+    ],
+    [
+      1,
+      4,
+      3,
+      14
+    ],
+    [
+      25,
+      4,
+      4,
+      14
+    ],
+    [
+      4,
+      16,
+      21,
+      2
+    ],
+    [
+      9,
+      5,
+      12,
+      2
+    ],
+    [
+      6,
+      9,
+      2,
+      2
+    ],
+    [
+      4,
+      13,
+      2,
+      2
+    ],
+    [
+      23,
+      4,
+      2,
+      2
+    ],
+    [
+      22,
+      9,
+      3,
+      2
+    ],
+    [
+      19,
+      10,
+      3,
+      1
+    ]
+  ],
+  "trees": [],
+  "props": [],
+  "stations": [
+    {
+      "id": "counter",
+      "name": "马格纳斯的炉台",
+      "kind": "shop",
+      "cell": [
+        14,
+        7
+      ],
+      "shop_id": "smith"
+    },
+    {
+      "id": "to_market",
+      "name": "回到集市街",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "market",
+      "arrival": [
+        912,
+        880
+      ]
+    }
+  ],
+  "gather": [],
+  "debris": [],
+  "paths": [],
+  "water": []
+}

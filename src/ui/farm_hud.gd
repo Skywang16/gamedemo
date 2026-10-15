@@ -1,21 +1,29 @@
 class_name FarmHUD
 extends GameScreen
 
-const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe"]
-const TOOL_NAMES = ["锄头", "种子", "水壶", "收获", "镰刀", "斧头", "镐"]
-const TOOL_ICONS = ["hoe", "seed_bag", "watering_can", "turnip_item", "scythe", "axe", "pickaxe"]
-const POCKET_ITEMS = ["turnip", "carrot", "wood", "berry"]
+const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe", "rod"]
+const TOOL_NAMES = ["锄头", "种子", "水壶", "收获", "镰刀", "斧头", "镐", "钓竿"]
+const TOOL_ICONS = [
+	"hoe", "seed_bag", "watering_can", "turnip_item", "scythe", "axe", "pickaxe", "fishing_rod"
+]
+const POCKET_ITEMS = ["turnip", "carrot", "bait"]
 var state: FarmState
 var dialogs: GameDialogs
 var chrome: Control
 var day_label: Label
 var clock_frame: Panel
+var coin_icon: TextureRect
+var energy_shown: float = -1.0
+var gold_shown: float = -1.0
+var toast_tween_age: float = 0.0
 var time_label: Label
 var gold_label: Label
 var stamina_fill: ColorRect
 var stamina_label: Label
 var location_label: Label
 var location_frame: Panel
+var quest_frame: Panel
+var quest_label: Label
 var tool_buttons: Dictionary = {}
 var seed_button: Button
 var seed_icon: TextureRect
@@ -47,13 +55,15 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	location_frame = _frame(Rect2(22, 22, 220, 48), "wood", chrome)
 	location_label = _label("", Rect2(38, 28, 188, 34), 19, LIGHT, false, chrome)
 	location_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	quest_frame = _frame(Rect2(22, 78, 330, 42), "paper", chrome)
+	quest_label = _label("", Rect2(36, 82, 304, 34), 17, INK, false, chrome)
 	clock_frame = _frame(Rect2(1044, 18, 216, 152), "paper", chrome)
 	clock_frame.mouse_filter = Control.MOUSE_FILTER_STOP
 	ui_icon("sun", Rect2(1063, 38, 44, 44), chrome)
 	day_label = _label("", Rect2(1114, 31, 130, 33), 21, INK, false, chrome)
 	time_label = _label("", Rect2(1114, 68, 130, 30), 24, INK, false, chrome)
 	_panel(Rect2(1060, 108, 184, 2), Color("b99150"), chrome)
-	ui_icon("coin", Rect2(1064, 120, 30, 30), chrome)
+	coin_icon = ui_icon("coin", Rect2(1064, 120, 30, 30), chrome)
 	gold_label = _label("", Rect2(1098, 117, 142, 36), 23, INK, false, chrome)
 	gold_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	for entry in [
@@ -83,7 +93,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		_label(str(i + 1), Rect2(8, 3, 20, 18), 12, INK, false, button)
 		tool_buttons[id] = button
 	seed_button = _slot(
-		Rect2(704, 713, 60, 60), func(): action_requested.emit("cycle_seed", {}), chrome
+		Rect2(768, 713, 60, 60), func(): action_requested.emit("cycle_seed", {}), chrome
 	)
 	seed_icon = icon("turnip_packet", Rect2(10, 11, 40, 40), seed_button)
 	_label("Q", Rect2(8, 3, 20, 18), 12, INK, false, seed_button)
@@ -92,7 +102,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	for i in range(POCKET_ITEMS.size()):
 		var id: String = POCKET_ITEMS[i]
 		var button = _slot(
-			Rect2(768 + i * 64, 713, 60, 60),
+			Rect2(832 + i * 64, 713, 60, 60),
 			func():
 				dialogs.selected_item = id
 				dialogs.show_bag(),
@@ -142,13 +152,16 @@ func refresh(selected_tool: String, selected_crop: String) -> void:
 	day_label.text = (
 		"%s %d 日 %s" % [date.season_name, date.day, catalog.weather.short_name(weather)]
 	)
-	time_label.text = "%s %02d:%02d" % [date.weekday_name, state.minute / 60, state.minute % 60]
+	time_label.text = "%s %s" % [date.weekday_name, GameCalendar.clock(state.minute)]
+	var current_quest = catalog.story.quests[int(state.narrative.stage)]
+	quest_label.text = "› " + (current_quest.title if state.narrative.stage < 6 else "自由经营")
 	clock_frame.tooltip_text = _calendar_tooltip(weather)
-	gold_label.text = "%d" % state.gold
-	var energy = float(state.stamina) / FarmState.MAX_STAMINA
-	stamina_fill.position = Vector2(1233, 571 + (1 - energy) * 148)
-	stamina_fill.size = Vector2(14, energy * 148)
-	stamina_fill.color = Color("86b34b") if energy > .3 else Color("d28e3f")
+	if gold_shown < 0.0:
+		gold_shown = float(state.gold)
+		energy_shown = float(state.stamina)
+	elif state.gold > gold_shown + 0.5:
+		UIMotion.pulse(coin_icon)
+	_update_meters(0.0)
 	stamina_fill.tooltip_text = "体力 %d / 100" % state.stamina
 	if last_region != state.current_map:
 		last_region = state.current_map
@@ -189,6 +202,8 @@ func toast(message: String, seconds: float = 2.4) -> void:
 	toast_label.position = toast_box.position + Vector2(18, 11)
 	toast_box.show()
 	toast_label.show()
+	UIMotion.appear(toast_box, 0.18, 10.0)
+	UIMotion.appear(toast_label, 0.18, 10.0)
 
 
 func notify_saved(error: String) -> void:
@@ -196,8 +211,23 @@ func notify_saved(error: String) -> void:
 		toast(error, 5)
 
 
+## Eases the stamina bar and the gold counter towards their real values.
+func _update_meters(delta: float) -> void:
+	gold_shown = UIMotion.ease_toward(gold_shown, float(state.gold), delta, 7.0)
+	energy_shown = UIMotion.ease_toward(energy_shown, float(state.stamina), delta, 9.0, 0.3)
+	gold_label.text = "%d" % roundi(gold_shown)
+	var energy = clampf(energy_shown / FarmState.MAX_STAMINA, 0.0, 1.0)
+	stamina_fill.position = Vector2(1233, 571 + (1 - energy) * 148)
+	stamina_fill.size = Vector2(14, energy * 148)
+	stamina_fill.color = Color("86b34b") if energy > .3 else Color("d28e3f")
+
+
 func _process(delta: float) -> void:
+	_update_meters(delta)
 	toast_remaining = maxf(0, toast_remaining - delta)
+	if toast_remaining < 0.3 and toast_remaining > 0.0 and not UIMotion.reduced:
+		toast_box.modulate.a = toast_remaining / 0.3
+		toast_label.modulate.a = toast_remaining / 0.3
 	if toast_remaining == 0:
 		toast_box.hide()
 		toast_label.hide()

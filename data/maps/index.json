@@ -6,6 +6,17 @@
     "lake",
     "cottage",
     "inn",
-    "workshop"
+    "workshop",
+    "market",
+    "ranch",
+    "seaside",
+    "mine_1",
+    "mine_2",
+    "mine_3",
+    "general_store",
+    "blacksmith",
+    "clinic",
+    "tea_house",
+    "tackle_shop"
   ]
 }

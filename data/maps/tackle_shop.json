@@ -1,0 +1,106 @@
+{
+  "id": "tackle_shop",
+  "name": "托比渔具店",
+  "width": 30,
+  "height": 19,
+  "tile_size": 32,
+  "background": "tackle_shop_background",
+  "spawn": [
+    464,
+    464
+  ],
+  "obstacles": [
+    [
+      1,
+      1,
+      28,
+      3
+    ],
+    [
+      1,
+      4,
+      3,
+      14
+    ],
+    [
+      25,
+      4,
+      4,
+      14
+    ],
+    [
+      4,
+      16,
+      21,
+      2
+    ],
+    [
+      9,
+      5,
+      12,
+      2
+    ],
+    [
+      4,
+      4,
+      2,
+      2
+    ],
+    [
+      4,
+      12,
+      2,
+      2
+    ],
+    [
+      6,
+      10,
+      3,
+      1
+    ],
+    [
+      22,
+      8,
+      3,
+      3
+    ],
+    [
+      23,
+      13,
+      2,
+      2
+    ]
+  ],
+  "trees": [],
+  "props": [],
+  "stations": [
+    {
+      "id": "counter",
+      "name": "托比的渔具柜",
+      "kind": "shop",
+      "cell": [
+        14,
+        7
+      ],
+      "shop_id": "tackle"
+    },
+    {
+      "id": "to_seaside",
+      "name": "回到海鸥湾",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "seaside",
+      "arrival": [
+        656,
+        400
+      ]
+    }
+  ],
+  "gather": [],
+  "debris": [],
+  "paths": [],
+  "water": []
+}

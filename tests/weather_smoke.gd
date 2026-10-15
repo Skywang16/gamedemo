@@ -23,8 +23,16 @@ func run() -> void:
 	await spawn()
 	await press("开始新生活")
 	await press("带着这份期待，出发")
+	await press("开始在这里")
 	check(game.initialized, "game starts")
-	place_cell(Vector2i(46, 24))
+	var middle = Vector2i(48, 40)
+	var best = middle
+	var best_distance = 1000000
+	for cell in free_cells(100000):
+		if (cell - middle).length_squared() < best_distance:
+			best = cell
+			best_distance = (cell - middle).length_squared()
+	place_cell(best)
 	var world: FarmWorld = game.world
 	check(world.weather_layer != null and world.outdoors, "farm has a weather layer")
 	check(world.weather == "sunny" and world.season == "spring", "day 1 is fair spring")
@@ -64,7 +72,7 @@ func run() -> void:
 		await process_frame
 	check(layer.flash == 0.0, "reduce motion disables lightning")
 	# Weather stays outside: the cottage is dry and untinted by the season.
-	await interact("bed")
+	await interact("to_cottage")
 	check(game.state.current_map == "cottage", "entered cottage")
 	check(not game.world.weather_layer.visible, "no weather indoors")
 	check(

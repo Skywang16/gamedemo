@@ -1,0 +1,1311 @@
+{
+  "spots": {
+    "home_farm": "pond",
+    "ranch": "pond",
+    "town": "river",
+    "forest": "stream",
+    "lake": "lake",
+    "seaside": "sea",
+    "mine_1": "cave",
+    "mine_2": "cave",
+    "mine_3": "cave"
+  },
+  "fish": [
+    {
+      "id": "crucian",
+      "spots": [
+        "pond",
+        "stream",
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 30,
+      "difficulty": 1
+    },
+    {
+      "id": "loach",
+      "spots": [
+        "pond",
+        "stream"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 22,
+      "difficulty": 1
+    },
+    {
+      "id": "shrimp",
+      "spots": [
+        "pond",
+        "stream",
+        "river"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        22
+      ],
+      "weight": 20,
+      "difficulty": 1
+    },
+    {
+      "id": "crab",
+      "spots": [
+        "stream",
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        22
+      ],
+      "weight": 14,
+      "difficulty": 2
+    },
+    {
+      "id": "pike",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        19
+      ],
+      "weight": 18,
+      "difficulty": 2
+    },
+    {
+      "id": "bream",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 16,
+      "difficulty": 2
+    },
+    {
+      "id": "roach",
+      "spots": [
+        "lake",
+        "river"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 15,
+      "difficulty": 2
+    },
+    {
+      "id": "carp",
+      "spots": [
+        "pond",
+        "stream",
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 14,
+      "difficulty": 3
+    },
+    {
+      "id": "catfish",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "rain",
+        "storm",
+        "cloudy"
+      ],
+      "hours": [
+        18,
+        26
+      ],
+      "weight": 12,
+      "difficulty": 3
+    },
+    {
+      "id": "riverperch",
+      "spots": [
+        "pond",
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 10,
+      "difficulty": 3
+    },
+    {
+      "id": "eel",
+      "spots": [
+        "pond",
+        "stream",
+        "river"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "rain",
+        "cloudy"
+      ],
+      "hours": [
+        16,
+        26
+      ],
+      "weight": 9,
+      "difficulty": 3
+    },
+    {
+      "id": "perch",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 10,
+      "difficulty": 3
+    },
+    {
+      "id": "zander",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "weather": [
+        "any_clear"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 7,
+      "difficulty": 4
+    },
+    {
+      "id": "whitefish",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        11
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "tench",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        8,
+        20
+      ],
+      "weight": 9,
+      "difficulty": 3
+    },
+    {
+      "id": "trout",
+      "spots": [
+        "stream",
+        "lake"
+      ],
+      "seasons": [
+        "winter",
+        "spring"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 4
+    },
+    {
+      "id": "icesmelt",
+      "spots": [
+        "lake",
+        "river"
+      ],
+      "seasons": [
+        "winter"
+      ],
+      "weather": [
+        "snow",
+        "cloudy"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 6,
+      "difficulty": 4
+    },
+    {
+      "id": "lanternfish",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        19,
+        26
+      ],
+      "weight": 4,
+      "difficulty": 4
+    },
+    {
+      "id": "mooncarp",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "rain"
+      ],
+      "hours": [
+        20,
+        26
+      ],
+      "weight": 2,
+      "difficulty": 5
+    },
+    {
+      "id": "koi",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "spring"
+      ],
+      "weather": [
+        "rain",
+        "sunny"
+      ],
+      "hours": [
+        6,
+        12
+      ],
+      "weight": 1,
+      "difficulty": 5
+    },
+    {
+      "id": "minnow",
+      "spots": [
+        "pond",
+        "stream",
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 26,
+      "difficulty": 1
+    },
+    {
+      "id": "bitterling",
+      "spots": [
+        "pond",
+        "stream"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 14,
+      "difficulty": 1
+    },
+    {
+      "id": "chub",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        19
+      ],
+      "weight": 9,
+      "difficulty": 3
+    },
+    {
+      "id": "dace",
+      "spots": [
+        "stream"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 12,
+      "difficulty": 2
+    },
+    {
+      "id": "stripedbass",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "frog",
+      "spots": [
+        "pond",
+        "stream"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "rain",
+        "cloudy"
+      ],
+      "hours": [
+        18,
+        26
+      ],
+      "weight": 12,
+      "difficulty": 1
+    },
+    {
+      "id": "snail",
+      "spots": [
+        "pond",
+        "stream",
+        "river"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        22
+      ],
+      "weight": 14,
+      "difficulty": 1
+    },
+    {
+      "id": "mussel",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        22
+      ],
+      "weight": 8,
+      "difficulty": 2
+    },
+    {
+      "id": "snapper",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 4,
+      "difficulty": 4
+    },
+    {
+      "id": "sardine",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        20
+      ],
+      "weight": 28,
+      "difficulty": 1
+    },
+    {
+      "id": "anchovy",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        20
+      ],
+      "weight": 24,
+      "difficulty": 1
+    },
+    {
+      "id": "herring",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        20
+      ],
+      "weight": 20,
+      "difficulty": 1
+    },
+    {
+      "id": "mackerel",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        20
+      ],
+      "weight": 18,
+      "difficulty": 2
+    },
+    {
+      "id": "haddock",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        12
+      ],
+      "weight": 12,
+      "difficulty": 3
+    },
+    {
+      "id": "pollock",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any_clear"
+      ],
+      "hours": [
+        18,
+        26
+      ],
+      "weight": 10,
+      "difficulty": 3
+    },
+    {
+      "id": "seabream",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "seabass",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 10,
+      "difficulty": 3
+    },
+    {
+      "id": "redsnapper",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 7,
+      "difficulty": 4
+    },
+    {
+      "id": "flounder",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "winter",
+        "spring"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "cod",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "salmon",
+      "spots": [
+        "sea",
+        "stream"
+      ],
+      "seasons": [
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 7,
+      "difficulty": 4
+    },
+    {
+      "id": "tuna",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 4,
+      "difficulty": 5
+    },
+    {
+      "id": "swordfish",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer"
+      ],
+      "weather": [
+        "sunny"
+      ],
+      "hours": [
+        6,
+        14
+      ],
+      "weight": 2,
+      "difficulty": 5
+    },
+    {
+      "id": "squid",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        18,
+        26
+      ],
+      "weight": 12,
+      "difficulty": 2
+    },
+    {
+      "id": "octopus",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer",
+        "autumn",
+        "spring"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "cuttlefish",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        5,
+        12
+      ],
+      "weight": 9,
+      "difficulty": 3
+    },
+    {
+      "id": "jellyfish",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer"
+      ],
+      "weather": [
+        "cloudy",
+        "rain"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 8,
+      "difficulty": 2
+    },
+    {
+      "id": "lobster",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        22
+      ],
+      "weight": 5,
+      "difficulty": 4
+    },
+    {
+      "id": "seacrab",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 8,
+      "difficulty": 3
+    },
+    {
+      "id": "oyster",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "winter",
+        "spring"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 12,
+      "difficulty": 2
+    },
+    {
+      "id": "clam",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 16,
+      "difficulty": 1
+    },
+    {
+      "id": "scallop",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "autumn"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 10,
+      "difficulty": 2
+    },
+    {
+      "id": "abalone",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 4,
+      "difficulty": 4
+    },
+    {
+      "id": "urchin",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 5,
+      "difficulty": 4
+    },
+    {
+      "id": "seahorse",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer"
+      ],
+      "weather": [
+        "sunny"
+      ],
+      "hours": [
+        6,
+        12
+      ],
+      "weight": 3,
+      "difficulty": 4
+    },
+    {
+      "id": "pufferfish",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        18
+      ],
+      "weight": 5,
+      "difficulty": 4
+    },
+    {
+      "id": "starfish",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 10,
+      "difficulty": 1
+    },
+    {
+      "id": "kelp",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "winter",
+        "spring"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        20
+      ],
+      "weight": 14,
+      "difficulty": 1
+    },
+    {
+      "id": "mantaray",
+      "spots": [
+        "sea"
+      ],
+      "seasons": [
+        "summer"
+      ],
+      "weather": [
+        "sunny"
+      ],
+      "hours": [
+        8,
+        16
+      ],
+      "weight": 1,
+      "difficulty": 5
+    },
+    {
+      "id": "goldtrout",
+      "spots": [
+        "stream",
+        "lake"
+      ],
+      "seasons": [
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        14
+      ],
+      "weight": 4,
+      "difficulty": 4
+    },
+    {
+      "id": "cavefish",
+      "spots": [
+        "cave"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        0,
+        26
+      ],
+      "weight": 20,
+      "difficulty": 2
+    },
+    {
+      "id": "glowworm",
+      "spots": [
+        "cave"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        0,
+        26
+      ],
+      "weight": 10,
+      "difficulty": 3
+    },
+    {
+      "id": "crystalfish",
+      "spots": [
+        "cave"
+      ],
+      "seasons": [
+        "spring",
+        "summer",
+        "autumn",
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        0,
+        26
+      ],
+      "weight": 3,
+      "difficulty": 5
+    },
+    {
+      "id": "sturgeon",
+      "spots": [
+        "river",
+        "lake"
+      ],
+      "seasons": [
+        "winter"
+      ],
+      "weather": [
+        "any"
+      ],
+      "hours": [
+        6,
+        16
+      ],
+      "weight": 3,
+      "difficulty": 5
+    },
+    {
+      "id": "stormfin",
+      "spots": [
+        "lake"
+      ],
+      "seasons": [
+        "autumn"
+      ],
+      "weather": [
+        "storm"
+      ],
+      "hours": [
+        18,
+        26
+      ],
+      "weight": 1,
+      "difficulty": 5
+    }
+  ]
+}

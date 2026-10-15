@@ -1,0 +1,2881 @@
+[
+  {
+    "id": "berry_oatmeal",
+    "needs": {
+      "berry": 2
+    },
+    "level": 0
+  },
+  {
+    "id": "turnip_soup",
+    "needs": {
+      "turnip": 2
+    },
+    "level": 0
+  },
+  {
+    "id": "honey_carrots",
+    "needs": {
+      "carrot": 2
+    },
+    "level": 0
+  },
+  {
+    "id": "cucumber_salad",
+    "needs": {
+      "cucumber": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "tomato_soup",
+    "needs": {
+      "tomato": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "grilled_corn",
+    "needs": {
+      "corn": 1
+    },
+    "level": 1
+  },
+  {
+    "id": "butternut_soup",
+    "needs": {
+      "butternut": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "baked_sweetpotato",
+    "needs": {
+      "sweetpotato": 1
+    },
+    "level": 1
+  },
+  {
+    "id": "stuffed_eggplant",
+    "needs": {
+      "eggplant": 1,
+      "jalapeno": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "strawberry_shortcake",
+    "needs": {
+      "strawberry": 3
+    },
+    "level": 2
+  },
+  {
+    "id": "fried_crucian",
+    "needs": {
+      "crucian": 1
+    },
+    "level": 1
+  },
+  {
+    "id": "wine_carp",
+    "needs": {
+      "carp": 1,
+      "grape": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "perch_chowder",
+    "needs": {
+      "perch": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "shrimp_boil",
+    "needs": {
+      "shrimp": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "mushroom_soup",
+    "needs": {
+      "mushroom": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_chestnuts",
+    "needs": {
+      "chestnut": 3
+    },
+    "level": 2
+  },
+  {
+    "id": "grape_juice",
+    "needs": {
+      "grape": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "buckwheat_pancakes",
+    "needs": {
+      "buckwheat": 3
+    },
+    "level": 1
+  },
+  {
+    "id": "parsnip_mash",
+    "needs": {
+      "parsnip": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "cattail_stew",
+    "needs": {
+      "cattail_root": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "honey_tea",
+    "needs": {
+      "honey": 1
+    },
+    "level": 1
+  },
+  {
+    "id": "apple_pie",
+    "needs": {
+      "crab_apple": 3
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_pea",
+    "needs": {
+      "pea": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "sauce_pea",
+    "needs": {
+      "pea": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_pea",
+    "needs": {
+      "pea": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "garlic_saute_spinach",
+    "needs": {
+      "spinach": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_spinach",
+    "needs": {
+      "spinach": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_spinach",
+    "needs": {
+      "spinach": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "stew_potato",
+    "needs": {
+      "potato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_potato",
+    "needs": {
+      "potato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_potato",
+    "needs": {
+      "potato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "juice_strawberry",
+    "needs": {
+      "strawberry": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "jam_strawberry",
+    "needs": {
+      "strawberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_strawberry",
+    "needs": {
+      "strawberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "garlic_saute_rhubarb",
+    "needs": {
+      "rhubarb": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_rhubarb",
+    "needs": {
+      "rhubarb": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_rhubarb",
+    "needs": {
+      "rhubarb": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "juice_tomato",
+    "needs": {
+      "tomato": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "jam_tomato",
+    "needs": {
+      "tomato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_tomato",
+    "needs": {
+      "tomato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "scone_corn",
+    "needs": {
+      "corn": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "porridge_corn",
+    "needs": {
+      "corn": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "juice_watermelon",
+    "needs": {
+      "watermelon": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_watermelon",
+    "needs": {
+      "watermelon": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pie_watermelon",
+    "needs": {
+      "watermelon": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_cucumber",
+    "needs": {
+      "cucumber": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_cucumber",
+    "needs": {
+      "cucumber": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_cucumber",
+    "needs": {
+      "cucumber": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_eggplant",
+    "needs": {
+      "eggplant": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "sauce_eggplant",
+    "needs": {
+      "eggplant": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_eggplant",
+    "needs": {
+      "eggplant": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_chili",
+    "needs": {
+      "chili": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_chili",
+    "needs": {
+      "chili": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_chili",
+    "needs": {
+      "chili": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_sunflower",
+    "needs": {
+      "sunflower": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_sunflower",
+    "needs": {
+      "sunflower": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_sunflower",
+    "needs": {
+      "sunflower": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "juice_pumpkin",
+    "needs": {
+      "pumpkin": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "jam_pumpkin",
+    "needs": {
+      "pumpkin": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pie_pumpkin",
+    "needs": {
+      "pumpkin": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "stew_sweetpotato",
+    "needs": {
+      "sweetpotato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_sweetpotato",
+    "needs": {
+      "sweetpotato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_sweetpotato",
+    "needs": {
+      "sweetpotato": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "stew_parsnip",
+    "needs": {
+      "parsnip": 2
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_parsnip",
+    "needs": {
+      "parsnip": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_parsnip",
+    "needs": {
+      "parsnip": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "scone_buckwheat",
+    "needs": {
+      "buckwheat": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "porridge_buckwheat",
+    "needs": {
+      "buckwheat": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_rutabaga",
+    "needs": {
+      "rutabaga": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_rutabaga",
+    "needs": {
+      "rutabaga": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_rutabaga",
+    "needs": {
+      "rutabaga": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "juice_grape",
+    "needs": {
+      "grape": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_grape",
+    "needs": {
+      "grape": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_grape",
+    "needs": {
+      "grape": 2
+    },
+    "level": 4
+  },
+  {
+    "id": "garlic_saute_cabbage",
+    "needs": {
+      "cabbage": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_cabbage",
+    "needs": {
+      "cabbage": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_cabbage",
+    "needs": {
+      "cabbage": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_brussels",
+    "needs": {
+      "brussels": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_brussels",
+    "needs": {
+      "brussels": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_brussels",
+    "needs": {
+      "brussels": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_scallion",
+    "needs": {
+      "scallion": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_scallion",
+    "needs": {
+      "scallion": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_scallion",
+    "needs": {
+      "scallion": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_winterradish",
+    "needs": {
+      "winterradish": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_winterradish",
+    "needs": {
+      "winterradish": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_winterradish",
+    "needs": {
+      "winterradish": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "garlic_saute_rosemary",
+    "needs": {
+      "rosemary": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_rosemary",
+    "needs": {
+      "rosemary": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_rosemary",
+    "needs": {
+      "rosemary": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_lettuce",
+    "needs": {
+      "lettuce": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_lettuce",
+    "needs": {
+      "lettuce": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "salad_lettuce",
+    "needs": {
+      "lettuce": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "garlic_saute_celery",
+    "needs": {
+      "celery": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_celery",
+    "needs": {
+      "celery": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_celery",
+    "needs": {
+      "celery": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_leek",
+    "needs": {
+      "leek": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_leek",
+    "needs": {
+      "leek": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "salad_leek",
+    "needs": {
+      "leek": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "stew_onion",
+    "needs": {
+      "onion": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_onion",
+    "needs": {
+      "onion": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_onion",
+    "needs": {
+      "onion": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_asparagus",
+    "needs": {
+      "asparagus": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "sauce_asparagus",
+    "needs": {
+      "asparagus": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_asparagus",
+    "needs": {
+      "asparagus": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_broadbean",
+    "needs": {
+      "broadbean": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_broadbean",
+    "needs": {
+      "broadbean": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_broadbean",
+    "needs": {
+      "broadbean": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_radish",
+    "needs": {
+      "radish": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "roast_radish",
+    "needs": {
+      "radish": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "mash_radish",
+    "needs": {
+      "radish": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "juice_butternut",
+    "needs": {
+      "butternut": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_butternut",
+    "needs": {
+      "butternut": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_butternut",
+    "needs": {
+      "butternut": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_jalapeno",
+    "needs": {
+      "jalapeno": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_jalapeno",
+    "needs": {
+      "jalapeno": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_jalapeno",
+    "needs": {
+      "jalapeno": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_greenbean",
+    "needs": {
+      "greenbean": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_greenbean",
+    "needs": {
+      "greenbean": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pickle_greenbean",
+    "needs": {
+      "greenbean": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "pan_fried_okra",
+    "needs": {
+      "okra": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "sauce_okra",
+    "needs": {
+      "okra": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_okra",
+    "needs": {
+      "okra": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_zucchini",
+    "needs": {
+      "zucchini": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_zucchini",
+    "needs": {
+      "zucchini": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_zucchini",
+    "needs": {
+      "zucchini": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_peanut",
+    "needs": {
+      "peanut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_peanut",
+    "needs": {
+      "peanut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_peanut",
+    "needs": {
+      "peanut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "juice_bellpepper",
+    "needs": {
+      "bellpepper": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_bellpepper",
+    "needs": {
+      "bellpepper": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_bellpepper",
+    "needs": {
+      "bellpepper": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "scone_wheat",
+    "needs": {
+      "wheat": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "porridge_wheat",
+    "needs": {
+      "wheat": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_basil",
+    "needs": {
+      "basil": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_basil",
+    "needs": {
+      "basil": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_basil",
+    "needs": {
+      "basil": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "garlic_saute_mint",
+    "needs": {
+      "mint": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_mint",
+    "needs": {
+      "mint": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_mint",
+    "needs": {
+      "mint": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "juice_blueberry",
+    "needs": {
+      "blueberry": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "jam_blueberry",
+    "needs": {
+      "blueberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_blueberry",
+    "needs": {
+      "blueberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "juice_raspberry",
+    "needs": {
+      "raspberry": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "jam_raspberry",
+    "needs": {
+      "raspberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_raspberry",
+    "needs": {
+      "raspberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "juice_cantaloupe",
+    "needs": {
+      "cantaloupe": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_cantaloupe",
+    "needs": {
+      "cantaloupe": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_cantaloupe",
+    "needs": {
+      "cantaloupe": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "juice_honeydew",
+    "needs": {
+      "honeydew": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_honeydew",
+    "needs": {
+      "honeydew": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_honeydew",
+    "needs": {
+      "honeydew": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "garlic_saute_cauliflower",
+    "needs": {
+      "cauliflower": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_cauliflower",
+    "needs": {
+      "cauliflower": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_cauliflower",
+    "needs": {
+      "cauliflower": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "garlic_saute_broccoli",
+    "needs": {
+      "broccoli": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_broccoli",
+    "needs": {
+      "broccoli": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_broccoli",
+    "needs": {
+      "broccoli": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "stew_beet",
+    "needs": {
+      "beet": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_beet",
+    "needs": {
+      "beet": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_beet",
+    "needs": {
+      "beet": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "stew_ginger",
+    "needs": {
+      "ginger": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_ginger",
+    "needs": {
+      "ginger": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "mash_ginger",
+    "needs": {
+      "ginger": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_garlic",
+    "needs": {
+      "garlic": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_garlic",
+    "needs": {
+      "garlic": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_garlic",
+    "needs": {
+      "garlic": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "scone_barley",
+    "needs": {
+      "barley": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "porridge_barley",
+    "needs": {
+      "barley": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "scone_oats",
+    "needs": {
+      "oats": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "porridge_oats",
+    "needs": {
+      "oats": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "juice_cranberry",
+    "needs": {
+      "cranberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "jam_cranberry",
+    "needs": {
+      "cranberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pie_cranberry",
+    "needs": {
+      "cranberry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "stew_kohlrabi",
+    "needs": {
+      "kohlrabi": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_kohlrabi",
+    "needs": {
+      "kohlrabi": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_kohlrabi",
+    "needs": {
+      "kohlrabi": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_artichoke",
+    "needs": {
+      "artichoke": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_artichoke",
+    "needs": {
+      "artichoke": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_artichoke",
+    "needs": {
+      "artichoke": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_chard",
+    "needs": {
+      "chard": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_chard",
+    "needs": {
+      "chard": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "salad_chard",
+    "needs": {
+      "chard": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "garlic_saute_kale",
+    "needs": {
+      "kale": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_kale",
+    "needs": {
+      "kale": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_kale",
+    "needs": {
+      "kale": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_snowpea",
+    "needs": {
+      "snowpea": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "sauce_snowpea",
+    "needs": {
+      "snowpea": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pickle_snowpea",
+    "needs": {
+      "snowpea": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_blackradish",
+    "needs": {
+      "blackradish": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_blackradish",
+    "needs": {
+      "blackradish": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_blackradish",
+    "needs": {
+      "blackradish": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "stew_turnip_purple",
+    "needs": {
+      "turnip_purple": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_turnip_purple",
+    "needs": {
+      "turnip_purple": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "mash_turnip_purple",
+    "needs": {
+      "turnip_purple": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "garlic_saute_chicory",
+    "needs": {
+      "chicory": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_chicory",
+    "needs": {
+      "chicory": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_chicory",
+    "needs": {
+      "chicory": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "garlic_saute_watercress",
+    "needs": {
+      "watercress": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_watercress",
+    "needs": {
+      "watercress": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_watercress",
+    "needs": {
+      "watercress": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "pan_fried_crucian",
+    "needs": {
+      "crucian": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_crucian",
+    "needs": {
+      "crucian": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_crucian",
+    "needs": {
+      "crucian": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_loach",
+    "needs": {
+      "loach": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_loach",
+    "needs": {
+      "loach": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_loach",
+    "needs": {
+      "loach": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_shrimp",
+    "needs": {
+      "shrimp": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_shrimp",
+    "needs": {
+      "shrimp": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_crab",
+    "needs": {
+      "crab": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_crab",
+    "needs": {
+      "crab": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_pike",
+    "needs": {
+      "pike": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_pike",
+    "needs": {
+      "pike": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_pike",
+    "needs": {
+      "pike": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_bream",
+    "needs": {
+      "bream": 2
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_bream",
+    "needs": {
+      "bream": 2
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_roach",
+    "needs": {
+      "roach": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_roach",
+    "needs": {
+      "roach": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_roach",
+    "needs": {
+      "roach": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_carp",
+    "needs": {
+      "carp": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_carp",
+    "needs": {
+      "carp": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_carp",
+    "needs": {
+      "carp": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_catfish",
+    "needs": {
+      "catfish": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_catfish",
+    "needs": {
+      "catfish": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_catfish",
+    "needs": {
+      "catfish": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_riverperch",
+    "needs": {
+      "riverperch": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_riverperch",
+    "needs": {
+      "riverperch": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_riverperch",
+    "needs": {
+      "riverperch": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_eel",
+    "needs": {
+      "eel": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_eel",
+    "needs": {
+      "eel": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_eel",
+    "needs": {
+      "eel": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_perch",
+    "needs": {
+      "perch": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_perch",
+    "needs": {
+      "perch": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_perch",
+    "needs": {
+      "perch": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_zander",
+    "needs": {
+      "zander": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_zander",
+    "needs": {
+      "zander": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_zander",
+    "needs": {
+      "zander": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_whitefish",
+    "needs": {
+      "whitefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_whitefish",
+    "needs": {
+      "whitefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_whitefish",
+    "needs": {
+      "whitefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_tench",
+    "needs": {
+      "tench": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_tench",
+    "needs": {
+      "tench": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_tench",
+    "needs": {
+      "tench": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_trout",
+    "needs": {
+      "trout": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_trout",
+    "needs": {
+      "trout": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_trout",
+    "needs": {
+      "trout": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_icesmelt",
+    "needs": {
+      "icesmelt": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_icesmelt",
+    "needs": {
+      "icesmelt": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_icesmelt",
+    "needs": {
+      "icesmelt": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_lanternfish",
+    "needs": {
+      "lanternfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_lanternfish",
+    "needs": {
+      "lanternfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_lanternfish",
+    "needs": {
+      "lanternfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_mooncarp",
+    "needs": {
+      "mooncarp": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_mooncarp",
+    "needs": {
+      "mooncarp": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_mooncarp",
+    "needs": {
+      "mooncarp": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_koi",
+    "needs": {
+      "koi": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_koi",
+    "needs": {
+      "koi": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_koi",
+    "needs": {
+      "koi": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_minnow",
+    "needs": {
+      "minnow": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_minnow",
+    "needs": {
+      "minnow": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "roast_minnow",
+    "needs": {
+      "minnow": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "buttered_bitterling",
+    "needs": {
+      "bitterling": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pot_bitterling",
+    "needs": {
+      "bitterling": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_chub",
+    "needs": {
+      "chub": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_chub",
+    "needs": {
+      "chub": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_chub",
+    "needs": {
+      "chub": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_dace",
+    "needs": {
+      "dace": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_dace",
+    "needs": {
+      "dace": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_dace",
+    "needs": {
+      "dace": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_stripedbass",
+    "needs": {
+      "stripedbass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_stripedbass",
+    "needs": {
+      "stripedbass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_stripedbass",
+    "needs": {
+      "stripedbass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "buttered_mussel",
+    "needs": {
+      "mussel": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "pot_mussel",
+    "needs": {
+      "mussel": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_snapper",
+    "needs": {
+      "snapper": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pot_snapper",
+    "needs": {
+      "snapper": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_sardine",
+    "needs": {
+      "sardine": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_sardine",
+    "needs": {
+      "sardine": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_sardine",
+    "needs": {
+      "sardine": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_anchovy",
+    "needs": {
+      "anchovy": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_anchovy",
+    "needs": {
+      "anchovy": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "roast_anchovy",
+    "needs": {
+      "anchovy": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_herring",
+    "needs": {
+      "herring": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_herring",
+    "needs": {
+      "herring": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_herring",
+    "needs": {
+      "herring": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_mackerel",
+    "needs": {
+      "mackerel": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_mackerel",
+    "needs": {
+      "mackerel": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "roast_mackerel",
+    "needs": {
+      "mackerel": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "pan_fried_haddock",
+    "needs": {
+      "haddock": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_haddock",
+    "needs": {
+      "haddock": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_haddock",
+    "needs": {
+      "haddock": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_pollock",
+    "needs": {
+      "pollock": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_pollock",
+    "needs": {
+      "pollock": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_pollock",
+    "needs": {
+      "pollock": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "buttered_seabream",
+    "needs": {
+      "seabream": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_seabream",
+    "needs": {
+      "seabream": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_seabass",
+    "needs": {
+      "seabass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_seabass",
+    "needs": {
+      "seabass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_seabass",
+    "needs": {
+      "seabass": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_redsnapper",
+    "needs": {
+      "redsnapper": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_redsnapper",
+    "needs": {
+      "redsnapper": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_redsnapper",
+    "needs": {
+      "redsnapper": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "buttered_flounder",
+    "needs": {
+      "flounder": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_flounder",
+    "needs": {
+      "flounder": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_cod",
+    "needs": {
+      "cod": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_cod",
+    "needs": {
+      "cod": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_cod",
+    "needs": {
+      "cod": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pan_fried_salmon",
+    "needs": {
+      "salmon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_salmon",
+    "needs": {
+      "salmon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_salmon",
+    "needs": {
+      "salmon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_tuna",
+    "needs": {
+      "tuna": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_tuna",
+    "needs": {
+      "tuna": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_tuna",
+    "needs": {
+      "tuna": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_swordfish",
+    "needs": {
+      "swordfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_swordfish",
+    "needs": {
+      "swordfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_swordfish",
+    "needs": {
+      "swordfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "buttered_squid",
+    "needs": {
+      "squid": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_squid",
+    "needs": {
+      "squid": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "buttered_octopus",
+    "needs": {
+      "octopus": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_octopus",
+    "needs": {
+      "octopus": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "buttered_cuttlefish",
+    "needs": {
+      "cuttlefish": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_cuttlefish",
+    "needs": {
+      "cuttlefish": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "buttered_jellyfish",
+    "needs": {
+      "jellyfish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_jellyfish",
+    "needs": {
+      "jellyfish": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_lobster",
+    "needs": {
+      "lobster": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pot_lobster",
+    "needs": {
+      "lobster": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "buttered_seacrab",
+    "needs": {
+      "seacrab": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "pot_seacrab",
+    "needs": {
+      "seacrab": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "buttered_oyster",
+    "needs": {
+      "oyster": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_oyster",
+    "needs": {
+      "oyster": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "buttered_clam",
+    "needs": {
+      "clam": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "pot_clam",
+    "needs": {
+      "clam": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "buttered_scallop",
+    "needs": {
+      "scallop": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pot_scallop",
+    "needs": {
+      "scallop": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "buttered_abalone",
+    "needs": {
+      "abalone": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pot_abalone",
+    "needs": {
+      "abalone": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "buttered_urchin",
+    "needs": {
+      "urchin": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pot_urchin",
+    "needs": {
+      "urchin": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_seahorse",
+    "needs": {
+      "seahorse": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_seahorse",
+    "needs": {
+      "seahorse": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_seahorse",
+    "needs": {
+      "seahorse": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_pufferfish",
+    "needs": {
+      "pufferfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_pufferfish",
+    "needs": {
+      "pufferfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_pufferfish",
+    "needs": {
+      "pufferfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "buttered_mantaray",
+    "needs": {
+      "mantaray": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pot_mantaray",
+    "needs": {
+      "mantaray": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_goldtrout",
+    "needs": {
+      "goldtrout": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_goldtrout",
+    "needs": {
+      "goldtrout": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_goldtrout",
+    "needs": {
+      "goldtrout": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_cavefish",
+    "needs": {
+      "cavefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_cavefish",
+    "needs": {
+      "cavefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "roast_cavefish",
+    "needs": {
+      "cavefish": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "pan_fried_glowworm",
+    "needs": {
+      "glowworm": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_glowworm",
+    "needs": {
+      "glowworm": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "roast_glowworm",
+    "needs": {
+      "glowworm": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_crystalfish",
+    "needs": {
+      "crystalfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_crystalfish",
+    "needs": {
+      "crystalfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_crystalfish",
+    "needs": {
+      "crystalfish": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_sturgeon",
+    "needs": {
+      "sturgeon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_sturgeon",
+    "needs": {
+      "sturgeon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_sturgeon",
+    "needs": {
+      "sturgeon": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "pan_fried_stormfin",
+    "needs": {
+      "stormfin": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_stormfin",
+    "needs": {
+      "stormfin": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "roast_stormfin",
+    "needs": {
+      "stormfin": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "soup_ramps",
+    "needs": {
+      "ramps": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_ramps",
+    "needs": {
+      "ramps": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_nettle",
+    "needs": {
+      "nettle": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_nettle",
+    "needs": {
+      "nettle": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_cattail_root",
+    "needs": {
+      "cattail_root": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_cattail_root",
+    "needs": {
+      "cattail_root": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "fry_mushroom",
+    "needs": {
+      "mushroom": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_mushroom",
+    "needs": {
+      "mushroom": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_chestnut",
+    "needs": {
+      "chestnut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_chestnut",
+    "needs": {
+      "chestnut": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_frozen_berry",
+    "needs": {
+      "frozen_berry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_frozen_berry",
+    "needs": {
+      "frozen_berry": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_pinenut",
+    "needs": {
+      "pinenut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_pinenut",
+    "needs": {
+      "pinenut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_seaweed",
+    "needs": {
+      "seaweed": 2
+    },
+    "level": 0
+  },
+  {
+    "id": "salad_seaweed",
+    "needs": {
+      "seaweed": 2
+    },
+    "level": 0
+  },
+  {
+    "id": "soup_wildgarlic",
+    "needs": {
+      "wildgarlic": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_wildgarlic",
+    "needs": {
+      "wildgarlic": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_fiddlehead",
+    "needs": {
+      "fiddlehead": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_fiddlehead",
+    "needs": {
+      "fiddlehead": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_dandelion",
+    "needs": {
+      "dandelion": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "salad_dandelion",
+    "needs": {
+      "dandelion": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "soup_lilybulb",
+    "needs": {
+      "lilybulb": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_lilybulb",
+    "needs": {
+      "lilybulb": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_water_celery",
+    "needs": {
+      "water_celery": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_water_celery",
+    "needs": {
+      "water_celery": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_waterlily_seed",
+    "needs": {
+      "waterlily_seed": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_waterlily_seed",
+    "needs": {
+      "waterlily_seed": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "fry_chanterelle",
+    "needs": {
+      "chanterelle": 1
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_chanterelle",
+    "needs": {
+      "chanterelle": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "fry_morel",
+    "needs": {
+      "morel": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_morel",
+    "needs": {
+      "morel": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "soup_truffle",
+    "needs": {
+      "truffle": 1
+    },
+    "level": 5
+  },
+  {
+    "id": "salad_truffle",
+    "needs": {
+      "truffle": 1
+    },
+    "level": 4
+  },
+  {
+    "id": "fry_oyster_mushroom",
+    "needs": {
+      "oyster_mushroom": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_oyster_mushroom",
+    "needs": {
+      "oyster_mushroom": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_hawthorn",
+    "needs": {
+      "hawthorn": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_hawthorn",
+    "needs": {
+      "hawthorn": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "soup_crab_apple",
+    "needs": {
+      "crab_apple": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_crab_apple",
+    "needs": {
+      "crab_apple": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_walnut",
+    "needs": {
+      "walnut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_walnut",
+    "needs": {
+      "walnut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_hazelnut",
+    "needs": {
+      "hazelnut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "salad_hazelnut",
+    "needs": {
+      "hazelnut": 2
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_blackberry",
+    "needs": {
+      "blackberry": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "salad_blackberry",
+    "needs": {
+      "blackberry": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "fry_porcini",
+    "needs": {
+      "porcini": 1
+    },
+    "level": 3
+  },
+  {
+    "id": "soup_porcini",
+    "needs": {
+      "porcini": 1
+    },
+    "level": 3
+  }
+]

@@ -1,0 +1,106 @@
+{
+  "id": "tea_house",
+  "name": "铜壶茶室",
+  "width": 30,
+  "height": 19,
+  "tile_size": 32,
+  "background": "tea_house_background",
+  "spawn": [
+    464,
+    464
+  ],
+  "obstacles": [
+    [
+      1,
+      1,
+      28,
+      3
+    ],
+    [
+      1,
+      4,
+      3,
+      14
+    ],
+    [
+      25,
+      4,
+      4,
+      14
+    ],
+    [
+      4,
+      16,
+      21,
+      2
+    ],
+    [
+      9,
+      5,
+      12,
+      2
+    ],
+    [
+      6,
+      10,
+      3,
+      2
+    ],
+    [
+      18,
+      10,
+      3,
+      2
+    ],
+    [
+      4,
+      4,
+      2,
+      2
+    ],
+    [
+      23,
+      5,
+      2,
+      3
+    ],
+    [
+      23,
+      13,
+      2,
+      2
+    ]
+  ],
+  "trees": [],
+  "props": [],
+  "stations": [
+    {
+      "id": "counter",
+      "name": "茶室柜台",
+      "kind": "shop",
+      "cell": [
+        14,
+        7
+      ],
+      "shop_id": "tea"
+    },
+    {
+      "id": "to_market",
+      "name": "回到集市街",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "market",
+      "arrival": [
+        2576,
+        880
+      ]
+    }
+  ],
+  "gather": [],
+  "debris": [],
+  "paths": [],
+  "water": []
+}

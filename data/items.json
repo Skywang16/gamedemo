@@ -5,15 +5,8 @@
     "buy_price": 4,
     "sell_price": 0,
     "icon": "turnip_packet",
-    "description": "春季种子。每天浇水，3 天成熟。"
-  },
-  "carrot_seed": {
-    "name": "胡萝卜种子",
-    "kind": "seed",
-    "buy_price": 6,
-    "sell_price": 0,
-    "icon": "carrot_packet",
-    "description": "春季种子。每天浇水，4 天成熟。"
+    "description": "四季种子。每天浇水，3 天成熟。",
+    "energy": 0
   },
   "turnip": {
     "name": "萝卜",
@@ -21,7 +14,17 @@
     "buy_price": 0,
     "sell_price": 12,
     "icon": "turnip_item",
-    "description": "刚采下的白萝卜，叶尖还带着露水。"
+    "description": "刚采下的白萝卜，叶尖还带着露水。",
+    "energy": 8
+  },
+  "carrot_seed": {
+    "name": "胡萝卜种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "carrot_packet",
+    "description": "春、夏、秋季种子。每天浇水，4 天成熟。",
+    "energy": 0
   },
   "carrot": {
     "name": "胡萝卜",
@@ -29,7 +32,1106 @@
     "buy_price": 0,
     "sell_price": 20,
     "icon": "carrot_item",
-    "description": "脆甜的胡萝卜。可以出售，也可以送给朋友。"
+    "description": "脆甜的胡萝卜。可以出售，也可以送给朋友。",
+    "energy": 10
+  },
+  "pea_seed": {
+    "name": "豌豆种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "pea_packet",
+    "description": "春季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "pea": {
+    "name": "豌豆",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "pea_item",
+    "description": "脆甜的豆荚，可以一茬一茬地摘。",
+    "energy": 8
+  },
+  "spinach_seed": {
+    "name": "菠菜种子",
+    "kind": "seed",
+    "buy_price": 5,
+    "sell_price": 0,
+    "icon": "spinach_packet",
+    "description": "春、秋季种子。每天浇水，3 天成熟。",
+    "energy": 0
+  },
+  "spinach": {
+    "name": "菠菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "spinach_item",
+    "description": "叶片厚实，做沙拉煮汤都好。",
+    "energy": 10
+  },
+  "potato_seed": {
+    "name": "土豆种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "potato_packet",
+    "description": "春、夏季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "potato": {
+    "name": "土豆",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "potato_item",
+    "description": "沉甸甸的土豆，埋在土里长大。",
+    "energy": 14
+  },
+  "strawberry_seed": {
+    "name": "草莓种子",
+    "kind": "seed",
+    "buy_price": 20,
+    "sell_price": 0,
+    "icon": "strawberry_packet",
+    "description": "春季种子。每天浇水，8 天成熟，收获后每 4 天再结一次果。",
+    "energy": 0
+  },
+  "strawberry": {
+    "name": "草莓",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "strawberry_item",
+    "description": "红透了的草莓，会一直结到季末。",
+    "energy": 8
+  },
+  "rhubarb_seed": {
+    "name": "大黄种子",
+    "kind": "seed",
+    "buy_price": 7,
+    "sell_price": 0,
+    "icon": "rhubarb_packet",
+    "description": "春季种子。每天浇水，4 天成熟。",
+    "energy": 0
+  },
+  "rhubarb": {
+    "name": "大黄",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "rhubarb_item",
+    "description": "酸酸的大黄茎，做派最好。",
+    "energy": 8
+  },
+  "tomato_seed": {
+    "name": "番茄种子",
+    "kind": "seed",
+    "buy_price": 12,
+    "sell_price": 0,
+    "icon": "tomato_packet",
+    "description": "夏季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "tomato": {
+    "name": "番茄",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "tomato_item",
+    "description": "晒足了太阳的番茄，酸甜多汁。",
+    "energy": 10
+  },
+  "corn_seed": {
+    "name": "玉米种子",
+    "kind": "seed",
+    "buy_price": 16,
+    "sell_price": 0,
+    "icon": "corn_packet",
+    "description": "夏季种子。每天浇水，8 天成熟，收获后每 4 天再结一次果。",
+    "energy": 0
+  },
+  "corn": {
+    "name": "玉米",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "corn_item",
+    "description": "金黄的玉米棒，一季能收好几次。",
+    "energy": 14
+  },
+  "watermelon_seed": {
+    "name": "西瓜种子",
+    "kind": "seed",
+    "buy_price": 22,
+    "sell_price": 0,
+    "icon": "watermelon_packet",
+    "description": "夏季种子。每天浇水，9 天成熟。",
+    "energy": 0
+  },
+  "watermelon": {
+    "name": "西瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "watermelon_item",
+    "description": "夏天里最沉的一个。拍一拍，咚咚响。",
+    "energy": 18
+  },
+  "cucumber_seed": {
+    "name": "黄瓜种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "cucumber_packet",
+    "description": "夏季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "cucumber": {
+    "name": "黄瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "cucumber_item",
+    "description": "清爽的黄瓜，咬一口全是水汽。",
+    "energy": 8
+  },
+  "eggplant_seed": {
+    "name": "茄子种子",
+    "kind": "seed",
+    "buy_price": 11,
+    "sell_price": 0,
+    "icon": "eggplant_packet",
+    "description": "夏季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "eggplant": {
+    "name": "茄子",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "eggplant_item",
+    "description": "紫亮亮的茄子，油润饱满。",
+    "energy": 10
+  },
+  "chili_seed": {
+    "name": "辣椒种子",
+    "kind": "seed",
+    "buy_price": 10,
+    "sell_price": 0,
+    "icon": "chili_packet",
+    "description": "夏、秋季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "chili": {
+    "name": "辣椒",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "chili_item",
+    "description": "小小一根，辣得很有精神。",
+    "energy": 6
+  },
+  "sunflower_seed": {
+    "name": "向日葵种子",
+    "kind": "seed",
+    "buy_price": 14,
+    "sell_price": 0,
+    "icon": "sunflower_packet",
+    "description": "夏季种子。每天浇水，7 天成熟。",
+    "energy": 0
+  },
+  "sunflower": {
+    "name": "向日葵",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "sunflower_item",
+    "description": "跟着太阳转的大花盘，籽可以炒着吃。",
+    "energy": 10
+  },
+  "pumpkin_seed": {
+    "name": "南瓜种子",
+    "kind": "seed",
+    "buy_price": 24,
+    "sell_price": 0,
+    "icon": "pumpkin_packet",
+    "description": "秋季种子。每天浇水，9 天成熟。",
+    "energy": 0
+  },
+  "pumpkin": {
+    "name": "南瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "pumpkin_item",
+    "description": "圆滚滚的南瓜，秋天的主角。",
+    "energy": 20
+  },
+  "sweetpotato_seed": {
+    "name": "红薯种子",
+    "kind": "seed",
+    "buy_price": 11,
+    "sell_price": 0,
+    "icon": "sweetpotato_packet",
+    "description": "秋季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "sweetpotato": {
+    "name": "红薯",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "sweetpotato_item",
+    "description": "烤着吃最香的红薯。",
+    "energy": 16
+  },
+  "parsnip_seed": {
+    "name": "欧防风种子",
+    "kind": "seed",
+    "buy_price": 13,
+    "sell_price": 0,
+    "icon": "parsnip_packet",
+    "description": "秋季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "parsnip": {
+    "name": "欧防风",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 34,
+    "icon": "parsnip_item",
+    "description": "奶白色的根，烤着吃有坚果味。",
+    "energy": 14
+  },
+  "buckwheat_seed": {
+    "name": "荞麦种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "buckwheat_packet",
+    "description": "秋季种子。每天浇水，4 天成熟。",
+    "energy": 0
+  },
+  "buckwheat": {
+    "name": "荞麦",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 15,
+    "icon": "buckwheat_item",
+    "description": "小小的三角籽粒，磨粉做面。",
+    "energy": 8
+  },
+  "rutabaga_seed": {
+    "name": "芜菁甘蓝种子",
+    "kind": "seed",
+    "buy_price": 16,
+    "sell_price": 0,
+    "icon": "rutabaga_packet",
+    "description": "秋、冬季种子。每天浇水，7 天成熟。",
+    "energy": 0
+  },
+  "rutabaga": {
+    "name": "芜菁甘蓝",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 46,
+    "icon": "rutabaga_item",
+    "description": "紫边黄心的大根菜，耐放。",
+    "energy": 18
+  },
+  "grape_seed": {
+    "name": "葡萄种子",
+    "kind": "seed",
+    "buy_price": 28,
+    "sell_price": 0,
+    "icon": "grape_packet",
+    "description": "秋季种子。每天浇水，9 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "grape": {
+    "name": "葡萄",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "grape_item",
+    "description": "一串串紫葡萄，沉甸甸地垂下来。",
+    "energy": 10
+  },
+  "cabbage_seed": {
+    "name": "卷心菜种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "cabbage_packet",
+    "description": "秋、冬季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "cabbage": {
+    "name": "卷心菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "cabbage_item",
+    "description": "层层包紧的大卷心菜。",
+    "energy": 12
+  },
+  "brussels_seed": {
+    "name": "抱子甘蓝种子",
+    "kind": "seed",
+    "buy_price": 7,
+    "sell_price": 0,
+    "icon": "brussels_packet",
+    "description": "冬季种子。每天浇水，4 天成熟。",
+    "energy": 0
+  },
+  "brussels": {
+    "name": "抱子甘蓝",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "brussels_item",
+    "description": "一颗颗小卷心菜，耐得住霜。",
+    "energy": 8
+  },
+  "scallion_seed": {
+    "name": "小葱种子",
+    "kind": "seed",
+    "buy_price": 7,
+    "sell_price": 0,
+    "icon": "scallion_packet",
+    "description": "冬季种子。每天浇水，4 天成熟。",
+    "energy": 0
+  },
+  "scallion": {
+    "name": "小葱",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 17,
+    "icon": "scallion_item",
+    "description": "冬天里最有精神的绿色。",
+    "energy": 8
+  },
+  "winterradish_seed": {
+    "name": "冬萝卜种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "winterradish_packet",
+    "description": "冬季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "winterradish": {
+    "name": "冬萝卜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "winterradish_item",
+    "description": "霜打过的萝卜，格外甜。",
+    "energy": 12
+  },
+  "rosemary_seed": {
+    "name": "迷迭香种子",
+    "kind": "seed",
+    "buy_price": 12,
+    "sell_price": 0,
+    "icon": "rosemary_packet",
+    "description": "冬季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "rosemary": {
+    "name": "迷迭香",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "rosemary_item",
+    "description": "气味清冽的香草，烤肉最配。",
+    "energy": 6
+  },
+  "lettuce_seed": {
+    "name": "生菜种子",
+    "kind": "seed",
+    "buy_price": 5,
+    "sell_price": 0,
+    "icon": "lettuce_packet",
+    "description": "春、秋季种子。每天浇水，3 天成熟。",
+    "energy": 0
+  },
+  "lettuce": {
+    "name": "生菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "lettuce_item",
+    "description": "脆嫩的生菜，包什么都好吃。",
+    "energy": 8
+  },
+  "celery_seed": {
+    "name": "芹菜种子",
+    "kind": "seed",
+    "buy_price": 7,
+    "sell_price": 0,
+    "icon": "celery_packet",
+    "description": "春、冬季种子。每天浇水，4 天成熟。",
+    "energy": 0
+  },
+  "celery": {
+    "name": "芹菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "celery_item",
+    "description": "清香的芹菜，嚼起来脆生生。",
+    "energy": 8
+  },
+  "leek_seed": {
+    "name": "韭葱种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "leek_packet",
+    "description": "春、夏季种子。每天浇水，4 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "leek": {
+    "name": "韭葱",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "leek_item",
+    "description": "割了又长的韭葱。",
+    "energy": 8
+  },
+  "onion_seed": {
+    "name": "洋葱种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "onion_packet",
+    "description": "春、夏季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "onion": {
+    "name": "洋葱",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "onion_item",
+    "description": "一层一层，辣得人流泪。",
+    "energy": 10
+  },
+  "asparagus_seed": {
+    "name": "芦笋种子",
+    "kind": "seed",
+    "buy_price": 14,
+    "sell_price": 0,
+    "icon": "asparagus_packet",
+    "description": "春季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "asparagus": {
+    "name": "芦笋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "asparagus_item",
+    "description": "春天最嫩的一茬芦笋。",
+    "energy": 8
+  },
+  "broadbean_seed": {
+    "name": "蚕豆种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "broadbean_packet",
+    "description": "春季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "broadbean": {
+    "name": "蚕豆",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "broadbean_item",
+    "description": "饱满的蚕豆，剥开是翠绿的。",
+    "energy": 10
+  },
+  "radish_seed": {
+    "name": "樱桃萝卜种子",
+    "kind": "seed",
+    "buy_price": 4,
+    "sell_price": 0,
+    "icon": "radish_packet",
+    "description": "春、冬季种子。每天浇水，3 天成熟。",
+    "energy": 0
+  },
+  "radish": {
+    "name": "樱桃萝卜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 11,
+    "icon": "radish_item",
+    "description": "红扑扑的小萝卜。",
+    "energy": 6
+  },
+  "butternut_seed": {
+    "name": "奶油南瓜种子",
+    "kind": "seed",
+    "buy_price": 16,
+    "sell_price": 0,
+    "icon": "butternut_packet",
+    "description": "夏、秋季种子。每天浇水，8 天成熟。",
+    "energy": 0
+  },
+  "butternut": {
+    "name": "奶油南瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 54,
+    "icon": "butternut_item",
+    "description": "米色的奶油南瓜，煮汤又香又甜。",
+    "energy": 14
+  },
+  "jalapeno_seed": {
+    "name": "墨西哥辣椒种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "jalapeno_packet",
+    "description": "夏季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "jalapeno": {
+    "name": "墨西哥辣椒",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "jalapeno_item",
+    "description": "又辣又爽口的小青椒。",
+    "energy": 8
+  },
+  "greenbean_seed": {
+    "name": "四季豆种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "greenbean_packet",
+    "description": "春、夏季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "greenbean": {
+    "name": "四季豆",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 15,
+    "icon": "greenbean_item",
+    "description": "一把把细长的四季豆。",
+    "energy": 8
+  },
+  "okra_seed": {
+    "name": "秋葵种子",
+    "kind": "seed",
+    "buy_price": 11,
+    "sell_price": 0,
+    "icon": "okra_packet",
+    "description": "夏季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "okra": {
+    "name": "秋葵",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "okra_item",
+    "description": "五角的秋葵，切开黏黏的。",
+    "energy": 8
+  },
+  "zucchini_seed": {
+    "name": "西葫芦种子",
+    "kind": "seed",
+    "buy_price": 10,
+    "sell_price": 0,
+    "icon": "zucchini_packet",
+    "description": "夏季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "zucchini": {
+    "name": "西葫芦",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "zucchini_item",
+    "description": "绿油油的西葫芦。",
+    "energy": 10
+  },
+  "peanut_seed": {
+    "name": "花生种子",
+    "kind": "seed",
+    "buy_price": 10,
+    "sell_price": 0,
+    "icon": "peanut_packet",
+    "description": "春、夏季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "peanut": {
+    "name": "花生",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "peanut_item",
+    "description": "埋在土里结果的花生。",
+    "energy": 12
+  },
+  "bellpepper_seed": {
+    "name": "彩椒种子",
+    "kind": "seed",
+    "buy_price": 13,
+    "sell_price": 0,
+    "icon": "bellpepper_packet",
+    "description": "夏季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "bellpepper": {
+    "name": "彩椒",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "bellpepper_item",
+    "description": "鲜亮的彩椒，不辣。",
+    "energy": 8
+  },
+  "wheat_seed": {
+    "name": "小麦种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "wheat_packet",
+    "description": "夏、秋季种子。每天浇水，7 天成熟。",
+    "energy": 0
+  },
+  "wheat": {
+    "name": "小麦",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "wheat_item",
+    "description": "金色的麦穗在风里沙沙响。",
+    "energy": 10
+  },
+  "basil_seed": {
+    "name": "罗勒种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "basil_packet",
+    "description": "夏季种子。每天浇水，3 天成熟，收获后每 2 天再结一次果。",
+    "energy": 0
+  },
+  "basil": {
+    "name": "罗勒",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "basil_item",
+    "description": "味道浓郁的香草。",
+    "energy": 4
+  },
+  "mint_seed": {
+    "name": "薄荷种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "mint_packet",
+    "description": "春、夏季种子。每天浇水，3 天成熟，收获后每 2 天再结一次果。",
+    "energy": 0
+  },
+  "mint": {
+    "name": "薄荷",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "mint_item",
+    "description": "凉丝丝的薄荷叶。",
+    "energy": 4
+  },
+  "blueberry_seed": {
+    "name": "蓝莓种子",
+    "kind": "seed",
+    "buy_price": 18,
+    "sell_price": 0,
+    "icon": "blueberry_packet",
+    "description": "夏季种子。每天浇水，7 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "blueberry": {
+    "name": "蓝莓",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "blueberry_item",
+    "description": "一小粒一小粒的蓝莓。",
+    "energy": 6
+  },
+  "raspberry_seed": {
+    "name": "覆盆子种子",
+    "kind": "seed",
+    "buy_price": 18,
+    "sell_price": 0,
+    "icon": "raspberry_packet",
+    "description": "夏季种子。每天浇水，7 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "raspberry": {
+    "name": "覆盆子",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "raspberry_item",
+    "description": "酸甜的覆盆子。",
+    "energy": 6
+  },
+  "cantaloupe_seed": {
+    "name": "哈密瓜种子",
+    "kind": "seed",
+    "buy_price": 20,
+    "sell_price": 0,
+    "icon": "cantaloupe_packet",
+    "description": "夏季种子。每天浇水，8 天成熟。",
+    "energy": 0
+  },
+  "cantaloupe": {
+    "name": "哈密瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "cantaloupe_item",
+    "description": "网纹的哈密瓜，香气扑鼻。",
+    "energy": 14
+  },
+  "honeydew_seed": {
+    "name": "蜜瓜种子",
+    "kind": "seed",
+    "buy_price": 18,
+    "sell_price": 0,
+    "icon": "honeydew_packet",
+    "description": "夏季种子。每天浇水，9 天成熟。",
+    "energy": 0
+  },
+  "honeydew": {
+    "name": "蜜瓜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "honeydew_item",
+    "description": "淡绿色的蜜瓜，甜得流汁。",
+    "energy": 12
+  },
+  "cauliflower_seed": {
+    "name": "花菜种子",
+    "kind": "seed",
+    "buy_price": 12,
+    "sell_price": 0,
+    "icon": "cauliflower_packet",
+    "description": "秋、春季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "cauliflower": {
+    "name": "花菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 32,
+    "icon": "cauliflower_item",
+    "description": "白白胖胖的花菜。",
+    "energy": 10
+  },
+  "broccoli_seed": {
+    "name": "西兰花种子",
+    "kind": "seed",
+    "buy_price": 12,
+    "sell_price": 0,
+    "icon": "broccoli_packet",
+    "description": "秋季种子。每天浇水，6 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "broccoli": {
+    "name": "西兰花",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "broccoli_item",
+    "description": "小树一样的西兰花。",
+    "energy": 10
+  },
+  "beet_seed": {
+    "name": "甜菜种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "beet_packet",
+    "description": "秋季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "beet": {
+    "name": "甜菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "beet_item",
+    "description": "紫红色的甜菜根。",
+    "energy": 10
+  },
+  "ginger_seed": {
+    "name": "生姜种子",
+    "kind": "seed",
+    "buy_price": 14,
+    "sell_price": 0,
+    "icon": "ginger_packet",
+    "description": "秋季种子。每天浇水，7 天成熟。",
+    "energy": 0
+  },
+  "ginger": {
+    "name": "生姜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "ginger_item",
+    "description": "辛辣暖身的老姜。",
+    "energy": 8
+  },
+  "garlic_seed": {
+    "name": "大蒜种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "garlic_packet",
+    "description": "秋、冬季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "garlic": {
+    "name": "大蒜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "garlic_item",
+    "description": "一头头紧实的大蒜。",
+    "energy": 8
+  },
+  "barley_seed": {
+    "name": "大麦种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "barley_packet",
+    "description": "夏、秋季种子。每天浇水，8 天成熟。",
+    "energy": 0
+  },
+  "barley": {
+    "name": "大麦",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "barley_item",
+    "description": "垂着长芒的大麦，可以酿啤酒。",
+    "energy": 12
+  },
+  "oats_seed": {
+    "name": "燕麦种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "oats_packet",
+    "description": "夏、秋季种子。每天浇水，6 天成熟。",
+    "energy": 0
+  },
+  "oats": {
+    "name": "燕麦",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "oats_item",
+    "description": "煮成早餐粥最合适。",
+    "energy": 6
+  },
+  "cranberry_seed": {
+    "name": "蔓越莓种子",
+    "kind": "seed",
+    "buy_price": 20,
+    "sell_price": 0,
+    "icon": "cranberry_packet",
+    "description": "秋季种子。每天浇水，7 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "cranberry": {
+    "name": "蔓越莓",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "cranberry_item",
+    "description": "酸酸的红莓。",
+    "energy": 6
+  },
+  "kohlrabi_seed": {
+    "name": "苤蓝种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "kohlrabi_packet",
+    "description": "秋、春季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "kohlrabi": {
+    "name": "苤蓝",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "kohlrabi_item",
+    "description": "圆溜溜的苤蓝。",
+    "energy": 10
+  },
+  "artichoke_seed": {
+    "name": "洋蓟种子",
+    "kind": "seed",
+    "buy_price": 16,
+    "sell_price": 0,
+    "icon": "artichoke_packet",
+    "description": "春、夏季种子。每天浇水，8 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "artichoke": {
+    "name": "洋蓟",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "artichoke_item",
+    "description": "层层叠叠的花苞。",
+    "energy": 8
+  },
+  "chard_seed": {
+    "name": "瑞士甜菜种子",
+    "kind": "seed",
+    "buy_price": 5,
+    "sell_price": 0,
+    "icon": "chard_packet",
+    "description": "春、夏季种子。每天浇水，3 天成熟。",
+    "energy": 0
+  },
+  "chard": {
+    "name": "瑞士甜菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 13,
+    "icon": "chard_item",
+    "description": "红色茎秆的甜菜叶。",
+    "energy": 6
+  },
+  "kale_seed": {
+    "name": "羽衣甘蓝种子",
+    "kind": "seed",
+    "buy_price": 10,
+    "sell_price": 0,
+    "icon": "kale_packet",
+    "description": "冬、春季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "kale": {
+    "name": "羽衣甘蓝",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "kale_item",
+    "description": "卷边的叶子，耐得住霜。",
+    "energy": 10
+  },
+  "snowpea_seed": {
+    "name": "雪豌豆种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "snowpea_packet",
+    "description": "冬季种子。每天浇水，5 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "snowpea": {
+    "name": "雪豌豆",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "snowpea_item",
+    "description": "冬天里的脆豆荚。",
+    "energy": 8
+  },
+  "blackradish_seed": {
+    "name": "黑萝卜种子",
+    "kind": "seed",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "blackradish_packet",
+    "description": "冬、秋季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "blackradish": {
+    "name": "黑萝卜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "blackradish_item",
+    "description": "黑皮白心的萝卜，辣得过瘾。",
+    "energy": 12
+  },
+  "turnip_purple_seed": {
+    "name": "紫芜菁种子",
+    "kind": "seed",
+    "buy_price": 9,
+    "sell_price": 0,
+    "icon": "turnip_purple_packet",
+    "description": "冬、春季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "turnip_purple": {
+    "name": "紫芜菁",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "turnip_purple_item",
+    "description": "顶着紫色的芜菁。",
+    "energy": 10
+  },
+  "chicory_seed": {
+    "name": "菊苣种子",
+    "kind": "seed",
+    "buy_price": 10,
+    "sell_price": 0,
+    "icon": "chicory_packet",
+    "description": "冬、春季种子。每天浇水，5 天成熟。",
+    "energy": 0
+  },
+  "chicory": {
+    "name": "菊苣",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "chicory_item",
+    "description": "开着蓝花的菊苣。",
+    "energy": 6
+  },
+  "watercress_seed": {
+    "name": "豆瓣菜种子",
+    "kind": "seed",
+    "buy_price": 6,
+    "sell_price": 0,
+    "icon": "watercress_packet",
+    "description": "冬、春季种子。每天浇水，4 天成熟，收获后每 3 天再结一次果。",
+    "energy": 0
+  },
+  "watercress": {
+    "name": "豆瓣菜",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "watercress_item",
+    "description": "水边的豆瓣菜。",
+    "energy": 6
   },
   "wood": {
     "name": "木材",
@@ -37,7 +1139,8 @@
     "buy_price": 0,
     "sell_price": 0,
     "icon": "wood",
-    "description": "坚实的木料，可用于修桥和制作工具。"
+    "description": "坚实的木料，可用于修桥和制作工具。",
+    "energy": 0
   },
   "stone": {
     "name": "石料",
@@ -45,15 +1148,17 @@
     "buy_price": 0,
     "sell_price": 0,
     "icon": "stone",
-    "description": "从碎岩中采出的石料。"
+    "description": "从碎岩中采出的石料。",
+    "energy": 0
   },
   "berry": {
     "name": "野莓",
-    "kind": "material",
+    "kind": "forage",
     "buy_price": 0,
-    "sell_price": 0,
+    "sell_price": 12,
     "icon": "berry",
-    "description": "酸甜的野莓。两份能煮一碗恢复体力的粥。"
+    "description": "酸甜的野莓。可以直接吃，也能煮粥。",
+    "energy": 6
   },
   "fiber": {
     "name": "纤维",
@@ -61,6 +1166,5020 @@
     "buy_price": 0,
     "sell_price": 0,
     "icon": "fiber",
-    "description": "清除杂草收集的植物纤维。"
+    "description": "清除杂草收集的植物纤维。",
+    "energy": 0
+  },
+  "crucian": {
+    "name": "鲫鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "fish_crucian",
+    "description": "最常见的小鲫鱼，炖汤很鲜。（池塘、溪流、河道、湖泊 · 四）",
+    "energy": 8
+  },
+  "loach": {
+    "name": "泥鳅",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "fish_loach",
+    "description": "滑溜溜的，一不留神就钻走了。（池塘、溪流 · 春、夏、秋）",
+    "energy": 6
+  },
+  "shrimp": {
+    "name": "河虾",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "fish_shrimp",
+    "description": "透明的小河虾，煮熟后通红。（池塘、溪流、河道 · 春、夏、秋）",
+    "energy": 8
+  },
+  "crab": {
+    "name": "河蟹",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 42,
+    "icon": "fish_crab",
+    "description": "横着走路的河蟹，钳子很有力气。（溪流、河道、湖泊 · 夏、秋）",
+    "energy": 10
+  },
+  "pike": {
+    "name": "狗鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "fish_pike",
+    "description": "长嘴的猎手，藏在水草里。（河道、湖泊 · 春、夏、秋）",
+    "energy": 12
+  },
+  "bream": {
+    "name": "欧鳊",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 34,
+    "icon": "fish_bream",
+    "description": "银白扁平的欧鳊。（河道、湖泊 · 春、秋）",
+    "energy": 10
+  },
+  "roach": {
+    "name": "拟鲤",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "fish_roach",
+    "description": "银亮亮的小拟鲤，成群游过。（湖泊、河道 · 夏、秋）",
+    "energy": 10
+  },
+  "carp": {
+    "name": "鲤鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "fish_carp",
+    "description": "金铜色的大鲤鱼，是河里的老住户。（池塘、溪流、河道、湖泊 · 春、夏、秋）",
+    "energy": 14
+  },
+  "catfish": {
+    "name": "鲶鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "fish_catfish",
+    "description": "雨天夜里才会出来的鲶鱼，有长长的胡须。（河道、湖泊 · 春、夏）",
+    "energy": 14
+  },
+  "riverperch": {
+    "name": "河鲈",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 66,
+    "icon": "fish_riverperch",
+    "description": "背鳍竖起来的河鲈，脾气不小。（池塘、河道、湖泊 · 夏、秋）",
+    "energy": 16
+  },
+  "eel": {
+    "name": "河鳗",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 68,
+    "icon": "fish_eel",
+    "description": "滑溜溜的河鳗，雨夜才出来。（池塘、溪流、河道 · 夏、秋）",
+    "energy": 14
+  },
+  "perch": {
+    "name": "鲈鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 78,
+    "icon": "fish_perch",
+    "description": "肉质细嫩的鲈鱼，秋天最肥。（河道、湖泊 · 秋、冬）",
+    "energy": 16
+  },
+  "zander": {
+    "name": "梭鲈",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "fish_zander",
+    "description": "清晨出没的梭鲈，肉质细嫩。（河道、湖泊 · 春、秋）",
+    "energy": 18
+  },
+  "whitefish": {
+    "name": "白鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "fish_whitefish",
+    "description": "清晨才出没的白鱼，身子像银条。（湖泊 · 春、夏、秋）",
+    "energy": 12
+  },
+  "tench": {
+    "name": "丁鲷",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 62,
+    "icon": "fish_tench",
+    "description": "绿褐色的丁鲷，爱待在泥底。（湖泊 · 春、夏）",
+    "energy": 14
+  },
+  "trout": {
+    "name": "虹鳟",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 88,
+    "icon": "fish_trout",
+    "description": "身侧有一道彩虹色，只爱凉水。（溪流、湖泊 · 冬、春）",
+    "energy": 18
+  },
+  "icesmelt": {
+    "name": "冰银鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "fish_icesmelt",
+    "description": "冬天才有的透明小鱼。（湖泊、河道 · 冬）",
+    "energy": 20
+  },
+  "lanternfish": {
+    "name": "灯鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 160,
+    "icon": "fish_lanternfish",
+    "description": "夜里肚子会发光的鱼，像一盏小灯。（湖泊 · 夏、秋）",
+    "energy": 24
+  },
+  "mooncarp": {
+    "name": "月光鲤",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 260,
+    "icon": "fish_mooncarp",
+    "description": "雨夜才见得到的传说：银白色的鲤鱼。（湖泊 · 四）",
+    "energy": 30
+  },
+  "koi": {
+    "name": "金锦鲤",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 420,
+    "icon": "fish_koi",
+    "description": "据说钓到它的人一整年都走运。（湖泊 · 春）",
+    "energy": 40
+  },
+  "minnow": {
+    "name": "小米诺鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 8,
+    "icon": "fish_minnow",
+    "description": "一指长的小鱼，爱成群结队。（池塘、溪流、河道、湖泊 · 四）",
+    "energy": 4
+  },
+  "bitterling": {
+    "name": "彩石鲋",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "fish_bitterling",
+    "description": "身上彩色的小鱼。（池塘、溪流 · 春、夏）",
+    "energy": 5
+  },
+  "chub": {
+    "name": "圆腹雅罗鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 64,
+    "icon": "fish_chub",
+    "description": "深色的大块头，爱躲在桥墩下。（河道、湖泊 · 春、夏、秋）",
+    "energy": 14
+  },
+  "dace": {
+    "name": "鲦鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "fish_dace",
+    "description": "溪里的小鲦鱼，闪着银光。（溪流 · 春、夏）",
+    "energy": 8
+  },
+  "stripedbass": {
+    "name": "条纹鲈",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 72,
+    "icon": "fish_stripedbass",
+    "description": "身侧有深色条纹的凶猛小鱼。（河道、湖泊 · 夏、秋）",
+    "energy": 14
+  },
+  "frog": {
+    "name": "青蛙",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "fish_frog",
+    "description": "雨夜里呱呱叫的青蛙。（池塘、溪流 · 春、夏）",
+    "energy": 6
+  },
+  "snail": {
+    "name": "河螺",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "fish_snail",
+    "description": "吐过沙之后很入味。（池塘、溪流、河道 · 春、夏、秋）",
+    "energy": 4
+  },
+  "mussel": {
+    "name": "河蚌",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "fish_mussel",
+    "description": "说不定里面有颗小珍珠。（河道、湖泊 · 四）",
+    "energy": 8
+  },
+  "snapper": {
+    "name": "鳄龟",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 130,
+    "icon": "fish_snapper",
+    "description": "慢吞吞的老鳄龟，咬合力惊人。（河道、湖泊 · 夏、秋）",
+    "energy": 20
+  },
+  "sardine": {
+    "name": "沙丁鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "fish_sardine",
+    "description": "成群结队的小沙丁。（海边 · 四）",
+    "energy": 6
+  },
+  "anchovy": {
+    "name": "鳀鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "fish_anchovy",
+    "description": "银色的小鳀鱼。（海边 · 春、夏）",
+    "energy": 5
+  },
+  "herring": {
+    "name": "鲱鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "fish_herring",
+    "description": "秋冬的鲱鱼群。（海边 · 秋、冬）",
+    "energy": 8
+  },
+  "mackerel": {
+    "name": "青花鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "fish_mackerel",
+    "description": "背上有波浪纹。（海边 · 春、秋）",
+    "energy": 10
+  },
+  "haddock": {
+    "name": "黑线鳕",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 66,
+    "icon": "fish_haddock",
+    "description": "侧线旁有一块黑斑的鳕鱼。（海边 · 春、夏）",
+    "energy": 14
+  },
+  "pollock": {
+    "name": "青鳕",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 74,
+    "icon": "fish_pollock",
+    "description": "银灰色的青鳕，夜里成群。（海边 · 秋、冬）",
+    "energy": 14
+  },
+  "seabream": {
+    "name": "海鲷",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 88,
+    "icon": "fish_seabream",
+    "description": "扁圆的海鲷，银中带粉。（海边 · 春、夏）",
+    "energy": 16
+  },
+  "seabass": {
+    "name": "海鲈",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "fish_seabass",
+    "description": "肉质紧实的海鲈。（海边 · 春、夏、秋）",
+    "energy": 16
+  },
+  "redsnapper": {
+    "name": "红鲷",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "fish_redsnapper",
+    "description": "红彤彤的鲷鱼。（海边 · 夏、秋）",
+    "energy": 18
+  },
+  "flounder": {
+    "name": "比目鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "fish_flounder",
+    "description": "两只眼睛长在一边。（海边 · 冬、春）",
+    "energy": 14
+  },
+  "cod": {
+    "name": "鳕鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "fish_cod",
+    "description": "冬天最肥的鳕鱼。（海边 · 冬）",
+    "energy": 16
+  },
+  "salmon": {
+    "name": "三文鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "fish_salmon",
+    "description": "洄游的橙红色三文鱼。（海边、溪流 · 秋）",
+    "energy": 18
+  },
+  "tuna": {
+    "name": "金枪鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 220,
+    "icon": "fish_tuna",
+    "description": "深海来的大家伙。（海边 · 夏、秋）",
+    "energy": 28
+  },
+  "swordfish": {
+    "name": "剑鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 300,
+    "icon": "fish_swordfish",
+    "description": "长长的嘴像一把剑。（海边 · 夏）",
+    "energy": 32
+  },
+  "squid": {
+    "name": "鱿鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 54,
+    "icon": "fish_squid",
+    "description": "夜里趋光的鱿鱼。（海边 · 夏、秋）",
+    "energy": 10
+  },
+  "octopus": {
+    "name": "章鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "fish_octopus",
+    "description": "吸盘很有力的章鱼。（海边 · 夏、秋、春）",
+    "energy": 14
+  },
+  "cuttlefish": {
+    "name": "墨鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "fish_cuttlefish",
+    "description": "喷墨的墨鱼。（海边 · 春、夏）",
+    "energy": 12
+  },
+  "jellyfish": {
+    "name": "海蜇",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 40,
+    "icon": "fish_jellyfish",
+    "description": "半透明的海蜇。（海边 · 夏）",
+    "energy": 6
+  },
+  "lobster": {
+    "name": "龙虾",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 150,
+    "icon": "fish_lobster",
+    "description": "钳子很大的龙虾。（海边 · 夏、秋）",
+    "energy": 20
+  },
+  "seacrab": {
+    "name": "梭子蟹",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "fish_seacrab",
+    "description": "青灰色的梭子蟹。（海边 · 秋）",
+    "energy": 14
+  },
+  "oyster": {
+    "name": "生蚝",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 44,
+    "icon": "fish_oyster",
+    "description": "壳上长满藤壶的生蚝。（海边 · 冬、春）",
+    "energy": 8
+  },
+  "clam": {
+    "name": "蛤蜊",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "fish_clam",
+    "description": "吐过沙的蛤蜊。（海边 · 四）",
+    "energy": 6
+  },
+  "scallop": {
+    "name": "扇贝",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "fish_scallop",
+    "description": "扇形的贝壳。（海边 · 春、秋）",
+    "energy": 8
+  },
+  "abalone": {
+    "name": "鲍鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 180,
+    "icon": "fish_abalone",
+    "description": "珍贵的鲍鱼。（海边 · 冬）",
+    "energy": 22
+  },
+  "urchin": {
+    "name": "海胆",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 130,
+    "icon": "fish_urchin",
+    "description": "带刺的海胆，里面是橙黄的肉。（海边 · 春、夏）",
+    "energy": 14
+  },
+  "seahorse": {
+    "name": "海马",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 140,
+    "icon": "fish_seahorse",
+    "description": "小小的海马，竖着游。（海边 · 夏）",
+    "energy": 6
+  },
+  "pufferfish": {
+    "name": "河豚",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 125,
+    "icon": "fish_pufferfish",
+    "description": "鼓起肚子的河豚，千万别乱吃。（海边 · 春、夏）",
+    "energy": 10
+  },
+  "starfish": {
+    "name": "海星",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "fish_starfish",
+    "description": "趴在礁石上的海星。（海边 · 四）",
+    "energy": 4
+  },
+  "kelp": {
+    "name": "海带",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "fish_kelp",
+    "description": "钩上来一条海带。（海边 · 冬、春）",
+    "energy": 4
+  },
+  "mantaray": {
+    "name": "魔鬼鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 350,
+    "icon": "fish_mantaray",
+    "description": "像一张毯子在水里飘。（海边 · 夏）",
+    "energy": 20
+  },
+  "goldtrout": {
+    "name": "金鳟",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 140,
+    "icon": "fish_goldtrout",
+    "description": "溪流里的金色鳟鱼。（溪流、湖泊 · 秋、冬）",
+    "energy": 18
+  },
+  "cavefish": {
+    "name": "盲鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "fish_cavefish",
+    "description": "洞里的盲鱼，皮肤是粉白色。（洞窟 · 四）",
+    "energy": 8
+  },
+  "glowworm": {
+    "name": "发光鳗",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "fish_glowworm",
+    "description": "暗处会发荧光的鳗。（洞窟 · 四）",
+    "energy": 14
+  },
+  "crystalfish": {
+    "name": "水晶鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 280,
+    "icon": "fish_crystalfish",
+    "description": "身体像水晶一样透明。（洞窟 · 四）",
+    "energy": 24
+  },
+  "sturgeon": {
+    "name": "鲟鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 240,
+    "icon": "fish_sturgeon",
+    "description": "古老的大鲟鱼。（河道、湖泊 · 冬）",
+    "energy": 26
+  },
+  "stormfin": {
+    "name": "风暴鳍鱼",
+    "kind": "fish",
+    "buy_price": 0,
+    "sell_price": 380,
+    "icon": "fish_stormfin",
+    "description": "暴风雨夜才出现的传说。（湖泊 · 秋）",
+    "energy": 34
+  },
+  "ramps": {
+    "name": "野韭葱",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "forage_ramps",
+    "description": "春天林子里最早冒出来的野葱。",
+    "energy": 8
+  },
+  "nettle": {
+    "name": "荨麻",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "forage_nettle",
+    "description": "戴着手套才敢摘的荨麻。",
+    "energy": 6
+  },
+  "cattail_root": {
+    "name": "香蒲根",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 32,
+    "icon": "forage_cattail_root",
+    "description": "水边挖出来的香蒲根，煮着吃有淀粉的甜味。",
+    "energy": 10
+  },
+  "mushroom": {
+    "name": "香菇",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "forage_mushroom",
+    "description": "秋天林子里的野蘑菇。",
+    "energy": 8
+  },
+  "chestnut": {
+    "name": "板栗",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "forage_chestnut",
+    "description": "带刺的壳里藏着甜板栗。",
+    "energy": 10
+  },
+  "frozen_berry": {
+    "name": "冻果",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "forage_frozen_berry",
+    "description": "结了霜的野果，像一粒粒小冰。",
+    "energy": 8
+  },
+  "pinenut": {
+    "name": "松子",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "forage_pinenut",
+    "description": "松塔里掉出来的松子。",
+    "energy": 8
+  },
+  "seaweed": {
+    "name": "水草",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 3,
+    "icon": "forage_seaweed",
+    "description": "钩上来的一团水草。",
+    "energy": 2
+  },
+  "honey": {
+    "name": "蜂蜜",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 55,
+    "icon": "forage_honey",
+    "description": "野蜂酿的蜜，金灿灿的。",
+    "energy": 20
+  },
+  "feather": {
+    "name": "白羽",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "forage_feather",
+    "description": "一根轻轻的白鹭羽毛。",
+    "energy": 0
+  },
+  "lamp_note": {
+    "name": "灯信残页",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 40,
+    "icon": "forage_lamp_note",
+    "description": "河面上漂来的一页字条，字迹模糊。",
+    "energy": 0
+  },
+  "old_coin": {
+    "name": "旧铜币",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "forage_old_coin",
+    "description": "老渡口的铜币，边缘磨得发亮。",
+    "energy": 0
+  },
+  "candy_apple": {
+    "name": "糖苹果",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "forage_candy_apple",
+    "description": "节日摊位上的糖苹果，亮晶晶的。",
+    "energy": 12
+  },
+  "firefly": {
+    "name": "萤火罐",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "forage_firefly",
+    "description": "罐子里闪着微光的萤火虫。",
+    "energy": 0
+  },
+  "wildgarlic": {
+    "name": "野蒜",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "forage_wildgarlic",
+    "description": "春天田埂上的野蒜。",
+    "energy": 6
+  },
+  "fiddlehead": {
+    "name": "蕨芽",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "forage_fiddlehead",
+    "description": "卷成小圈的蕨芽。",
+    "energy": 6
+  },
+  "dandelion": {
+    "name": "蒲公英",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 12,
+    "icon": "forage_dandelion",
+    "description": "吹一口气就散了。",
+    "energy": 4
+  },
+  "lilybulb": {
+    "name": "百合",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "forage_lilybulb",
+    "description": "雪白的百合球茎。",
+    "energy": 8
+  },
+  "water_celery": {
+    "name": "水芹",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "forage_water_celery",
+    "description": "溪边清香的水芹。",
+    "energy": 8
+  },
+  "waterlily_seed": {
+    "name": "睡莲籽",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "forage_waterlily_seed",
+    "description": "睡莲结的小籽。",
+    "energy": 6
+  },
+  "chanterelle": {
+    "name": "鸡油菌",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 42,
+    "icon": "forage_chanterelle",
+    "description": "金黄的鸡油菌。",
+    "energy": 8
+  },
+  "morel": {
+    "name": "羊肚菌",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "forage_morel",
+    "description": "蜂窝状的羊肚菌，很珍贵。",
+    "energy": 8
+  },
+  "truffle": {
+    "name": "松露",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "forage_truffle",
+    "description": "猪拱出来的黑松露。",
+    "energy": 10
+  },
+  "oyster_mushroom": {
+    "name": "平菇",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "forage_oyster_mushroom",
+    "description": "雨后长在朽木上的平菇。",
+    "energy": 6
+  },
+  "hawthorn": {
+    "name": "山楂",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "forage_hawthorn",
+    "description": "酸酸的山楂。",
+    "energy": 6
+  },
+  "crab_apple": {
+    "name": "野苹果",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "forage_crab_apple",
+    "description": "酸涩的小野苹果，适合做酱。",
+    "energy": 10
+  },
+  "walnut": {
+    "name": "核桃",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 32,
+    "icon": "forage_walnut",
+    "description": "硬壳的核桃。",
+    "energy": 10
+  },
+  "acorn": {
+    "name": "橡子",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 6,
+    "icon": "forage_acorn",
+    "description": "橡树掉下来的小橡子。",
+    "energy": 2
+  },
+  "snowdrop": {
+    "name": "雪花莲",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 160,
+    "icon": "forage_snowdrop",
+    "description": "冬天最早探出雪面的小白花。",
+    "energy": 4
+  },
+  "pearl": {
+    "name": "珍珠",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 190,
+    "icon": "forage_pearl",
+    "description": "河蚌里偶尔会有的珍珠。",
+    "energy": 0
+  },
+  "seashell": {
+    "name": "贝壳",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "forage_seashell",
+    "description": "沙滩上捡到的贝壳。",
+    "energy": 0
+  },
+  "conch": {
+    "name": "海螺",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "forage_conch",
+    "description": "耳朵贴上去能听见海。",
+    "energy": 0
+  },
+  "coral": {
+    "name": "珊瑚",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "forage_coral",
+    "description": "红色的珊瑚枝。",
+    "energy": 0
+  },
+  "driftwood": {
+    "name": "浮木",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 8,
+    "icon": "forage_driftwood",
+    "description": "被海水冲上岸的浮木。",
+    "energy": 0
+  },
+  "sandrose": {
+    "name": "沙漠玫瑰",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "forage_sandrose",
+    "description": "石膏结晶成的玫瑰形状。",
+    "energy": 0
+  },
+  "hazelnut": {
+    "name": "榛子",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "forage_hazelnut",
+    "description": "圆滚滚的榛子，壳很硬。",
+    "energy": 10
+  },
+  "blackberry": {
+    "name": "黑莓",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 20,
+    "icon": "forage_blackberry",
+    "description": "路边灌木上的黑莓。",
+    "energy": 6
+  },
+  "porcini": {
+    "name": "牛肝菌",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "forage_porcini",
+    "description": "又厚又香的牛肝菌。",
+    "energy": 8
+  },
+  "holly_berry": {
+    "name": "冬青果",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "forage_holly_berry",
+    "description": "冬青枝上的红果子，节日装饰。",
+    "energy": 4
+  },
+  "elderflower": {
+    "name": "接骨木花",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 26,
+    "icon": "forage_elderflower",
+    "description": "一簇簇奶白色的小花，煮糖浆很香。",
+    "energy": 4
+  },
+  "primrose": {
+    "name": "樱草",
+    "kind": "forage",
+    "buy_price": 0,
+    "sell_price": 16,
+    "icon": "forage_primrose",
+    "description": "春天草地上最早开的小黄花。",
+    "energy": 2
+  },
+  "coal": {
+    "name": "煤",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 18,
+    "icon": "mineral_coal",
+    "description": "黑亮的煤块，炉子的好燃料。",
+    "energy": 0
+  },
+  "copper_ore": {
+    "name": "铜矿",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 24,
+    "icon": "mineral_copper_ore",
+    "description": "带着绿锈的铜矿石。",
+    "energy": 0
+  },
+  "iron_ore": {
+    "name": "铁矿",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "mineral_iron_ore",
+    "description": "沉甸甸的铁矿石。",
+    "energy": 0
+  },
+  "silver_ore": {
+    "name": "银矿",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "mineral_silver_ore",
+    "description": "闪着冷光的银矿石。",
+    "energy": 0
+  },
+  "gold_ore": {
+    "name": "金矿",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "mineral_gold_ore",
+    "description": "夹着金色纹路的金矿石。",
+    "energy": 0
+  },
+  "quartz": {
+    "name": "石英",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 40,
+    "icon": "mineral_quartz",
+    "description": "透明的石英晶体。",
+    "energy": 0
+  },
+  "amethyst": {
+    "name": "紫水晶",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "mineral_amethyst",
+    "description": "紫色的水晶簇。",
+    "energy": 0
+  },
+  "topaz": {
+    "name": "黄玉",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "mineral_topaz",
+    "description": "橙黄的黄玉。",
+    "energy": 0
+  },
+  "aquamarine": {
+    "name": "海蓝宝",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "mineral_aquamarine",
+    "description": "海水一样的蓝。",
+    "energy": 0
+  },
+  "jade": {
+    "name": "翡翠",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 150,
+    "icon": "mineral_jade",
+    "description": "温润的翡翠。",
+    "energy": 0
+  },
+  "emerald": {
+    "name": "祖母绿",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 220,
+    "icon": "mineral_emerald",
+    "description": "浓绿的祖母绿。",
+    "energy": 0
+  },
+  "ruby": {
+    "name": "红宝石",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 260,
+    "icon": "mineral_ruby",
+    "description": "血红的红宝石。",
+    "energy": 0
+  },
+  "sapphire": {
+    "name": "蓝宝石",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 260,
+    "icon": "mineral_sapphire",
+    "description": "深蓝的蓝宝石。",
+    "energy": 0
+  },
+  "diamond": {
+    "name": "钻石",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 420,
+    "icon": "mineral_diamond",
+    "description": "最璀璨的一颗。",
+    "energy": 0
+  },
+  "geode": {
+    "name": "晶洞",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "mineral_geode",
+    "description": "敲开能看见紫色的晶体。",
+    "energy": 0
+  },
+  "fossil": {
+    "name": "化石",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "mineral_fossil",
+    "description": "不知哪个年代的贝壳化石。",
+    "energy": 0
+  },
+  "clay": {
+    "name": "黏土",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 6,
+    "icon": "mineral_clay",
+    "description": "湿漉漉的红黏土。",
+    "energy": 0
+  },
+  "sand": {
+    "name": "沙子",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 4,
+    "icon": "mineral_sand",
+    "description": "细细的沙。",
+    "energy": 0
+  },
+  "copper_bar": {
+    "name": "铜锭",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "mineral_copper_bar",
+    "description": "炉里炼出的铜锭。",
+    "energy": 0
+  },
+  "iron_bar": {
+    "name": "铁锭",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 180,
+    "icon": "mineral_iron_bar",
+    "description": "沉甸甸的铁锭。",
+    "energy": 0
+  },
+  "silver_bar": {
+    "name": "银锭",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 350,
+    "icon": "mineral_silver_bar",
+    "description": "银光闪闪的银锭。",
+    "energy": 0
+  },
+  "gold_bar": {
+    "name": "金锭",
+    "kind": "mineral",
+    "buy_price": 0,
+    "sell_price": 600,
+    "icon": "mineral_gold_bar",
+    "description": "金灿灿的金锭。",
+    "energy": 0
+  },
+  "egg": {
+    "name": "鸡蛋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "goods_egg",
+    "description": "还带着一点温度的鸡蛋。",
+    "energy": 14
+  },
+  "large_egg": {
+    "name": "大鸡蛋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "goods_large_egg",
+    "description": "个头特别大的鸡蛋。",
+    "energy": 20
+  },
+  "brown_egg": {
+    "name": "土鸡蛋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 30,
+    "icon": "goods_brown_egg",
+    "description": "农家散养的土鸡蛋。",
+    "energy": 18
+  },
+  "duck_egg": {
+    "name": "鸭蛋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 42,
+    "icon": "goods_duck_egg",
+    "description": "青壳的鸭蛋。",
+    "energy": 18
+  },
+  "quail_egg": {
+    "name": "鹌鹑蛋",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 28,
+    "icon": "goods_quail_egg",
+    "description": "有斑点的小蛋。",
+    "energy": 8
+  },
+  "milk": {
+    "name": "牛奶",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 42,
+    "icon": "goods_milk",
+    "description": "新鲜的牛奶。",
+    "energy": 22
+  },
+  "large_milk": {
+    "name": "浓牛奶",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 66,
+    "icon": "goods_large_milk",
+    "description": "特别浓的牛奶。",
+    "energy": 30
+  },
+  "goat_milk": {
+    "name": "羊奶",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "goods_goat_milk",
+    "description": "清甜的羊奶。",
+    "energy": 24
+  },
+  "wool": {
+    "name": "羊毛",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 54,
+    "icon": "goods_wool",
+    "description": "软软的羊毛。",
+    "energy": 0
+  },
+  "rabbit_fur": {
+    "name": "兔毛",
+    "kind": "produce",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "goods_rabbit_fur",
+    "description": "细密的兔毛。",
+    "energy": 0
+  },
+  "cheese": {
+    "name": "奶酪",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "goods_cheese",
+    "description": "用牛奶压成的奶酪。",
+    "energy": 40
+  },
+  "goat_cheese": {
+    "name": "羊奶酪",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 150,
+    "icon": "goods_goat_cheese",
+    "description": "味道浓郁的羊奶酪。",
+    "energy": 44
+  },
+  "mayonnaise": {
+    "name": "蛋黄酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "goods_mayonnaise",
+    "description": "细腻的蛋黄酱。",
+    "energy": 20
+  },
+  "cloth": {
+    "name": "布料",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "goods_cloth",
+    "description": "用羊毛织出的布。",
+    "energy": 0
+  },
+  "hay": {
+    "name": "干草",
+    "kind": "material",
+    "buy_price": 8,
+    "sell_price": 0,
+    "icon": "goods_hay",
+    "description": "喂牲口用的干草。",
+    "energy": 0
+  },
+  "bait": {
+    "name": "鱼饵",
+    "kind": "material",
+    "buy_price": 4,
+    "sell_price": 0,
+    "icon": "misc_bait",
+    "description": "钓鱼用的饵料，可以提高上钩速度。",
+    "energy": 0
+  },
+  "medicine": {
+    "name": "草药药剂",
+    "kind": "dish",
+    "buy_price": 60,
+    "sell_price": 12,
+    "icon": "misc_medicine",
+    "description": "苦苦的草药汤剂，恢复大量体力。",
+    "energy": 60
+  },
+  "bandage": {
+    "name": "纱布",
+    "kind": "material",
+    "buy_price": 15,
+    "sell_price": 0,
+    "icon": "misc_bandage",
+    "description": "干净的纱布。",
+    "energy": 0
+  },
+  "berry_oatmeal": {
+    "name": "莓果燕麦粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 46,
+    "icon": "dish_berry_oatmeal",
+    "description": "温热的燕麦粥，上面盖满莓果。 恢复 30 体力。",
+    "energy": 30
+  },
+  "turnip_soup": {
+    "name": "萝卜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 40,
+    "icon": "dish_turnip_soup",
+    "description": "奶白色的萝卜浓汤。 恢复 35 体力。",
+    "energy": 35
+  },
+  "honey_carrots": {
+    "name": "蜂蜜烤胡萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 56,
+    "icon": "dish_honey_carrots",
+    "description": "淋了蜂蜜烤得焦香。 恢复 38 体力。",
+    "energy": 38
+  },
+  "cucumber_salad": {
+    "name": "黄瓜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 42,
+    "icon": "dish_cucumber_salad",
+    "description": "拌了酸奶与莳萝的清爽沙拉。 恢复 40 体力。",
+    "energy": 40
+  },
+  "tomato_soup": {
+    "name": "番茄浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_tomato_soup",
+    "description": "红彤彤的浓汤，配烤面包最好。 恢复 45 体力。",
+    "energy": 45
+  },
+  "grilled_corn": {
+    "name": "烤玉米",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 54,
+    "icon": "dish_grilled_corn",
+    "description": "刷了黄油烤出的玉米。 恢复 40 体力。",
+    "energy": 40
+  },
+  "butternut_soup": {
+    "name": "奶油南瓜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_butternut_soup",
+    "description": "丝滑香甜，很顶饿。 恢复 70 体力。",
+    "energy": 70
+  },
+  "baked_sweetpotato": {
+    "name": "烤红薯",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "dish_baked_sweetpotato",
+    "description": "掰开冒着热气。 恢复 50 体力。",
+    "energy": 50
+  },
+  "stuffed_eggplant": {
+    "name": "香煎茄子",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 86,
+    "icon": "dish_stuffed_eggplant",
+    "description": "辣椒与茄子一起煎。 恢复 60 体力。",
+    "energy": 60
+  },
+  "strawberry_shortcake": {
+    "name": "草莓酥饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_strawberry_shortcake",
+    "description": "酥脆的饼夹着满满的草莓。 恢复 55 体力。",
+    "energy": 55
+  },
+  "fried_crucian": {
+    "name": "香煎鲫鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "dish_fried_crucian",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 60 体力。",
+    "energy": 60
+  },
+  "wine_carp": {
+    "name": "红酒炖鲤鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 150,
+    "icon": "dish_wine_carp",
+    "description": "用葡萄炖出来的红酒味。 恢复 90 体力。",
+    "energy": 90
+  },
+  "perch_chowder": {
+    "name": "鲈鱼杂烩浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 160,
+    "icon": "dish_perch_chowder",
+    "description": "奶味浓郁的鱼汤。 恢复 85 体力。",
+    "energy": 85
+  },
+  "shrimp_boil": {
+    "name": "水煮河虾",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 72,
+    "icon": "dish_shrimp_boil",
+    "description": "撒了香料煮得红亮。 恢复 55 体力。",
+    "energy": 55
+  },
+  "mushroom_soup": {
+    "name": "蘑菇浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "dish_mushroom_soup",
+    "description": "森林里的鲜味。 恢复 50 体力。",
+    "energy": 50
+  },
+  "roast_chestnuts": {
+    "name": "烤栗子",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_roast_chestnuts",
+    "description": "冬天街角的香味。 恢复 65 体力。",
+    "energy": 65
+  },
+  "grape_juice": {
+    "name": "葡萄汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 88,
+    "icon": "dish_grape_juice",
+    "description": "冰凉的紫色果汁。 恢复 45 体力。",
+    "energy": 45
+  },
+  "buckwheat_pancakes": {
+    "name": "荞麦煎饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 66,
+    "icon": "dish_buckwheat_pancakes",
+    "description": "配枫糖的荞麦煎饼。 恢复 55 体力。",
+    "energy": 55
+  },
+  "parsnip_mash": {
+    "name": "欧防风泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_parsnip_mash",
+    "description": "奶香的根菜泥。 恢复 60 体力。",
+    "energy": 60
+  },
+  "cattail_stew": {
+    "name": "香蒲根炖菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "dish_cattail_stew",
+    "description": "炖得粉粉的水边根茎。 恢复 55 体力。",
+    "energy": 55
+  },
+  "honey_tea": {
+    "name": "蜂蜜茶",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_honey_tea",
+    "description": "甜甜的暖茶。 恢复 50 体力。",
+    "energy": 50
+  },
+  "apple_pie": {
+    "name": "野苹果派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 130,
+    "icon": "dish_apple_pie",
+    "description": "酥皮下是焦糖味的苹果。 恢复 70 体力。",
+    "energy": 70
+  },
+  "pan_fried_pea": {
+    "name": "香煎豌豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_pan_fried_pea",
+    "description": "下饭的家常煎菜。 恢复 63 体力。",
+    "energy": 63
+  },
+  "sauce_pea": {
+    "name": "豌豆酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "dish_sauce_pea",
+    "description": "熬成酱，抹面包很香。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pickle_pea": {
+    "name": "腌豌豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 55,
+    "icon": "dish_pickle_pea",
+    "description": "腌了一夜，酸脆爽口。 恢复 61 体力。",
+    "energy": 61
+  },
+  "garlic_saute_spinach": {
+    "name": "蒜香煎菠菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_garlic_saute_spinach",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 74 体力。",
+    "energy": 74
+  },
+  "soup_spinach": {
+    "name": "菠菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 61,
+    "icon": "dish_soup_spinach",
+    "description": "绵密顺滑的一碗浓汤。 恢复 76 体力。",
+    "energy": 76
+  },
+  "salad_spinach": {
+    "name": "菠菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_salad_spinach",
+    "description": "淋上橄榄油和柠檬汁。 恢复 68 体力。",
+    "energy": 68
+  },
+  "stew_potato": {
+    "name": "炖土豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 135,
+    "icon": "dish_stew_potato",
+    "description": "炖到软烂入味。 恢复 107 体力。",
+    "energy": 107
+  },
+  "roast_potato": {
+    "name": "烤土豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 129,
+    "icon": "dish_roast_potato",
+    "description": "外焦里嫩，带着炭火气。 恢复 104 体力。",
+    "energy": 104
+  },
+  "mash_potato": {
+    "name": "土豆泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 117,
+    "icon": "dish_mash_potato",
+    "description": "细细压成泥，加了黄油。 恢复 97 体力。",
+    "energy": 97
+  },
+  "juice_strawberry": {
+    "name": "草莓汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_juice_strawberry",
+    "description": "冰凉清甜的果汁。 恢复 64 体力。",
+    "energy": 64
+  },
+  "jam_strawberry": {
+    "name": "草莓果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 115,
+    "icon": "dish_jam_strawberry",
+    "description": "熬得浓稠的果酱。 恢复 75 体力。",
+    "energy": 75
+  },
+  "pie_strawberry": {
+    "name": "草莓派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 124,
+    "icon": "dish_pie_strawberry",
+    "description": "酥皮包着满满的果肉。 恢复 79 体力。",
+    "energy": 79
+  },
+  "garlic_saute_rhubarb": {
+    "name": "蒜香煎大黄",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_garlic_saute_rhubarb",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 64 体力。",
+    "energy": 64
+  },
+  "soup_rhubarb": {
+    "name": "大黄浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_soup_rhubarb",
+    "description": "绵密顺滑的一碗浓汤。 恢复 66 体力。",
+    "energy": 66
+  },
+  "salad_rhubarb": {
+    "name": "大黄沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 68,
+    "icon": "dish_salad_rhubarb",
+    "description": "淋上橄榄油和柠檬汁。 恢复 60 体力。",
+    "energy": 60
+  },
+  "juice_tomato": {
+    "name": "番茄汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_juice_tomato",
+    "description": "冰凉清甜的果汁。 恢复 75 体力。",
+    "energy": 75
+  },
+  "jam_tomato": {
+    "name": "番茄果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_jam_tomato",
+    "description": "熬得浓稠的果酱。 恢复 88 体力。",
+    "energy": 88
+  },
+  "pie_tomato": {
+    "name": "番茄派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 113,
+    "icon": "dish_pie_tomato",
+    "description": "酥皮包着满满的果肉。 恢复 93 体力。",
+    "energy": 93
+  },
+  "scone_corn": {
+    "name": "玉米烤饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_scone_corn",
+    "description": "烤得金黄的饼。 恢复 100 体力。",
+    "energy": 100
+  },
+  "porridge_corn": {
+    "name": "玉米粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_porridge_corn",
+    "description": "熬得软糯的热粥。 恢复 96 体力。",
+    "energy": 96
+  },
+  "juice_watermelon": {
+    "name": "西瓜汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_juice_watermelon",
+    "description": "冰凉清甜的果汁。 恢复 77 体力。",
+    "energy": 77
+  },
+  "jam_watermelon": {
+    "name": "西瓜果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 183,
+    "icon": "dish_jam_watermelon",
+    "description": "熬得浓稠的果酱。 恢复 89 体力。",
+    "energy": 89
+  },
+  "pie_watermelon": {
+    "name": "西瓜派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 198,
+    "icon": "dish_pie_watermelon",
+    "description": "酥皮包着满满的果肉。 恢复 93 体力。",
+    "energy": 93
+  },
+  "pan_fried_cucumber": {
+    "name": "香煎黄瓜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 67,
+    "icon": "dish_pan_fried_cucumber",
+    "description": "下饭的家常煎菜。 恢复 64 体力。",
+    "energy": 64
+  },
+  "sauce_cucumber": {
+    "name": "黄瓜酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "dish_sauce_cucumber",
+    "description": "熬成酱，抹面包很香。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pickle_cucumber": {
+    "name": "腌黄瓜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 63,
+    "icon": "dish_pickle_cucumber",
+    "description": "腌了一夜，酸脆爽口。 恢复 61 体力。",
+    "energy": 61
+  },
+  "pan_fried_eggplant": {
+    "name": "香煎茄子",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_pan_fried_eggplant",
+    "description": "下饭的家常煎菜。 恢复 75 体力。",
+    "energy": 75
+  },
+  "sauce_eggplant": {
+    "name": "茄子酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_sauce_eggplant",
+    "description": "熬成酱，抹面包很香。 恢复 86 体力。",
+    "energy": 86
+  },
+  "pickle_eggplant": {
+    "name": "腌茄子",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_pickle_eggplant",
+    "description": "腌了一夜，酸脆爽口。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_chili": {
+    "name": "香煎辣椒",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_pan_fried_chili",
+    "description": "下饭的家常煎菜。 恢复 53 体力。",
+    "energy": 53
+  },
+  "sauce_chili": {
+    "name": "辣椒酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_sauce_chili",
+    "description": "熬成酱，抹面包很香。 恢复 60 体力。",
+    "energy": 60
+  },
+  "pickle_chili": {
+    "name": "腌辣椒",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_pickle_chili",
+    "description": "腌了一夜，酸脆爽口。 恢复 52 体力。",
+    "energy": 52
+  },
+  "pan_fried_sunflower": {
+    "name": "香煎向日葵",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_pan_fried_sunflower",
+    "description": "下饭的家常煎菜。 恢复 51 体力。",
+    "energy": 51
+  },
+  "sauce_sunflower": {
+    "name": "向日葵酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_sauce_sunflower",
+    "description": "熬成酱，抹面包很香。 恢复 56 体力。",
+    "energy": 56
+  },
+  "pickle_sunflower": {
+    "name": "腌向日葵",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_pickle_sunflower",
+    "description": "腌了一夜，酸脆爽口。 恢复 50 体力。",
+    "energy": 50
+  },
+  "juice_pumpkin": {
+    "name": "南瓜汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 168,
+    "icon": "dish_juice_pumpkin",
+    "description": "冰凉清甜的果汁。 恢复 84 体力。",
+    "energy": 84
+  },
+  "jam_pumpkin": {
+    "name": "南瓜果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 210,
+    "icon": "dish_jam_pumpkin",
+    "description": "熬得浓稠的果酱。 恢复 97 体力。",
+    "energy": 97
+  },
+  "pie_pumpkin": {
+    "name": "南瓜派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 226,
+    "icon": "dish_pie_pumpkin",
+    "description": "酥皮包着满满的果肉。 恢复 102 体力。",
+    "energy": 102
+  },
+  "stew_sweetpotato": {
+    "name": "炖红薯",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 144,
+    "icon": "dish_stew_sweetpotato",
+    "description": "炖到软烂入味。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_sweetpotato": {
+    "name": "烤红薯",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_roast_sweetpotato",
+    "description": "外焦里嫩，带着炭火气。 恢复 116 体力。",
+    "energy": 116
+  },
+  "mash_sweetpotato": {
+    "name": "红薯泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 126,
+    "icon": "dish_mash_sweetpotato",
+    "description": "细细压成泥，加了黄油。 恢复 107 体力。",
+    "energy": 107
+  },
+  "stew_parsnip": {
+    "name": "炖欧防风",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 164,
+    "icon": "dish_stew_parsnip",
+    "description": "炖到软烂入味。 恢复 108 体力。",
+    "energy": 108
+  },
+  "roast_parsnip": {
+    "name": "烤欧防风",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 157,
+    "icon": "dish_roast_parsnip",
+    "description": "外焦里嫩，带着炭火气。 恢复 105 体力。",
+    "energy": 105
+  },
+  "mash_parsnip": {
+    "name": "欧防风泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 142,
+    "icon": "dish_mash_parsnip",
+    "description": "细细压成泥，加了黄油。 恢复 97 体力。",
+    "energy": 97
+  },
+  "scone_buckwheat": {
+    "name": "荞麦烤饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 66,
+    "icon": "dish_scone_buckwheat",
+    "description": "烤得金黄的饼。 恢复 65 体力。",
+    "energy": 65
+  },
+  "porridge_buckwheat": {
+    "name": "荞麦粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 63,
+    "icon": "dish_porridge_buckwheat",
+    "description": "熬得软糯的热粥。 恢复 63 体力。",
+    "energy": 63
+  },
+  "stew_rutabaga": {
+    "name": "炖芜菁甘蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 111,
+    "icon": "dish_stew_rutabaga",
+    "description": "炖到软烂入味。 恢复 80 体力。",
+    "energy": 80
+  },
+  "roast_rutabaga": {
+    "name": "烤芜菁甘蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_roast_rutabaga",
+    "description": "外焦里嫩，带着炭火气。 恢复 78 体力。",
+    "energy": 78
+  },
+  "mash_rutabaga": {
+    "name": "芜菁甘蓝泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "dish_mash_rutabaga",
+    "description": "细细压成泥，加了黄油。 恢复 73 体力。",
+    "energy": 73
+  },
+  "juice_grape": {
+    "name": "葡萄汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 126,
+    "icon": "dish_juice_grape",
+    "description": "冰凉清甜的果汁。 恢复 76 体力。",
+    "energy": 76
+  },
+  "jam_grape": {
+    "name": "葡萄果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 157,
+    "icon": "dish_jam_grape",
+    "description": "熬得浓稠的果酱。 恢复 89 体力。",
+    "energy": 89
+  },
+  "pie_grape": {
+    "name": "葡萄派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 170,
+    "icon": "dish_pie_grape",
+    "description": "酥皮包着满满的果肉。 恢复 94 体力。",
+    "energy": 94
+  },
+  "garlic_saute_cabbage": {
+    "name": "蒜香煎卷心菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_garlic_saute_cabbage",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 86 体力。",
+    "energy": 86
+  },
+  "soup_cabbage": {
+    "name": "卷心菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 114,
+    "icon": "dish_soup_cabbage",
+    "description": "绵密顺滑的一碗浓汤。 恢复 89 体力。",
+    "energy": 89
+  },
+  "salad_cabbage": {
+    "name": "卷心菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 98,
+    "icon": "dish_salad_cabbage",
+    "description": "淋上橄榄油和柠檬汁。 恢复 80 体力。",
+    "energy": 80
+  },
+  "garlic_saute_brussels": {
+    "name": "蒜香煎抱子甘蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_garlic_saute_brussels",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 64 体力。",
+    "energy": 64
+  },
+  "soup_brussels": {
+    "name": "抱子甘蓝浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_soup_brussels",
+    "description": "绵密顺滑的一碗浓汤。 恢复 66 体力。",
+    "energy": 66
+  },
+  "salad_brussels": {
+    "name": "抱子甘蓝沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 68,
+    "icon": "dish_salad_brussels",
+    "description": "淋上橄榄油和柠檬汁。 恢复 60 体力。",
+    "energy": 60
+  },
+  "garlic_saute_scallion": {
+    "name": "蒜香煎小葱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_garlic_saute_scallion",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 64 体力。",
+    "energy": 64
+  },
+  "soup_scallion": {
+    "name": "小葱浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 74,
+    "icon": "dish_soup_scallion",
+    "description": "绵密顺滑的一碗浓汤。 恢复 66 体力。",
+    "energy": 66
+  },
+  "salad_scallion": {
+    "name": "小葱沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 64,
+    "icon": "dish_salad_scallion",
+    "description": "淋上橄榄油和柠檬汁。 恢复 59 体力。",
+    "energy": 59
+  },
+  "stew_winterradish": {
+    "name": "炖冬萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 125,
+    "icon": "dish_stew_winterradish",
+    "description": "炖到软烂入味。 恢复 95 体力。",
+    "energy": 95
+  },
+  "roast_winterradish": {
+    "name": "烤冬萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_roast_winterradish",
+    "description": "外焦里嫩，带着炭火气。 恢复 92 体力。",
+    "energy": 92
+  },
+  "mash_winterradish": {
+    "name": "冬萝卜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_mash_winterradish",
+    "description": "细细压成泥，加了黄油。 恢复 86 体力。",
+    "energy": 86
+  },
+  "garlic_saute_rosemary": {
+    "name": "蒜香煎迷迭香",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_garlic_saute_rosemary",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 41 体力。",
+    "energy": 41
+  },
+  "soup_rosemary": {
+    "name": "迷迭香浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_soup_rosemary",
+    "description": "绵密顺滑的一碗浓汤。 恢复 42 体力。",
+    "energy": 42
+  },
+  "salad_rosemary": {
+    "name": "迷迭香沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_salad_rosemary",
+    "description": "淋上橄榄油和柠檬汁。 恢复 39 体力。",
+    "energy": 39
+  },
+  "garlic_saute_lettuce": {
+    "name": "蒜香煎生菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "dish_garlic_saute_lettuce",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 63 体力。",
+    "energy": 63
+  },
+  "soup_lettuce": {
+    "name": "生菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_soup_lettuce",
+    "description": "绵密顺滑的一碗浓汤。 恢复 65 体力。",
+    "energy": 65
+  },
+  "salad_lettuce": {
+    "name": "生菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 45,
+    "icon": "dish_salad_lettuce",
+    "description": "淋上橄榄油和柠檬汁。 恢复 59 体力。",
+    "energy": 59
+  },
+  "garlic_saute_celery": {
+    "name": "蒜香煎芹菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 67,
+    "icon": "dish_garlic_saute_celery",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 64 体力。",
+    "energy": 64
+  },
+  "soup_celery": {
+    "name": "芹菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "dish_soup_celery",
+    "description": "绵密顺滑的一碗浓汤。 恢复 66 体力。",
+    "energy": 66
+  },
+  "salad_celery": {
+    "name": "芹菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "dish_salad_celery",
+    "description": "淋上橄榄油和柠檬汁。 恢复 59 体力。",
+    "energy": 59
+  },
+  "garlic_saute_leek": {
+    "name": "蒜香煎韭葱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "dish_garlic_saute_leek",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 63 体力。",
+    "energy": 63
+  },
+  "soup_leek": {
+    "name": "韭葱浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_soup_leek",
+    "description": "绵密顺滑的一碗浓汤。 恢复 65 体力。",
+    "energy": 65
+  },
+  "salad_leek": {
+    "name": "韭葱沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 45,
+    "icon": "dish_salad_leek",
+    "description": "淋上橄榄油和柠檬汁。 恢复 59 体力。",
+    "energy": 59
+  },
+  "stew_onion": {
+    "name": "炖洋葱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_stew_onion",
+    "description": "炖到软烂入味。 恢复 83 体力。",
+    "energy": 83
+  },
+  "roast_onion": {
+    "name": "烤洋葱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_roast_onion",
+    "description": "外焦里嫩，带着炭火气。 恢复 80 体力。",
+    "energy": 80
+  },
+  "mash_onion": {
+    "name": "洋葱泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_mash_onion",
+    "description": "细细压成泥，加了黄油。 恢复 75 体力。",
+    "energy": 75
+  },
+  "pan_fried_asparagus": {
+    "name": "香煎芦笋",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 126,
+    "icon": "dish_pan_fried_asparagus",
+    "description": "下饭的家常煎菜。 恢复 66 体力。",
+    "energy": 66
+  },
+  "sauce_asparagus": {
+    "name": "芦笋酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 151,
+    "icon": "dish_sauce_asparagus",
+    "description": "熬成酱，抹面包很香。 恢复 74 体力。",
+    "energy": 74
+  },
+  "pickle_asparagus": {
+    "name": "腌芦笋",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 119,
+    "icon": "dish_pickle_asparagus",
+    "description": "腌了一夜，酸脆爽口。 恢复 64 体力。",
+    "energy": 64
+  },
+  "pan_fried_broadbean": {
+    "name": "香煎蚕豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 67,
+    "icon": "dish_pan_fried_broadbean",
+    "description": "下饭的家常煎菜。 恢复 74 体力。",
+    "energy": 74
+  },
+  "sauce_broadbean": {
+    "name": "蚕豆酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "dish_sauce_broadbean",
+    "description": "熬成酱，抹面包很香。 恢复 84 体力。",
+    "energy": 84
+  },
+  "pickle_broadbean": {
+    "name": "腌蚕豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 63,
+    "icon": "dish_pickle_broadbean",
+    "description": "腌了一夜，酸脆爽口。 恢复 71 体力。",
+    "energy": 71
+  },
+  "stew_radish": {
+    "name": "炖樱桃萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 53,
+    "icon": "dish_stew_radish",
+    "description": "炖到软烂入味。 恢复 57 体力。",
+    "energy": 57
+  },
+  "roast_radish": {
+    "name": "烤樱桃萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 50,
+    "icon": "dish_roast_radish",
+    "description": "外焦里嫩，带着炭火气。 恢复 55 体力。",
+    "energy": 55
+  },
+  "mash_radish": {
+    "name": "樱桃萝卜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 46,
+    "icon": "dish_mash_radish",
+    "description": "细细压成泥，加了黄油。 恢复 52 体力。",
+    "energy": 52
+  },
+  "juice_butternut": {
+    "name": "奶油南瓜汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 113,
+    "icon": "dish_juice_butternut",
+    "description": "冰凉清甜的果汁。 恢复 64 体力。",
+    "energy": 64
+  },
+  "jam_butternut": {
+    "name": "奶油南瓜果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 141,
+    "icon": "dish_jam_butternut",
+    "description": "熬得浓稠的果酱。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pie_butternut": {
+    "name": "奶油南瓜派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 153,
+    "icon": "dish_pie_butternut",
+    "description": "酥皮包着满满的果肉。 恢复 77 体力。",
+    "energy": 77
+  },
+  "pan_fried_jalapeno": {
+    "name": "香煎墨西哥辣椒",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_pan_fried_jalapeno",
+    "description": "下饭的家常煎菜。 恢复 64 体力。",
+    "energy": 64
+  },
+  "sauce_jalapeno": {
+    "name": "墨西哥辣椒酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_sauce_jalapeno",
+    "description": "熬成酱，抹面包很香。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pickle_jalapeno": {
+    "name": "腌墨西哥辣椒",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_pickle_jalapeno",
+    "description": "腌了一夜，酸脆爽口。 恢复 62 体力。",
+    "energy": 62
+  },
+  "pan_fried_greenbean": {
+    "name": "香煎四季豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 63,
+    "icon": "dish_pan_fried_greenbean",
+    "description": "下饭的家常煎菜。 恢复 63 体力。",
+    "energy": 63
+  },
+  "sauce_greenbean": {
+    "name": "四季豆酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_sauce_greenbean",
+    "description": "熬成酱，抹面包很香。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pickle_greenbean": {
+    "name": "腌四季豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 59,
+    "icon": "dish_pickle_greenbean",
+    "description": "腌了一夜，酸脆爽口。 恢复 61 体力。",
+    "energy": 61
+  },
+  "pan_fried_okra": {
+    "name": "香煎秋葵",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_pan_fried_okra",
+    "description": "下饭的家常煎菜。 恢复 65 体力。",
+    "energy": 65
+  },
+  "sauce_okra": {
+    "name": "秋葵酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_sauce_okra",
+    "description": "熬成酱，抹面包很香。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pickle_okra": {
+    "name": "腌秋葵",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_pickle_okra",
+    "description": "腌了一夜，酸脆爽口。 恢复 63 体力。",
+    "energy": 63
+  },
+  "pan_fried_zucchini": {
+    "name": "香煎西葫芦",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_pan_fried_zucchini",
+    "description": "下饭的家常煎菜。 恢复 75 体力。",
+    "energy": 75
+  },
+  "sauce_zucchini": {
+    "name": "西葫芦酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_sauce_zucchini",
+    "description": "熬成酱，抹面包很香。 恢复 85 体力。",
+    "energy": 85
+  },
+  "pickle_zucchini": {
+    "name": "腌西葫芦",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_pickle_zucchini",
+    "description": "腌了一夜，酸脆爽口。 恢复 72 体力。",
+    "energy": 72
+  },
+  "stew_peanut": {
+    "name": "炖花生",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 125,
+    "icon": "dish_stew_peanut",
+    "description": "炖到软烂入味。 恢复 95 体力。",
+    "energy": 95
+  },
+  "roast_peanut": {
+    "name": "烤花生",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_roast_peanut",
+    "description": "外焦里嫩，带着炭火气。 恢复 92 体力。",
+    "energy": 92
+  },
+  "mash_peanut": {
+    "name": "花生泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_mash_peanut",
+    "description": "细细压成泥，加了黄油。 恢复 86 体力。",
+    "energy": 86
+  },
+  "juice_bellpepper": {
+    "name": "彩椒汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 117,
+    "icon": "dish_juice_bellpepper",
+    "description": "冰凉清甜的果汁。 恢复 65 体力。",
+    "energy": 65
+  },
+  "jam_bellpepper": {
+    "name": "彩椒果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_jam_bellpepper",
+    "description": "熬得浓稠的果酱。 恢复 76 体力。",
+    "energy": 76
+  },
+  "pie_bellpepper": {
+    "name": "彩椒派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 158,
+    "icon": "dish_pie_bellpepper",
+    "description": "酥皮包着满满的果肉。 恢复 80 体力。",
+    "energy": 80
+  },
+  "scone_wheat": {
+    "name": "小麦烤饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 88,
+    "icon": "dish_scone_wheat",
+    "description": "烤得金黄的饼。 恢复 77 体力。",
+    "energy": 77
+  },
+  "porridge_wheat": {
+    "name": "小麦粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_porridge_wheat",
+    "description": "熬得软糯的热粥。 恢复 75 体力。",
+    "energy": 75
+  },
+  "garlic_saute_basil": {
+    "name": "蒜香煎罗勒",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_garlic_saute_basil",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 42 体力。",
+    "energy": 42
+  },
+  "soup_basil": {
+    "name": "罗勒浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 61,
+    "icon": "dish_soup_basil",
+    "description": "绵密顺滑的一碗浓汤。 恢复 43 体力。",
+    "energy": 43
+  },
+  "salad_basil": {
+    "name": "罗勒沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_salad_basil",
+    "description": "淋上橄榄油和柠檬汁。 恢复 40 体力。",
+    "energy": 40
+  },
+  "garlic_saute_mint": {
+    "name": "蒜香煎薄荷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_garlic_saute_mint",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 42 体力。",
+    "energy": 42
+  },
+  "soup_mint": {
+    "name": "薄荷浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 61,
+    "icon": "dish_soup_mint",
+    "description": "绵密顺滑的一碗浓汤。 恢复 43 体力。",
+    "energy": 43
+  },
+  "salad_mint": {
+    "name": "薄荷沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_salad_mint",
+    "description": "淋上橄榄油和柠檬汁。 恢复 40 体力。",
+    "energy": 40
+  },
+  "juice_blueberry": {
+    "name": "蓝莓汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_juice_blueberry",
+    "description": "冰凉清甜的果汁。 恢复 54 体力。",
+    "energy": 54
+  },
+  "jam_blueberry": {
+    "name": "蓝莓果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_jam_blueberry",
+    "description": "熬得浓稠的果酱。 恢复 62 体力。",
+    "energy": 62
+  },
+  "pie_blueberry": {
+    "name": "蓝莓派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 113,
+    "icon": "dish_pie_blueberry",
+    "description": "酥皮包着满满的果肉。 恢复 65 体力。",
+    "energy": 65
+  },
+  "juice_raspberry": {
+    "name": "覆盆子汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_juice_raspberry",
+    "description": "冰凉清甜的果汁。 恢复 54 体力。",
+    "energy": 54
+  },
+  "jam_raspberry": {
+    "name": "覆盆子果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 115,
+    "icon": "dish_jam_raspberry",
+    "description": "熬得浓稠的果酱。 恢复 62 体力。",
+    "energy": 62
+  },
+  "pie_raspberry": {
+    "name": "覆盆子派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 124,
+    "icon": "dish_pie_raspberry",
+    "description": "酥皮包着满满的果肉。 恢复 65 体力。",
+    "energy": 65
+  },
+  "juice_cantaloupe": {
+    "name": "哈密瓜汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 121,
+    "icon": "dish_juice_cantaloupe",
+    "description": "冰凉清甜的果汁。 恢复 65 体力。",
+    "energy": 65
+  },
+  "jam_cantaloupe": {
+    "name": "哈密瓜果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 152,
+    "icon": "dish_jam_cantaloupe",
+    "description": "熬得浓稠的果酱。 恢复 74 体力。",
+    "energy": 74
+  },
+  "pie_cantaloupe": {
+    "name": "哈密瓜派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 164,
+    "icon": "dish_pie_cantaloupe",
+    "description": "酥皮包着满满的果肉。 恢复 77 体力。",
+    "energy": 77
+  },
+  "juice_honeydew": {
+    "name": "蜜瓜汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_juice_honeydew",
+    "description": "冰凉清甜的果汁。 恢复 59 体力。",
+    "energy": 59
+  },
+  "jam_honeydew": {
+    "name": "蜜瓜果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 136,
+    "icon": "dish_jam_honeydew",
+    "description": "熬得浓稠的果酱。 恢复 66 体力。",
+    "energy": 66
+  },
+  "pie_honeydew": {
+    "name": "蜜瓜派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_pie_honeydew",
+    "description": "酥皮包着满满的果肉。 恢复 69 体力。",
+    "energy": 69
+  },
+  "garlic_saute_cauliflower": {
+    "name": "蒜香煎花菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 134,
+    "icon": "dish_garlic_saute_cauliflower",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 76 体力。",
+    "energy": 76
+  },
+  "soup_cauliflower": {
+    "name": "花菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 141,
+    "icon": "dish_soup_cauliflower",
+    "description": "绵密顺滑的一碗浓汤。 恢复 79 体力。",
+    "energy": 79
+  },
+  "salad_cauliflower": {
+    "name": "花菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_salad_cauliflower",
+    "description": "淋上橄榄油和柠檬汁。 恢复 71 体力。",
+    "energy": 71
+  },
+  "garlic_saute_broccoli": {
+    "name": "蒜香煎西兰花",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 117,
+    "icon": "dish_garlic_saute_broccoli",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 76 体力。",
+    "energy": 76
+  },
+  "soup_broccoli": {
+    "name": "西兰花浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 123,
+    "icon": "dish_soup_broccoli",
+    "description": "绵密顺滑的一碗浓汤。 恢复 78 体力。",
+    "energy": 78
+  },
+  "salad_broccoli": {
+    "name": "西兰花沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_salad_broccoli",
+    "description": "淋上橄榄油和柠檬汁。 恢复 71 体力。",
+    "energy": 71
+  },
+  "stew_beet": {
+    "name": "炖甜菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 115,
+    "icon": "dish_stew_beet",
+    "description": "炖到软烂入味。 恢复 83 体力。",
+    "energy": 83
+  },
+  "roast_beet": {
+    "name": "烤甜菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_roast_beet",
+    "description": "外焦里嫩，带着炭火气。 恢复 80 体力。",
+    "energy": 80
+  },
+  "mash_beet": {
+    "name": "甜菜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_mash_beet",
+    "description": "细细压成泥，加了黄油。 恢复 75 体力。",
+    "energy": 75
+  },
+  "stew_ginger": {
+    "name": "炖生姜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 86,
+    "icon": "dish_stew_ginger",
+    "description": "炖到软烂入味。 恢复 49 体力。",
+    "energy": 49
+  },
+  "roast_ginger": {
+    "name": "烤生姜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_roast_ginger",
+    "description": "外焦里嫩，带着炭火气。 恢复 48 体力。",
+    "energy": 48
+  },
+  "mash_ginger": {
+    "name": "生姜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_mash_ginger",
+    "description": "细细压成泥，加了黄油。 恢复 46 体力。",
+    "energy": 46
+  },
+  "stew_garlic": {
+    "name": "炖大蒜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 115,
+    "icon": "dish_stew_garlic",
+    "description": "炖到软烂入味。 恢复 71 体力。",
+    "energy": 71
+  },
+  "roast_garlic": {
+    "name": "烤大蒜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_roast_garlic",
+    "description": "外焦里嫩，带着炭火气。 恢复 69 体力。",
+    "energy": 69
+  },
+  "mash_garlic": {
+    "name": "大蒜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_mash_garlic",
+    "description": "细细压成泥，加了黄油。 恢复 65 体力。",
+    "energy": 65
+  },
+  "scone_barley": {
+    "name": "大麦烤饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 97,
+    "icon": "dish_scone_barley",
+    "description": "烤得金黄的饼。 恢复 88 体力。",
+    "energy": 88
+  },
+  "porridge_barley": {
+    "name": "大麦粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_porridge_barley",
+    "description": "熬得软糯的热粥。 恢复 85 体力。",
+    "energy": 85
+  },
+  "scone_oats": {
+    "name": "燕麦烤饼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 88,
+    "icon": "dish_scone_oats",
+    "description": "烤得金黄的饼。 恢复 55 体力。",
+    "energy": 55
+  },
+  "porridge_oats": {
+    "name": "燕麦粥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_porridge_oats",
+    "description": "熬得软糯的热粥。 恢复 54 体力。",
+    "energy": 54
+  },
+  "juice_cranberry": {
+    "name": "蔓越莓汁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_juice_cranberry",
+    "description": "冰凉清甜的果汁。 恢复 55 体力。",
+    "energy": 55
+  },
+  "jam_cranberry": {
+    "name": "蔓越莓果酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 136,
+    "icon": "dish_jam_cranberry",
+    "description": "熬得浓稠的果酱。 恢复 62 体力。",
+    "energy": 62
+  },
+  "pie_cranberry": {
+    "name": "蔓越莓派",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_pie_cranberry",
+    "description": "酥皮包着满满的果肉。 恢复 66 体力。",
+    "energy": 66
+  },
+  "stew_kohlrabi": {
+    "name": "炖苤蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_stew_kohlrabi",
+    "description": "炖到软烂入味。 恢复 83 体力。",
+    "energy": 83
+  },
+  "roast_kohlrabi": {
+    "name": "烤苤蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_roast_kohlrabi",
+    "description": "外焦里嫩，带着炭火气。 恢复 80 体力。",
+    "energy": 80
+  },
+  "mash_kohlrabi": {
+    "name": "苤蓝泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_mash_kohlrabi",
+    "description": "细细压成泥，加了黄油。 恢复 75 体力。",
+    "energy": 75
+  },
+  "garlic_saute_artichoke": {
+    "name": "蒜香煎洋蓟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_garlic_saute_artichoke",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 46 体力。",
+    "energy": 46
+  },
+  "soup_artichoke": {
+    "name": "洋蓟浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_soup_artichoke",
+    "description": "绵密顺滑的一碗浓汤。 恢复 47 体力。",
+    "energy": 47
+  },
+  "salad_artichoke": {
+    "name": "洋蓟沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_salad_artichoke",
+    "description": "淋上橄榄油和柠檬汁。 恢复 44 体力。",
+    "energy": 44
+  },
+  "garlic_saute_chard": {
+    "name": "蒜香煎瑞士甜菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 54,
+    "icon": "dish_garlic_saute_chard",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 53 体力。",
+    "energy": 53
+  },
+  "soup_chard": {
+    "name": "瑞士甜菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 57,
+    "icon": "dish_soup_chard",
+    "description": "绵密顺滑的一碗浓汤。 恢复 54 体力。",
+    "energy": 54
+  },
+  "salad_chard": {
+    "name": "瑞士甜菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 49,
+    "icon": "dish_salad_chard",
+    "description": "淋上橄榄油和柠檬汁。 恢复 50 体力。",
+    "energy": 50
+  },
+  "garlic_saute_kale": {
+    "name": "蒜香煎羽衣甘蓝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_garlic_saute_kale",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 75 体力。",
+    "energy": 75
+  },
+  "soup_kale": {
+    "name": "羽衣甘蓝浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_soup_kale",
+    "description": "绵密顺滑的一碗浓汤。 恢复 78 体力。",
+    "energy": 78
+  },
+  "salad_kale": {
+    "name": "羽衣甘蓝沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_salad_kale",
+    "description": "淋上橄榄油和柠檬汁。 恢复 70 体力。",
+    "energy": 70
+  },
+  "pan_fried_snowpea": {
+    "name": "香煎雪豌豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 84,
+    "icon": "dish_pan_fried_snowpea",
+    "description": "下饭的家常煎菜。 恢复 64 体力。",
+    "energy": 64
+  },
+  "sauce_snowpea": {
+    "name": "雪豌豆酱",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_sauce_snowpea",
+    "description": "熬成酱，抹面包很香。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pickle_snowpea": {
+    "name": "腌雪豌豆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_pickle_snowpea",
+    "description": "腌了一夜，酸脆爽口。 恢复 62 体力。",
+    "energy": 62
+  },
+  "stew_blackradish": {
+    "name": "炖黑萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_stew_blackradish",
+    "description": "炖到软烂入味。 恢复 95 体力。",
+    "energy": 95
+  },
+  "roast_blackradish": {
+    "name": "烤黑萝卜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_roast_blackradish",
+    "description": "外焦里嫩，带着炭火气。 恢复 91 体力。",
+    "energy": 91
+  },
+  "mash_blackradish": {
+    "name": "黑萝卜泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_mash_blackradish",
+    "description": "细细压成泥，加了黄油。 恢复 85 体力。",
+    "energy": 85
+  },
+  "stew_turnip_purple": {
+    "name": "炖紫芜菁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 115,
+    "icon": "dish_stew_turnip_purple",
+    "description": "炖到软烂入味。 恢复 83 体力。",
+    "energy": 83
+  },
+  "roast_turnip_purple": {
+    "name": "烤紫芜菁",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_roast_turnip_purple",
+    "description": "外焦里嫩，带着炭火气。 恢复 80 体力。",
+    "energy": 80
+  },
+  "mash_turnip_purple": {
+    "name": "紫芜菁泥",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_mash_turnip_purple",
+    "description": "细细压成泥，加了黄油。 恢复 75 体力。",
+    "energy": 75
+  },
+  "garlic_saute_chicory": {
+    "name": "蒜香煎菊苣",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 109,
+    "icon": "dish_garlic_saute_chicory",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 55 体力。",
+    "energy": 55
+  },
+  "soup_chicory": {
+    "name": "菊苣浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 114,
+    "icon": "dish_soup_chicory",
+    "description": "绵密顺滑的一碗浓汤。 恢复 56 体力。",
+    "energy": 56
+  },
+  "salad_chicory": {
+    "name": "菊苣沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 98,
+    "icon": "dish_salad_chicory",
+    "description": "淋上橄榄油和柠檬汁。 恢复 51 体力。",
+    "energy": 51
+  },
+  "garlic_saute_watercress": {
+    "name": "蒜香煎豆瓣菜",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 58,
+    "icon": "dish_garlic_saute_watercress",
+    "description": "蒜香煎得刚好，保留脆嫩。 恢复 53 体力。",
+    "energy": 53
+  },
+  "soup_watercress": {
+    "name": "豆瓣菜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 61,
+    "icon": "dish_soup_watercress",
+    "description": "绵密顺滑的一碗浓汤。 恢复 54 体力。",
+    "energy": 54
+  },
+  "salad_watercress": {
+    "name": "豆瓣菜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 52,
+    "icon": "dish_salad_watercress",
+    "description": "淋上橄榄油和柠檬汁。 恢复 50 体力。",
+    "energy": 50
+  },
+  "pan_fried_crucian": {
+    "name": "香煎鲫鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 86,
+    "icon": "dish_pan_fried_crucian",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 70 体力。",
+    "energy": 70
+  },
+  "soup_crucian": {
+    "name": "鲫鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_soup_crucian",
+    "description": "奶味浓郁的鱼汤。 恢复 68 体力。",
+    "energy": 68
+  },
+  "roast_crucian": {
+    "name": "烤鲫鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_roast_crucian",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pan_fried_loach": {
+    "name": "香煎泥鳅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 77,
+    "icon": "dish_pan_fried_loach",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 58 体力。",
+    "energy": 58
+  },
+  "soup_loach": {
+    "name": "泥鳅浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 73,
+    "icon": "dish_soup_loach",
+    "description": "奶味浓郁的鱼汤。 恢复 56 体力。",
+    "energy": 56
+  },
+  "roast_loach": {
+    "name": "烤泥鳅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 80,
+    "icon": "dish_roast_loach",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 59 体力。",
+    "energy": 59
+  },
+  "buttered_shrimp": {
+    "name": "黄油河虾",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_buttered_shrimp",
+    "description": "黄油和蒜末一起焖熟。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pot_shrimp": {
+    "name": "河虾炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "dish_pot_shrimp",
+    "description": "炖出一锅鲜汁。 恢复 70 体力。",
+    "energy": 70
+  },
+  "buttered_crab": {
+    "name": "黄油河蟹",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 105,
+    "icon": "dish_buttered_crab",
+    "description": "黄油和蒜末一起焖熟。 恢复 57 体力。",
+    "energy": 57
+  },
+  "pot_crab": {
+    "name": "河蟹炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_pot_crab",
+    "description": "炖出一锅鲜汁。 恢复 56 体力。",
+    "energy": 56
+  },
+  "pan_fried_pike": {
+    "name": "香煎狗鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 91,
+    "icon": "dish_pan_fried_pike",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 61 体力。",
+    "energy": 61
+  },
+  "soup_pike": {
+    "name": "狗鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_soup_pike",
+    "description": "奶味浓郁的鱼汤。 恢复 60 体力。",
+    "energy": 60
+  },
+  "roast_pike": {
+    "name": "烤狗鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_roast_pike",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 63 体力。",
+    "energy": 63
+  },
+  "buttered_bream": {
+    "name": "黄油欧鳊",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 171,
+    "icon": "dish_buttered_bream",
+    "description": "黄油和蒜末一起焖熟。 恢复 87 体力。",
+    "energy": 87
+  },
+  "pot_bream": {
+    "name": "欧鳊炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 164,
+    "icon": "dish_pot_bream",
+    "description": "炖出一锅鲜汁。 恢复 84 体力。",
+    "energy": 84
+  },
+  "pan_fried_roach": {
+    "name": "香煎拟鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 86,
+    "icon": "dish_pan_fried_roach",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 55 体力。",
+    "energy": 55
+  },
+  "soup_roach": {
+    "name": "拟鲤浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_soup_roach",
+    "description": "奶味浓郁的鱼汤。 恢复 54 体力。",
+    "energy": 54
+  },
+  "roast_roach": {
+    "name": "烤拟鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_roast_roach",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 56 体力。",
+    "energy": 56
+  },
+  "pan_fried_carp": {
+    "name": "香煎鲤鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 144,
+    "icon": "dish_pan_fried_carp",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 70 体力。",
+    "energy": 70
+  },
+  "soup_carp": {
+    "name": "鲤鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_soup_carp",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_carp": {
+    "name": "烤鲤鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 151,
+    "icon": "dish_roast_carp",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pan_fried_catfish": {
+    "name": "香煎鲶鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 169,
+    "icon": "dish_pan_fried_catfish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_catfish": {
+    "name": "鲶鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 161,
+    "icon": "dish_soup_catfish",
+    "description": "奶味浓郁的鱼汤。 恢复 70 体力。",
+    "energy": 70
+  },
+  "roast_catfish": {
+    "name": "烤鲶鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 176,
+    "icon": "dish_roast_catfish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 74 体力。",
+    "energy": 74
+  },
+  "pan_fried_riverperch": {
+    "name": "香煎河鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 159,
+    "icon": "dish_pan_fried_riverperch",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 77 体力。",
+    "energy": 77
+  },
+  "soup_riverperch": {
+    "name": "河鲈浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 152,
+    "icon": "dish_soup_riverperch",
+    "description": "奶味浓郁的鱼汤。 恢复 75 体力。",
+    "energy": 75
+  },
+  "roast_riverperch": {
+    "name": "烤河鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 166,
+    "icon": "dish_roast_riverperch",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 79 体力。",
+    "energy": 79
+  },
+  "pan_fried_eel": {
+    "name": "香煎河鳗",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 164,
+    "icon": "dish_pan_fried_eel",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_eel": {
+    "name": "河鳗浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 157,
+    "icon": "dish_soup_eel",
+    "description": "奶味浓郁的鱼汤。 恢复 70 体力。",
+    "energy": 70
+  },
+  "roast_eel": {
+    "name": "烤河鳗",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 171,
+    "icon": "dish_roast_eel",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_perch": {
+    "name": "香煎鲈鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 188,
+    "icon": "dish_pan_fried_perch",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 79 体力。",
+    "energy": 79
+  },
+  "soup_perch": {
+    "name": "鲈鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 180,
+    "icon": "dish_soup_perch",
+    "description": "奶味浓郁的鱼汤。 恢复 77 体力。",
+    "energy": 77
+  },
+  "roast_perch": {
+    "name": "烤鲈鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 196,
+    "icon": "dish_roast_perch",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 81 体力。",
+    "energy": 81
+  },
+  "pan_fried_zander": {
+    "name": "香煎梭鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 231,
+    "icon": "dish_pan_fried_zander",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 88 体力。",
+    "energy": 88
+  },
+  "soup_zander": {
+    "name": "梭鲈浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 221,
+    "icon": "dish_soup_zander",
+    "description": "奶味浓郁的鱼汤。 恢复 85 体力。",
+    "energy": 85
+  },
+  "roast_zander": {
+    "name": "烤梭鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 241,
+    "icon": "dish_roast_zander",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 90 体力。",
+    "energy": 90
+  },
+  "pan_fried_whitefish": {
+    "name": "香煎白鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 140,
+    "icon": "dish_pan_fried_whitefish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 64 体力。",
+    "energy": 64
+  },
+  "soup_whitefish": {
+    "name": "白鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 133,
+    "icon": "dish_soup_whitefish",
+    "description": "奶味浓郁的鱼汤。 恢复 63 体力。",
+    "energy": 63
+  },
+  "roast_whitefish": {
+    "name": "烤白鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 146,
+    "icon": "dish_roast_whitefish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 66 体力。",
+    "energy": 66
+  },
+  "pan_fried_tench": {
+    "name": "香煎丁鲷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 149,
+    "icon": "dish_pan_fried_tench",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 71 体力。",
+    "energy": 71
+  },
+  "soup_tench": {
+    "name": "丁鲷浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 143,
+    "icon": "dish_soup_tench",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_tench": {
+    "name": "烤丁鲷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 156,
+    "icon": "dish_roast_tench",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 72 体力。",
+    "energy": 72
+  },
+  "pan_fried_trout": {
+    "name": "香煎虹鳟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 212,
+    "icon": "dish_pan_fried_trout",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 87 体力。",
+    "energy": 87
+  },
+  "soup_trout": {
+    "name": "虹鳟浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 203,
+    "icon": "dish_soup_trout",
+    "description": "奶味浓郁的鱼汤。 恢复 84 体力。",
+    "energy": 84
+  },
+  "roast_trout": {
+    "name": "烤虹鳟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 221,
+    "icon": "dish_roast_trout",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 89 体力。",
+    "energy": 89
+  },
+  "pan_fried_icesmelt": {
+    "name": "香煎冰银鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 265,
+    "icon": "dish_pan_fried_icesmelt",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 96 体力。",
+    "energy": 96
+  },
+  "soup_icesmelt": {
+    "name": "冰银鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 254,
+    "icon": "dish_soup_icesmelt",
+    "description": "奶味浓郁的鱼汤。 恢复 93 体力。",
+    "energy": 93
+  },
+  "roast_icesmelt": {
+    "name": "烤冰银鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 277,
+    "icon": "dish_roast_icesmelt",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 98 体力。",
+    "energy": 98
+  },
+  "pan_fried_lanternfish": {
+    "name": "香煎灯鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 386,
+    "icon": "dish_pan_fried_lanternfish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 115 体力。",
+    "energy": 115
+  },
+  "soup_lanternfish": {
+    "name": "灯鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 369,
+    "icon": "dish_soup_lanternfish",
+    "description": "奶味浓郁的鱼汤。 恢复 112 体力。",
+    "energy": 112
+  },
+  "roast_lanternfish": {
+    "name": "烤灯鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 403,
+    "icon": "dish_roast_lanternfish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 118 体力。",
+    "energy": 118
+  },
+  "pan_fried_mooncarp": {
+    "name": "香煎月光鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 627,
+    "icon": "dish_pan_fried_mooncarp",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_mooncarp": {
+    "name": "月光鲤浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 600,
+    "icon": "dish_soup_mooncarp",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_mooncarp": {
+    "name": "烤月光鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 655,
+    "icon": "dish_roast_mooncarp",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_koi": {
+    "name": "香煎金锦鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 1014,
+    "icon": "dish_pan_fried_koi",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_koi": {
+    "name": "金锦鲤浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 970,
+    "icon": "dish_soup_koi",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_koi": {
+    "name": "烤金锦鲤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 1058,
+    "icon": "dish_roast_koi",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_minnow": {
+    "name": "香煎小米诺鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 38,
+    "icon": "dish_pan_fried_minnow",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 45 体力。",
+    "energy": 45
+  },
+  "soup_minnow": {
+    "name": "小米诺鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 36,
+    "icon": "dish_soup_minnow",
+    "description": "奶味浓郁的鱼汤。 恢复 44 体力。",
+    "energy": 44
+  },
+  "roast_minnow": {
+    "name": "烤小米诺鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 40,
+    "icon": "dish_roast_minnow",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 46 体力。",
+    "energy": 46
+  },
+  "buttered_bitterling": {
+    "name": "黄油彩石鲋",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "dish_buttered_bitterling",
+    "description": "黄油和蒜末一起焖熟。 恢复 53 体力。",
+    "energy": 53
+  },
+  "pot_bitterling": {
+    "name": "彩石鲋炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 67,
+    "icon": "dish_pot_bitterling",
+    "description": "炖出一锅鲜汁。 恢复 52 体力。",
+    "energy": 52
+  },
+  "pan_fried_chub": {
+    "name": "香煎圆腹雅罗鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 154,
+    "icon": "dish_pan_fried_chub",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 71 体力。",
+    "energy": 71
+  },
+  "soup_chub": {
+    "name": "圆腹雅罗鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_soup_chub",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_chub": {
+    "name": "烤圆腹雅罗鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 161,
+    "icon": "dish_roast_chub",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_dace": {
+    "name": "香煎鲦鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 135,
+    "icon": "dish_pan_fried_dace",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_dace": {
+    "name": "鲦鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 129,
+    "icon": "dish_soup_dace",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_dace": {
+    "name": "烤鲦鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 141,
+    "icon": "dish_roast_dace",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 74 体力。",
+    "energy": 74
+  },
+  "pan_fried_stripedbass": {
+    "name": "香煎条纹鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 173,
+    "icon": "dish_pan_fried_stripedbass",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_stripedbass": {
+    "name": "条纹鲈浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 166,
+    "icon": "dish_soup_stripedbass",
+    "description": "奶味浓郁的鱼汤。 恢复 70 体力。",
+    "energy": 70
+  },
+  "roast_stripedbass": {
+    "name": "烤条纹鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 181,
+    "icon": "dish_roast_stripedbass",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 74 体力。",
+    "energy": 74
+  },
+  "buttered_mussel": {
+    "name": "黄油河蚌",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_buttered_mussel",
+    "description": "黄油和蒜末一起焖熟。 恢复 50 体力。",
+    "energy": 50
+  },
+  "pot_mussel": {
+    "name": "河蚌炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 91,
+    "icon": "dish_pot_mussel",
+    "description": "炖出一锅鲜汁。 恢复 49 体力。",
+    "energy": 49
+  },
+  "buttered_snapper": {
+    "name": "黄油鳄龟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 327,
+    "icon": "dish_buttered_snapper",
+    "description": "黄油和蒜末一起焖熟。 恢复 101 体力。",
+    "energy": 101
+  },
+  "pot_snapper": {
+    "name": "鳄龟炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 313,
+    "icon": "dish_pot_snapper",
+    "description": "炖出一锅鲜汁。 恢复 99 体力。",
+    "energy": 99
+  },
+  "pan_fried_sardine": {
+    "name": "香煎沙丁鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 67,
+    "icon": "dish_pan_fried_sardine",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 57 体力。",
+    "energy": 57
+  },
+  "soup_sardine": {
+    "name": "沙丁鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 64,
+    "icon": "dish_soup_sardine",
+    "description": "奶味浓郁的鱼汤。 恢复 56 体力。",
+    "energy": 56
+  },
+  "roast_sardine": {
+    "name": "烤沙丁鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 70,
+    "icon": "dish_roast_sardine",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 59 体力。",
+    "energy": 59
+  },
+  "pan_fried_anchovy": {
+    "name": "香煎鳀鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 57,
+    "icon": "dish_pan_fried_anchovy",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 51 体力。",
+    "energy": 51
+  },
+  "soup_anchovy": {
+    "name": "鳀鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 55,
+    "icon": "dish_soup_anchovy",
+    "description": "奶味浓郁的鱼汤。 恢复 50 体力。",
+    "energy": 50
+  },
+  "roast_anchovy": {
+    "name": "烤鳀鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "dish_roast_anchovy",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 53 体力。",
+    "energy": 53
+  },
+  "pan_fried_herring": {
+    "name": "香煎鲱鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_pan_fried_herring",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 71 体力。",
+    "energy": 71
+  },
+  "soup_herring": {
+    "name": "鲱鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_soup_herring",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_herring": {
+    "name": "烤鲱鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_roast_herring",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_mackerel": {
+    "name": "香煎青花鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 91,
+    "icon": "dish_pan_fried_mackerel",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 55 体力。",
+    "energy": 55
+  },
+  "soup_mackerel": {
+    "name": "青花鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_soup_mackerel",
+    "description": "奶味浓郁的鱼汤。 恢复 54 体力。",
+    "energy": 54
+  },
+  "roast_mackerel": {
+    "name": "烤青花鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_roast_mackerel",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 56 体力。",
+    "energy": 56
+  },
+  "pan_fried_haddock": {
+    "name": "香煎黑线鳕",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 159,
+    "icon": "dish_pan_fried_haddock",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 71 体力。",
+    "energy": 71
+  },
+  "soup_haddock": {
+    "name": "黑线鳕浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 152,
+    "icon": "dish_soup_haddock",
+    "description": "奶味浓郁的鱼汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "roast_haddock": {
+    "name": "烤黑线鳕",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 166,
+    "icon": "dish_roast_haddock",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_pollock": {
+    "name": "香煎青鳕",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 178,
+    "icon": "dish_pan_fried_pollock",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_pollock": {
+    "name": "青鳕浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 170,
+    "icon": "dish_soup_pollock",
+    "description": "奶味浓郁的鱼汤。 恢复 71 体力。",
+    "energy": 71
+  },
+  "roast_pollock": {
+    "name": "烤青鳕",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 186,
+    "icon": "dish_roast_pollock",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 74 体力。",
+    "energy": 74
+  },
+  "buttered_seabream": {
+    "name": "黄油海鲷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 221,
+    "icon": "dish_buttered_seabream",
+    "description": "黄油和蒜末一起焖熟。 恢复 83 体力。",
+    "energy": 83
+  },
+  "pot_seabream": {
+    "name": "海鲷炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 212,
+    "icon": "dish_pot_seabream",
+    "description": "炖出一锅鲜汁。 恢复 81 体力。",
+    "energy": 81
+  },
+  "pan_fried_seabass": {
+    "name": "香煎海鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 202,
+    "icon": "dish_pan_fried_seabass",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 80 体力。",
+    "energy": 80
+  },
+  "soup_seabass": {
+    "name": "海鲈浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 194,
+    "icon": "dish_soup_seabass",
+    "description": "奶味浓郁的鱼汤。 恢复 78 体力。",
+    "energy": 78
+  },
+  "roast_seabass": {
+    "name": "烤海鲈",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 211,
+    "icon": "dish_roast_seabass",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 82 体力。",
+    "energy": 82
+  },
+  "pan_fried_redsnapper": {
+    "name": "香煎红鲷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 265,
+    "icon": "dish_pan_fried_redsnapper",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 90 体力。",
+    "energy": 90
+  },
+  "soup_redsnapper": {
+    "name": "红鲷浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 254,
+    "icon": "dish_soup_redsnapper",
+    "description": "奶味浓郁的鱼汤。 恢复 87 体力。",
+    "energy": 87
+  },
+  "roast_redsnapper": {
+    "name": "烤红鲷",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 277,
+    "icon": "dish_roast_redsnapper",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 92 体力。",
+    "energy": 92
+  },
+  "buttered_flounder": {
+    "name": "黄油比目鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 201,
+    "icon": "dish_buttered_flounder",
+    "description": "黄油和蒜末一起焖熟。 恢复 75 体力。",
+    "energy": 75
+  },
+  "pot_flounder": {
+    "name": "比目鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 193,
+    "icon": "dish_pot_flounder",
+    "description": "炖出一锅鲜汁。 恢复 73 体力。",
+    "energy": 73
+  },
+  "pan_fried_cod": {
+    "name": "香煎鳕鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 222,
+    "icon": "dish_pan_fried_cod",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 81 体力。",
+    "energy": 81
+  },
+  "soup_cod": {
+    "name": "鳕鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 212,
+    "icon": "dish_soup_cod",
+    "description": "奶味浓郁的鱼汤。 恢复 79 体力。",
+    "energy": 79
+  },
+  "roast_cod": {
+    "name": "烤鳕鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 231,
+    "icon": "dish_roast_cod",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 83 体力。",
+    "energy": 83
+  },
+  "pan_fried_salmon": {
+    "name": "香煎三文鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 289,
+    "icon": "dish_pan_fried_salmon",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 91 体力。",
+    "energy": 91
+  },
+  "soup_salmon": {
+    "name": "三文鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 277,
+    "icon": "dish_soup_salmon",
+    "description": "奶味浓郁的鱼汤。 恢复 89 体力。",
+    "energy": 89
+  },
+  "roast_salmon": {
+    "name": "烤三文鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 302,
+    "icon": "dish_roast_salmon",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 94 体力。",
+    "energy": 94
+  },
+  "pan_fried_tuna": {
+    "name": "香煎金枪鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 531,
+    "icon": "dish_pan_fried_tuna",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_tuna": {
+    "name": "金枪鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 508,
+    "icon": "dish_soup_tuna",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_tuna": {
+    "name": "烤金枪鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 554,
+    "icon": "dish_roast_tuna",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_swordfish": {
+    "name": "香煎剑鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 724,
+    "icon": "dish_pan_fried_swordfish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_swordfish": {
+    "name": "剑鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 693,
+    "icon": "dish_soup_swordfish",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_swordfish": {
+    "name": "烤剑鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 756,
+    "icon": "dish_roast_swordfish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "buttered_squid": {
+    "name": "黄油鱿鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 136,
+    "icon": "dish_buttered_squid",
+    "description": "黄油和蒜末一起焖熟。 恢复 59 体力。",
+    "energy": 59
+  },
+  "pot_squid": {
+    "name": "鱿鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 130,
+    "icon": "dish_pot_squid",
+    "description": "炖出一锅鲜汁。 恢复 58 体力。",
+    "energy": 58
+  },
+  "buttered_octopus": {
+    "name": "黄油章鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 226,
+    "icon": "dish_buttered_octopus",
+    "description": "黄油和蒜末一起焖熟。 恢复 77 体力。",
+    "energy": 77
+  },
+  "pot_octopus": {
+    "name": "章鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 217,
+    "icon": "dish_pot_octopus",
+    "description": "炖出一锅鲜汁。 恢复 75 体力。",
+    "energy": 75
+  },
+  "buttered_cuttlefish": {
+    "name": "黄油墨鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 176,
+    "icon": "dish_buttered_cuttlefish",
+    "description": "黄油和蒜末一起焖熟。 恢复 67 体力。",
+    "energy": 67
+  },
+  "pot_cuttlefish": {
+    "name": "墨鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 169,
+    "icon": "dish_pot_cuttlefish",
+    "description": "炖出一锅鲜汁。 恢复 66 体力。",
+    "energy": 66
+  },
+  "buttered_jellyfish": {
+    "name": "黄油海蜇",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 100,
+    "icon": "dish_buttered_jellyfish",
+    "description": "黄油和蒜末一起焖熟。 恢复 44 体力。",
+    "energy": 44
+  },
+  "pot_jellyfish": {
+    "name": "海蜇炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 96,
+    "icon": "dish_pot_jellyfish",
+    "description": "炖出一锅鲜汁。 恢复 43 体力。",
+    "energy": 43
+  },
+  "buttered_lobster": {
+    "name": "黄油龙虾",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 378,
+    "icon": "dish_buttered_lobster",
+    "description": "黄油和蒜末一起焖熟。 恢复 104 体力。",
+    "energy": 104
+  },
+  "pot_lobster": {
+    "name": "龙虾炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 362,
+    "icon": "dish_pot_lobster",
+    "description": "炖出一锅鲜汁。 恢复 102 体力。",
+    "energy": 102
+  },
+  "buttered_seacrab": {
+    "name": "黄油梭子蟹",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 241,
+    "icon": "dish_buttered_seacrab",
+    "description": "黄油和蒜末一起焖熟。 恢复 78 体力。",
+    "energy": 78
+  },
+  "pot_seacrab": {
+    "name": "梭子蟹炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 231,
+    "icon": "dish_pot_seacrab",
+    "description": "炖出一锅鲜汁。 恢复 76 体力。",
+    "energy": 76
+  },
+  "buttered_oyster": {
+    "name": "黄油生蚝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_buttered_oyster",
+    "description": "黄油和蒜末一起焖熟。 恢复 51 体力。",
+    "energy": 51
+  },
+  "pot_oyster": {
+    "name": "生蚝炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 106,
+    "icon": "dish_pot_oyster",
+    "description": "炖出一锅鲜汁。 恢复 50 体力。",
+    "energy": 50
+  },
+  "buttered_clam": {
+    "name": "黄油蛤蜊",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 90,
+    "icon": "dish_buttered_clam",
+    "description": "黄油和蒜末一起焖熟。 恢复 60 体力。",
+    "energy": 60
+  },
+  "pot_clam": {
+    "name": "蛤蜊炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 86,
+    "icon": "dish_pot_clam",
+    "description": "炖出一锅鲜汁。 恢复 58 体力。",
+    "energy": 58
+  },
+  "buttered_scallop": {
+    "name": "黄油扇贝",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 126,
+    "icon": "dish_buttered_scallop",
+    "description": "黄油和蒜末一起焖熟。 恢复 52 体力。",
+    "energy": 52
+  },
+  "pot_scallop": {
+    "name": "扇贝炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_pot_scallop",
+    "description": "炖出一锅鲜汁。 恢复 51 体力。",
+    "energy": 51
+  },
+  "buttered_abalone": {
+    "name": "黄油鲍鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 453,
+    "icon": "dish_buttered_abalone",
+    "description": "黄油和蒜末一起焖熟。 恢复 115 体力。",
+    "energy": 115
+  },
+  "pot_abalone": {
+    "name": "鲍鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 434,
+    "icon": "dish_pot_abalone",
+    "description": "炖出一锅鲜汁。 恢复 112 体力。",
+    "energy": 112
+  },
+  "buttered_urchin": {
+    "name": "黄油海胆",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 327,
+    "icon": "dish_buttered_urchin",
+    "description": "黄油和蒜末一起焖熟。 恢复 83 体力。",
+    "energy": 83
+  },
+  "pot_urchin": {
+    "name": "海胆炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 313,
+    "icon": "dish_pot_urchin",
+    "description": "炖出一锅鲜汁。 恢复 81 体力。",
+    "energy": 81
+  },
+  "pan_fried_seahorse": {
+    "name": "香煎海马",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 338,
+    "icon": "dish_pan_fried_seahorse",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 58 体力。",
+    "energy": 58
+  },
+  "soup_seahorse": {
+    "name": "海马浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 323,
+    "icon": "dish_soup_seahorse",
+    "description": "奶味浓郁的鱼汤。 恢复 58 体力。",
+    "energy": 58
+  },
+  "roast_seahorse": {
+    "name": "烤海马",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 352,
+    "icon": "dish_roast_seahorse",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 59 体力。",
+    "energy": 59
+  },
+  "pan_fried_pufferfish": {
+    "name": "香煎河豚",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 301,
+    "icon": "dish_pan_fried_pufferfish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 68 体力。",
+    "energy": 68
+  },
+  "soup_pufferfish": {
+    "name": "河豚浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 288,
+    "icon": "dish_soup_pufferfish",
+    "description": "奶味浓郁的鱼汤。 恢复 67 体力。",
+    "energy": 67
+  },
+  "roast_pufferfish": {
+    "name": "烤河豚",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 315,
+    "icon": "dish_roast_pufferfish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 69 体力。",
+    "energy": 69
+  },
+  "buttered_mantaray": {
+    "name": "黄油魔鬼鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 882,
+    "icon": "dish_buttered_mantaray",
+    "description": "黄油和蒜末一起焖熟。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pot_mantaray": {
+    "name": "魔鬼鱼炖锅",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 845,
+    "icon": "dish_pot_mantaray",
+    "description": "炖出一锅鲜汁。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_goldtrout": {
+    "name": "香煎金鳟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 338,
+    "icon": "dish_pan_fried_goldtrout",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 94 体力。",
+    "energy": 94
+  },
+  "soup_goldtrout": {
+    "name": "金鳟浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 323,
+    "icon": "dish_soup_goldtrout",
+    "description": "奶味浓郁的鱼汤。 恢复 92 体力。",
+    "energy": 92
+  },
+  "roast_goldtrout": {
+    "name": "烤金鳟",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 352,
+    "icon": "dish_roast_goldtrout",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 97 体力。",
+    "energy": 97
+  },
+  "pan_fried_cavefish": {
+    "name": "香煎盲鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 144,
+    "icon": "dish_pan_fried_cavefish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 52 体力。",
+    "energy": 52
+  },
+  "soup_cavefish": {
+    "name": "盲鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_soup_cavefish",
+    "description": "奶味浓郁的鱼汤。 恢复 51 体力。",
+    "energy": 51
+  },
+  "roast_cavefish": {
+    "name": "烤盲鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 151,
+    "icon": "dish_roast_cavefish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 53 体力。",
+    "energy": 53
+  },
+  "pan_fried_glowworm": {
+    "name": "香煎发光鳗",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 265,
+    "icon": "dish_pan_fried_glowworm",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 78 体力。",
+    "energy": 78
+  },
+  "soup_glowworm": {
+    "name": "发光鳗浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 254,
+    "icon": "dish_soup_glowworm",
+    "description": "奶味浓郁的鱼汤。 恢复 76 体力。",
+    "energy": 76
+  },
+  "roast_glowworm": {
+    "name": "烤发光鳗",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 277,
+    "icon": "dish_roast_glowworm",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 80 体力。",
+    "energy": 80
+  },
+  "pan_fried_crystalfish": {
+    "name": "香煎水晶鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 676,
+    "icon": "dish_pan_fried_crystalfish",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_crystalfish": {
+    "name": "水晶鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 646,
+    "icon": "dish_soup_crystalfish",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_crystalfish": {
+    "name": "烤水晶鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 705,
+    "icon": "dish_roast_crystalfish",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_sturgeon": {
+    "name": "香煎鲟鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 579,
+    "icon": "dish_pan_fried_sturgeon",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_sturgeon": {
+    "name": "鲟鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 554,
+    "icon": "dish_soup_sturgeon",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_sturgeon": {
+    "name": "烤鲟鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 604,
+    "icon": "dish_roast_sturgeon",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "pan_fried_stormfin": {
+    "name": "香煎风暴鳍鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 917,
+    "icon": "dish_pan_fried_stormfin",
+    "description": "煎到两面金黄，挤一点柠檬。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_stormfin": {
+    "name": "风暴鳍鱼浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 877,
+    "icon": "dish_soup_stormfin",
+    "description": "奶味浓郁的鱼汤。 恢复 120 体力。",
+    "energy": 120
+  },
+  "roast_stormfin": {
+    "name": "烤风暴鳍鱼",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 957,
+    "icon": "dish_roast_stormfin",
+    "description": "撒了盐和香草，烤得外酥里嫩。 恢复 120 体力。",
+    "energy": 120
+  },
+  "soup_ramps": {
+    "name": "野韭葱浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 110,
+    "icon": "dish_soup_ramps",
+    "description": "熬得温润的浓汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "salad_ramps": {
+    "name": "野韭葱沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 95,
+    "icon": "dish_salad_ramps",
+    "description": "拌上一点橄榄油。 恢复 63 体力。",
+    "energy": 63
+  },
+  "soup_nettle": {
+    "name": "荨麻浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 73,
+    "icon": "dish_soup_nettle",
+    "description": "熬得温润的浓汤。 恢复 56 体力。",
+    "energy": 56
+  },
+  "salad_nettle": {
+    "name": "荨麻沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 63,
+    "icon": "dish_salad_nettle",
+    "description": "拌上一点橄榄油。 恢复 52 体力。",
+    "energy": 52
+  },
+  "soup_cattail_root": {
+    "name": "香蒲根浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_soup_cattail_root",
+    "description": "熬得温润的浓汤。 恢复 82 体力。",
+    "energy": 82
+  },
+  "salad_cattail_root": {
+    "name": "香蒲根沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 127,
+    "icon": "dish_salad_cattail_root",
+    "description": "拌上一点橄榄油。 恢复 74 体力。",
+    "energy": 74
+  },
+  "fry_mushroom": {
+    "name": "煎香菇",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_fry_mushroom",
+    "description": "山野的鲜味。 恢复 70 体力。",
+    "energy": 70
+  },
+  "soup_mushroom": {
+    "name": "香菇浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 144,
+    "icon": "dish_soup_mushroom",
+    "description": "香气扑鼻的浓汤。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_chestnut": {
+    "name": "板栗浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_soup_chestnut",
+    "description": "熬得温润的浓汤。 恢复 80 体力。",
+    "energy": 80
+  },
+  "salad_chestnut": {
+    "name": "板栗沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_salad_chestnut",
+    "description": "拌上一点橄榄油。 恢复 72 体力。",
+    "energy": 72
+  },
+  "soup_frozen_berry": {
+    "name": "冻果浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_soup_frozen_berry",
+    "description": "熬得温润的浓汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "salad_frozen_berry": {
+    "name": "冻果沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 103,
+    "icon": "dish_salad_frozen_berry",
+    "description": "拌上一点橄榄油。 恢复 63 体力。",
+    "energy": 63
+  },
+  "soup_pinenut": {
+    "name": "松子浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 129,
+    "icon": "dish_soup_pinenut",
+    "description": "熬得温润的浓汤。 恢复 69 体力。",
+    "energy": 69
+  },
+  "salad_pinenut": {
+    "name": "松子沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 111,
+    "icon": "dish_salad_pinenut",
+    "description": "拌上一点橄榄油。 恢复 63 体力。",
+    "energy": 63
+  },
+  "soup_seaweed": {
+    "name": "水草浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 13,
+    "icon": "dish_soup_seaweed",
+    "description": "熬得温润的浓汤。 恢复 31 体力。",
+    "energy": 31
+  },
+  "salad_seaweed": {
+    "name": "水草沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 11,
+    "icon": "dish_salad_seaweed",
+    "description": "拌上一点橄榄油。 恢复 30 体力。",
+    "energy": 30
+  },
+  "soup_wildgarlic": {
+    "name": "野蒜浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 64,
+    "icon": "dish_soup_wildgarlic",
+    "description": "熬得温润的浓汤。 恢复 56 体力。",
+    "energy": 56
+  },
+  "salad_wildgarlic": {
+    "name": "野蒜沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 55,
+    "icon": "dish_salad_wildgarlic",
+    "description": "拌上一点橄榄油。 恢复 51 体力。",
+    "energy": 51
+  },
+  "soup_fiddlehead": {
+    "name": "蕨芽浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_soup_fiddlehead",
+    "description": "熬得温润的浓汤。 恢复 57 体力。",
+    "energy": 57
+  },
+  "salad_fiddlehead": {
+    "name": "蕨芽沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_salad_fiddlehead",
+    "description": "拌上一点橄榄油。 恢复 52 体力。",
+    "energy": 52
+  },
+  "soup_dandelion": {
+    "name": "蒲公英浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 55,
+    "icon": "dish_soup_dandelion",
+    "description": "熬得温润的浓汤。 恢复 44 体力。",
+    "energy": 44
+  },
+  "salad_dandelion": {
+    "name": "蒲公英沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 47,
+    "icon": "dish_salad_dandelion",
+    "description": "拌上一点橄榄油。 恢复 41 体力。",
+    "energy": 41
+  },
+  "soup_lilybulb": {
+    "name": "百合浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 87,
+    "icon": "dish_soup_lilybulb",
+    "description": "熬得温润的浓汤。 恢复 48 体力。",
+    "energy": 48
+  },
+  "salad_lilybulb": {
+    "name": "百合沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 75,
+    "icon": "dish_salad_lilybulb",
+    "description": "拌上一点橄榄油。 恢复 45 体力。",
+    "energy": 45
+  },
+  "soup_water_celery": {
+    "name": "水芹浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_soup_water_celery",
+    "description": "熬得温润的浓汤。 恢复 68 体力。",
+    "energy": 68
+  },
+  "salad_water_celery": {
+    "name": "水芹沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_salad_water_celery",
+    "description": "拌上一点橄榄油。 恢复 62 体力。",
+    "energy": 62
+  },
+  "soup_waterlily_seed": {
+    "name": "睡莲籽浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_soup_waterlily_seed",
+    "description": "熬得温润的浓汤。 恢复 58 体力。",
+    "energy": 58
+  },
+  "salad_waterlily_seed": {
+    "name": "睡莲籽沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 119,
+    "icon": "dish_salad_waterlily_seed",
+    "description": "拌上一点橄榄油。 恢复 54 体力。",
+    "energy": 54
+  },
+  "fry_chanterelle": {
+    "name": "煎鸡油菌",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 97,
+    "icon": "dish_fry_chanterelle",
+    "description": "山野的鲜味。 恢复 49 体力。",
+    "energy": 49
+  },
+  "soup_chanterelle": {
+    "name": "鸡油菌浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 101,
+    "icon": "dish_soup_chanterelle",
+    "description": "香气扑鼻的浓汤。 恢复 50 体力。",
+    "energy": 50
+  },
+  "fry_morel": {
+    "name": "煎羊肚菌",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 184,
+    "icon": "dish_fry_morel",
+    "description": "山野的鲜味。 恢复 54 体力。",
+    "energy": 54
+  },
+  "soup_morel": {
+    "name": "羊肚菌浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 193,
+    "icon": "dish_soup_morel",
+    "description": "香气扑鼻的浓汤。 恢复 55 体力。",
+    "energy": 55
+  },
+  "soup_truffle": {
+    "name": "松露浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 277,
+    "icon": "dish_soup_truffle",
+    "description": "熬得温润的浓汤。 恢复 66 体力。",
+    "energy": 66
+  },
+  "salad_truffle": {
+    "name": "松露沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 239,
+    "icon": "dish_salad_truffle",
+    "description": "拌上一点橄榄油。 恢复 62 体力。",
+    "energy": 62
+  },
+  "fry_oyster_mushroom": {
+    "name": "煎平菇",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 120,
+    "icon": "dish_fry_oyster_mushroom",
+    "description": "山野的鲜味。 恢复 58 体力。",
+    "energy": 58
+  },
+  "soup_oyster_mushroom": {
+    "name": "平菇浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 125,
+    "icon": "dish_soup_oyster_mushroom",
+    "description": "香气扑鼻的浓汤。 恢复 59 体力。",
+    "energy": 59
+  },
+  "soup_hawthorn": {
+    "name": "山楂浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 83,
+    "icon": "dish_soup_hawthorn",
+    "description": "熬得温润的浓汤。 恢复 57 体力。",
+    "energy": 57
+  },
+  "salad_hawthorn": {
+    "name": "山楂沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 71,
+    "icon": "dish_salad_hawthorn",
+    "description": "拌上一点橄榄油。 恢复 52 体力。",
+    "energy": 52
+  },
+  "soup_crab_apple": {
+    "name": "野苹果浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 129,
+    "icon": "dish_soup_crab_apple",
+    "description": "熬得温润的浓汤。 恢复 81 体力。",
+    "energy": 81
+  },
+  "salad_crab_apple": {
+    "name": "野苹果沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 111,
+    "icon": "dish_salad_crab_apple",
+    "description": "拌上一点橄榄油。 恢复 73 体力。",
+    "energy": 73
+  },
+  "soup_walnut": {
+    "name": "核桃浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 147,
+    "icon": "dish_soup_walnut",
+    "description": "熬得温润的浓汤。 恢复 82 体力。",
+    "energy": 82
+  },
+  "salad_walnut": {
+    "name": "核桃沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 127,
+    "icon": "dish_salad_walnut",
+    "description": "拌上一点橄榄油。 恢复 74 体力。",
+    "energy": 74
+  },
+  "soup_hazelnut": {
+    "name": "榛子浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 138,
+    "icon": "dish_soup_hazelnut",
+    "description": "熬得温润的浓汤。 恢复 81 体力。",
+    "energy": 81
+  },
+  "salad_hazelnut": {
+    "name": "榛子沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 119,
+    "icon": "dish_salad_hazelnut",
+    "description": "拌上一点橄榄油。 恢复 73 体力。",
+    "energy": 73
+  },
+  "soup_blackberry": {
+    "name": "黑莓浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 92,
+    "icon": "dish_soup_blackberry",
+    "description": "熬得温润的浓汤。 恢复 57 体力。",
+    "energy": 57
+  },
+  "salad_blackberry": {
+    "name": "黑莓沙拉",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 79,
+    "icon": "dish_salad_blackberry",
+    "description": "拌上一点橄榄油。 恢复 52 体力。",
+    "energy": 52
+  },
+  "fry_porcini": {
+    "name": "煎牛肝菌",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 133,
+    "icon": "dish_fry_porcini",
+    "description": "山野的鲜味。 恢复 51 体力。",
+    "energy": 51
+  },
+  "soup_porcini": {
+    "name": "牛肝菌浓汤",
+    "kind": "dish",
+    "buy_price": 0,
+    "sell_price": 140,
+    "icon": "dish_soup_porcini",
+    "description": "香气扑鼻的浓汤。 恢复 52 体力。",
+    "energy": 52
   }
 }

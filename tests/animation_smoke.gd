@@ -15,31 +15,40 @@ func run() -> void:
 	await create_timer(.15).timeout
 	check(backdrop.time > 0.1, "title scene animates while menu is open")
 	game._on_front(
-		"create", {"name": "小雨", "farm": "青苇小院", "skin": 0, "hair": 0, "outfit": 1, "hat": 0}
+		"create",
+		{
+			"profile": {"name": "小雨", "farm": "青苇小院", "skin": 0, "hair": 0, "outfit": 1, "hat": 0},
+			"slot": 1
+		}
 	)
-	var cell = Vector2i(34, 20)
-	game.rules.apply_tool(game.state, "scythe", cell, cell, "turnip")
-	game.world.remove_debris("d_34_20")
+	var cell = Vector2i(-1, -1)
+	var open = free_cells(100000)
+	for candidate in open:
+		if open.has(candidate + Vector2i.DOWN):
+			cell = candidate
+			break
+	check(cell.x >= 0, "the farm has two free cells in a column")
 	place_cell(cell + Vector2i.DOWN)
 	game.world.player.facing = Vector2i.UP
+	var key_text = FarmState.cell_key(cell)
 	await key(KEY_1)
 	var energy = game.state.stamina
 	await key(KEY_SPACE)
 	check(
-		not game.state.plots.has("34,20") and game.state.stamina == energy,
+		not game.state.plots.has(key_text) and game.state.stamina == energy,
 		"windup does not apply farming early"
 	)
 	await key(KEY_ESCAPE)
 	var remaining = game.world.player.action_remaining
 	await create_timer(.35).timeout
 	check(
-		game.world.player.action_remaining == remaining and not game.state.plots.has("34,20"),
+		game.world.player.action_remaining == remaining and not game.state.plots.has(key_text),
 		"menu pauses pending action"
 	)
 	await key(KEY_ESCAPE)
 	await create_timer(.32).timeout
 	check(
-		game.state.plots.has("34,20") and game.state.stamina == energy - 2,
+		game.state.plots.has(key_text) and game.state.stamina == energy - 2,
 		"hoe applies at contact frame"
 	)
 	check(not game.world.effects.particles.is_empty(), "hoe impact emits soil particles")
@@ -49,13 +58,21 @@ func run() -> void:
 	await key(KEY_SPACE)
 	await create_timer(.4).timeout
 	check(
-		game.state.plots["34,20"].watered and not game.world.effects.streams.is_empty(),
+		game.state.plots[key_text].watered and not game.world.effects.streams.is_empty(),
 		"watering pose emits visible water at contact"
 	)
 	await capture("watering-action")
 	await create_timer(.5).timeout
-	var tree_cell = Vector2i(32, 14)
-	var tree_id = game.catalog.tree_at(tree_cell, game.state)
+	var tree_cell = Vector2i(-1, -1)
+	var tree_id = ""
+	for id in game.catalog.tree_ids:
+		var entry = game.catalog.tree_ids[id]
+		var below = entry.cell + Vector2i.DOWN
+		if entry.map == "home_farm" and below.y < 70 and not game.catalog.blocked(below):
+			tree_cell = entry.cell
+			tree_id = id
+			break
+	check(not tree_id.is_empty(), "a tree with free ground below it")
 	place_cell(tree_cell + Vector2i.DOWN)
 	await key(KEY_6)
 	for hit in range(3):

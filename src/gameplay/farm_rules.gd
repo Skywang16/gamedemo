@@ -13,6 +13,11 @@ func _init(content: ContentCatalog) -> void:
 	catalog = content
 
 
+## Stamina a tool costs: one less per upgrade level, never below one.
+func cost(s: FarmState, tool: String, base: int) -> int:
+	return maxi(1, base - int(s.development.tools.get(tool, 0)))
+
+
 func apply_tool(
 	s: FarmState, tool: String, cell: Vector2i, actor: Vector2i, crop_id: String
 ) -> Dictionary:
@@ -43,9 +48,10 @@ func apply_tool(
 func _chop(s: FarmState, tool: String, id: String) -> Dictionary:
 	if tool != "axe":
 		return result(false)
-	if s.stamina < 3:
+	var price = cost(s, "axe", 3)
+	if s.stamina < price:
 		return exhausted()
-	s.stamina -= 3
+	s.stamina -= price
 	var hits = int(s.tree_damage.get(id, 0)) + 1
 	s.tree_damage[id] = hits
 	var amount = 4 if hits == 3 else (1 if hits == 5 else 0)
@@ -58,9 +64,10 @@ func _clear(s: FarmState, tool: String, debris: Dictionary) -> Dictionary:
 	var clearing = CLEARING[debris.kind]
 	if tool != clearing.tool:
 		return result(false)
-	if s.stamina < clearing.cost:
+	var price = cost(s, tool, int(clearing.cost))
+	if s.stamina < price:
 		return exhausted()
-	s.stamina -= clearing.cost
+	s.stamina -= price
 	s.cleared.append(debris.id)
 	s.inventory[clearing.item] += 1
 	s.development.foraging_xp += 2
@@ -70,10 +77,11 @@ func _clear(s: FarmState, tool: String, debris: Dictionary) -> Dictionary:
 func _till(s: FarmState, key: String, plot: Variant) -> Dictionary:
 	if plot != null:
 		return result(false)
-	if s.stamina < 2:
+	var price = cost(s, "hoe", 2)
+	if s.stamina < price:
 		return exhausted()
 	s.plots[key] = {"crop": "", "growth": 0, "watered": false}
-	s.stamina -= 2
+	s.stamina -= price
 	s.progress.tilled = true
 	return result(true)
 
@@ -82,8 +90,9 @@ func _plant(s: FarmState, plot: Variant, crop_id: String) -> Dictionary:
 	if plot == null or plot.crop != "":
 		return result(false)
 	var crop = catalog.crops[crop_id]
-	if not crop.seasons.has(catalog.calendar.season_of(s.day)):
-		return result(false, "%s不适合在%s天种" % [crop.name, catalog.calendar.date(s.day).season_name])
+	var season = catalog.calendar.date(s.day)
+	if not crop.seasons.has(season.season):
+		return result(false, "%s不适合在%s天种" % [crop.name, season.season_name])
 	if s.inventory[crop.seed_item] < 1:
 		return result(false, "没有种子")
 	if s.stamina < 1:
@@ -102,11 +111,12 @@ func _water(s: FarmState, plot: Variant, cell: Vector2i) -> Dictionary:
 	if s.stamina < 1:
 		return exhausted()
 	plot.watered = true
-	if s.development.watering_level > 0:
-		for side in [Vector2i.LEFT, Vector2i.RIGHT]:
-			var adjacent = s.plots.get(FarmState.cell_key(cell + side))
-			if adjacent != null:
-				adjacent.watered = true
+	var reach = int(s.development.tools.water)
+	for step in range(1, reach + 1):
+		for side in [Vector2i(-step, 0), Vector2i(step, 0)]:
+			var neighbour = s.plots.get(FarmState.cell_key(cell + side))
+			if neighbour != null:
+				neighbour.watered = true
 	s.stamina -= 1
 	s.progress.watered = true
 	return result(true)
@@ -119,24 +129,28 @@ func _harvest(s: FarmState, plot: Variant) -> Dictionary:
 	if plot.growth < crop.growth_days:
 		return result(false)
 	s.inventory[crop.harvest_item] += int(crop.yield)
-	plot.crop = ""
-	plot.growth = 0
+	if int(crop.regrow) > 0:
+		plot.growth = int(crop.growth_days) - int(crop.regrow)
+	else:
+		plot.crop = ""
+		plot.growth = 0
 	s.progress.harvested = true
+	s.stats.harvested += int(crop.yield)
 	s.development.farming_xp += 10
 	return result(true, "+%d %s" % [crop.yield, crop.name], {"harvest": crop.harvest_item})
 
 
+# ---------------------------------------------------------------------------- the day
+
+
 func next_day(s: FarmState) -> Dictionary:
 	var grew = 0
-	var ready = 0
 	for p in s.plots.values():
 		if p.crop != "":
 			var days = int(catalog.crops[p.crop].growth_days)
 			if p.watered and int(p.growth) < days:
 				p.growth += 1
 				grew += 1
-			if int(p.growth) >= days:
-				ready += 1
 		p.watered = false
 	s.daily = {"talked": [], "gifted": [], "gathered": []}
 	var old_season = catalog.calendar.season_of(s.day)
@@ -148,14 +162,16 @@ func next_day(s: FarmState) -> Dictionary:
 	var withered = 0
 	if season != old_season:
 		withered = _wither_out_of_season(s, season)
-		ready = 0
-		for p in s.plots.values():
-			if p.crop != "" and int(p.growth) >= int(catalog.crops[p.crop].growth_days):
-				ready += 1
 	var weather = catalog.weather.weather_on(s.world_seed, s.day)
 	if catalog.weather.waters_crops(weather):
 		for p in s.plots.values():
 			p.watered = true
+	var ready = 0
+	for p in s.plots.values():
+		if p.crop != "" and int(p.growth) >= int(catalog.crops[p.crop].growth_days):
+			ready += 1
+	var summary = s.stats.duplicate()
+	s.stats = FarmState.fresh_stats()
 	return result(
 		true,
 		"第 %d 天 · %d 株生长，%d 株可收获。" % [s.day, grew, ready],
@@ -165,6 +181,7 @@ func next_day(s: FarmState) -> Dictionary:
 			"weather": weather,
 			"season_changed": season != old_season,
 			"withered": withered,
+			"summary": summary,
 		}
 	)
 
@@ -179,16 +196,7 @@ func _wither_out_of_season(s: FarmState, season: String) -> int:
 	return count
 
 
-func buy_seeds(s: FarmState, crop_id: String, quantity: int = 1) -> Dictionary:
-	if quantity < 1 or quantity > 99 or not catalog.crops.has(crop_id):
-		return result(false, "购买数量或作物无效。")
-	var c = catalog.crops[crop_id]
-	var cost = int(catalog.items[c.seed_item].buy_price) * quantity
-	if s.gold < cost:
-		return result(false, "金币不足")
-	s.gold -= cost
-	s.inventory[c.seed_item] += quantity
-	return result(true, "+%d %s种子" % [quantity, c.name])
+# ---------------------------------------------------------------------------- selling and eating
 
 
 func sale_quote(s: FarmState) -> Dictionary:
@@ -196,7 +204,7 @@ func sale_quote(s: FarmState) -> Dictionary:
 	var count = 0
 	for id in catalog.items:
 		var item = catalog.items[id]
-		if item.kind == "produce":
+		if item.kind in ContentCatalog.SELLABLE:
 			count += int(s.inventory[id])
 			gold += int(s.inventory[id]) * int(item.sell_price)
 	return {"gold": gold, "count": count}
@@ -205,13 +213,35 @@ func sale_quote(s: FarmState) -> Dictionary:
 func sell_produce(s: FarmState) -> Dictionary:
 	var quote = sale_quote(s)
 	if quote.count == 0:
-		return result(false, "没有可出售的农产品")
+		return result(false, "没有可出售的东西")
 	for id in catalog.items:
-		if catalog.items[id].kind == "produce":
+		if catalog.items[id].kind in ContentCatalog.SELLABLE:
 			s.inventory[id] = 0
 	s.gold += int(quote.gold)
+	s.stats.earned += int(quote.gold)
 	s.progress.sold = true
-	return result(true, "出售 %d 份农产品 · +%d G" % [quote.count, quote.gold])
+	return result(true, "出售 %d 件 · +%d G" % [quote.count, quote.gold])
+
+
+func eat(s: FarmState, item_id: String) -> Dictionary:
+	var item = catalog.items[item_id]
+	if int(item.energy) < 1 or s.inventory[item_id] < 1:
+		return result(false, "这个不能吃。")
+	if s.stamina >= FarmState.MAX_STAMINA:
+		return result(false, "现在体力充沛，饿了再吃吧。")
+	s.inventory[item_id] -= 1
+	s.stamina = mini(FarmState.MAX_STAMINA, s.stamina + int(item.energy))
+	return result(true, "吃下%s，恢复 %d 体力。" % [item.name, item.energy])
+
+
+## Adds everything the player holds to the collection log. Returns the new entries.
+func record_collection(s: FarmState) -> Array:
+	var fresh: Array = []
+	for id in catalog.items:
+		if (int(s.inventory[id]) > 0 or int(s.storage[id]) > 0) and not s.collected.has(id):
+			s.collected.append(id)
+			fresh.append(id)
+	return fresh
 
 
 func exhausted() -> Dictionary:

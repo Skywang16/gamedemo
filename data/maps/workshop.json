@@ -1,6 +1,6 @@
 {
   "id": "workshop",
-  "name": "沈砚工坊",
+  "name": "卡弗木工坊",
   "width": 30,
   "height": 19,
   "tile_size": 32,
@@ -51,8 +51,18 @@
   "props": [],
   "stations": [
     {
-      "id": "town",
-      "name": "回到青苇镇",
+      "id": "builder",
+      "name": "建造台",
+      "kind": "shop",
+      "cell": [
+        10,
+        8
+      ],
+      "shop_id": "builder"
+    },
+    {
+      "id": "to_town",
+      "name": "回到镇上",
       "kind": "exit",
       "cell": [
         14,
@@ -62,15 +72,6 @@
       "arrival": [
         1744,
         720
-      ]
-    },
-    {
-      "id": "upgrade",
-      "name": "工作台 / 工具升级",
-      "kind": "upgrade",
-      "cell": [
-        20,
-        8
       ]
     }
   ],

@@ -69,20 +69,6 @@
   "props": [],
   "stations": [
     {
-      "id": "farm",
-      "name": "走出农舍",
-      "kind": "exit",
-      "cell": [
-        14,
-        15
-      ],
-      "destination": "home_farm",
-      "arrival": [
-        1296,
-        528
-      ]
-    },
-    {
       "id": "sleep",
       "name": "床 / 休息",
       "kind": "bed",
@@ -111,11 +97,25 @@
     },
     {
       "id": "kitchen",
-      "name": "厨房 / 野莓粥",
+      "name": "厨房 / 烹饪",
       "kind": "kitchen",
       "cell": [
         21,
         11
+      ]
+    },
+    {
+      "id": "to_home_farm",
+      "name": "走出农舍",
+      "kind": "exit",
+      "cell": [
+        14,
+        15
+      ],
+      "destination": "home_farm",
+      "arrival": [
+        1296,
+        528
       ]
     }
   ],

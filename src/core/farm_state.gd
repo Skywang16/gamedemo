@@ -1,11 +1,14 @@
 class_name FarmState
 extends RefCounted
 
-const SCHEMA_VERSION = 5
+const SCHEMA_VERSION = 6
 const MAX_STAMINA = 100
-const MORNING = 8 * 60
-const NIGHT = 20 * 60
+## The day runs from 06:00 to 02:00 the next morning (26:00).
+const MORNING = 6 * 60
+const NIGHT = 26 * 60
+const TICK_MINUTES = 10
 const GOALS = ["tilled", "planted", "watered", "slept", "harvested", "sold"]
+const TOOLS = ["hoe", "axe", "pickaxe", "scythe", "water"]
 
 var day: int = 1
 var world_seed: int = 0
@@ -25,12 +28,16 @@ var narrative: Dictionary = {
 }
 var relationships: Dictionary = {}
 var daily: Dictionary = {"talked": [], "gifted": [], "gathered": []}
-var development: Dictionary = {
-	"farming_xp": 0, "foraging_xp": 0, "watering_level": 0, "memories": []
-}
+var development: Dictionary = {}
 var storage: Dictionary = {}
 var cleared: Array = []
 var tree_damage: Dictionary = {}
+var buildings: Dictionary = {}
+var animals: Array = []
+var collected: Array = []
+var festival_done: Array = []
+var stats: Dictionary = {}
+var board: Dictionary = {"week": 0, "done": []}
 
 
 static func cell_key(cell: Vector2i) -> String:
@@ -42,9 +49,31 @@ static func key_cell(key: String) -> Vector2i:
 	return Vector2i(int(parts[0]), int(parts[1]))
 
 
+static func fresh_development() -> Dictionary:
+	var tools: Dictionary = {}
+	for tool in TOOLS:
+		tools[tool] = 0
+	return {
+		"farming_xp": 0,
+		"foraging_xp": 0,
+		"fishing_xp": 0,
+		"cooking_xp": 0,
+		"mining_xp": 0,
+		"rod": 0,
+		"events": [],
+		"tools": tools,
+	}
+
+
+static func fresh_stats() -> Dictionary:
+	return {"earned": 0, "harvested": 0, "caught": 0, "cooked": 0}
+
+
 static func new_game(catalog: ContentCatalog, seed_value: int = 0) -> FarmState:
 	var s = FarmState.new()
 	s.world_seed = seed_value
+	s.development = fresh_development()
+	s.stats = fresh_stats()
 	for id in catalog.items:
 		s.inventory[id] = 0
 		s.storage[id] = 0
@@ -59,7 +88,7 @@ static func new_game(catalog: ContentCatalog, seed_value: int = 0) -> FarmState:
 	return s
 
 
-func snapshot(catalog: ContentCatalog) -> Dictionary:
+func snapshot(_catalog: ContentCatalog) -> Dictionary:
 	return {
 		"schema_version": SCHEMA_VERSION,
 		"map_id": current_map,
@@ -71,6 +100,12 @@ func snapshot(catalog: ContentCatalog) -> Dictionary:
 		"storage": storage.duplicate(true),
 		"cleared": cleared.duplicate(),
 		"tree_damage": tree_damage.duplicate(),
+		"buildings": buildings.duplicate(true),
+		"animals": animals.duplicate(true),
+		"collected": collected.duplicate(),
+		"festival_done": festival_done.duplicate(),
+		"stats": stats.duplicate(),
+		"board": board.duplicate(true),
 		"world_seed": world_seed,
 		"day": day,
 		"minute": minute,
@@ -90,18 +125,43 @@ static func from_validated(data: Dictionary) -> FarmState:
 	s.tree_damage = data.tree_damage.duplicate()
 	for id in s.tree_damage:
 		s.tree_damage[id] = int(s.tree_damage[id])
-	for field in ["profile", "narrative", "relationships", "daily", "development", "storage"]:
+	for field in [
+		"profile",
+		"narrative",
+		"relationships",
+		"daily",
+		"development",
+		"storage",
+		"buildings",
+		"board",
+		"stats"
+	]:
 		s.set(field, data[field].duplicate(true))
 	for key in ["skin", "hair", "outfit", "hat"]:
 		s.profile[key] = int(s.profile[key])
 	for key in ["stage", "page"]:
 		s.narrative[key] = int(s.narrative[key])
-	for key in ["farming_xp", "foraging_xp", "watering_level"]:
-		s.development[key] = int(s.development[key])
+	for key in s.development:
+		if s.development[key] is float:
+			s.development[key] = int(s.development[key])
+	for tool in s.development.tools:
+		s.development.tools[tool] = int(s.development.tools[tool])
+	for key in s.stats:
+		s.stats[key] = int(s.stats[key])
 	for id in s.relationships:
 		s.relationships[id] = int(s.relationships[id])
 	for id in s.storage:
 		s.storage[id] = int(s.storage[id])
+	for id in s.buildings:
+		s.buildings[id].ready_day = int(s.buildings[id].ready_day)
+	s.board.week = int(s.board.week)
+	s.board.done = s.board.done.map(func(i): return int(i))
+	s.animals = data.animals.duplicate(true)
+	for a in s.animals:
+		for key in ["friendship", "age", "wait"]:
+			a[key] = int(a[key])
+	s.collected = data.collected.duplicate()
+	s.festival_done = data.festival_done.duplicate()
 	s.world_seed = int(data.world_seed)
 	s.day = int(data.day)
 	s.minute = int(data.minute)

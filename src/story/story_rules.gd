@@ -8,8 +8,10 @@ func _init(content: ContentCatalog) -> void:
 	catalog = content
 
 
-func result(ok: bool, message: String) -> Dictionary:
-	return {"ok": ok, "message": message}
+func result(ok: bool, message: String, extra: Dictionary = {}) -> Dictionary:
+	var r = {"ok": ok, "message": message}
+	r.merge(extra)
+	return r
 
 
 func level(xp: int) -> int:
@@ -28,13 +30,14 @@ func missing(s: FarmState, requirements: Dictionary) -> String:
 	return "还需要：" + "，".join(parts) if not parts.is_empty() else ""
 
 
+# ---------------------------------------------------------------------------- the main story
+
+
 func can_complete(s: FarmState, event: String) -> String:
-	var expected = {
-		"welcome": 0, "first_meal": 1, "bridge": 2, "notebook": 3, "feast": 4, "festival": 5
-	}
-	if not expected.has(event) or int(s.narrative.stage) != expected[event]:
+	var q = quest(s)
+	if q.event != event or event == "":
 		return "这段故事已经完成，或还没到时候。"
-	return missing(s, quest(s).needs)
+	return missing(s, q.needs)
 
 
 func complete(s: FarmState, event: String, choice: String = "") -> Dictionary:
@@ -52,14 +55,22 @@ func complete(s: FarmState, event: String, choice: String = "") -> Dictionary:
 	for id in quest(s).needs:
 		s.inventory[id] -= int(quest(s).needs[id])
 	s.narrative.stage += 1
+	var message = ""
 	if event == "first_meal":
 		s.gold += 20
+		message = "+20 G"
 	if event == "festival":
 		s.gold += 50
 		s.narrative.wish = choice
-	return result(
-		true, "+50 G" if event == "festival" else ("+20 G" if event == "first_meal" else "")
-	)
+		message = "+50 G"
+	return result(true, message)
+
+
+# ---------------------------------------------------------------------------- people
+
+
+func birthday_today(s: FarmState, id: String) -> bool:
+	return id in catalog.calendar.birthdays_on(s.day, catalog.story.npcs)
 
 
 func talk(s: FarmState, id: String) -> String:
@@ -67,7 +78,26 @@ func talk(s: FarmState, id: String) -> String:
 		s.relationships[id] = mini(100, int(s.relationships[id]) + 4)
 		s.daily.talked.append(id)
 	var npc = catalog.story.npcs[id]
-	return npc.after if int(s.narrative.stage) == 6 else npc.talk[(s.day - 1) % npc.talk.size()]
+	if birthday_today(s, id):
+		return npc.birthday_line
+	if int(s.narrative.stage) == 6:
+		return npc.after
+	var weather = catalog.weather.weather_on(s.world_seed, s.day)
+	if catalog.weather.waters_crops(weather) and s.day % 2 == 0:
+		return npc.rain
+	return npc.talk[(s.day + id.length()) % npc.talk.size()]
+
+
+## How a villager feels about an item: "love" (favourite), "like", "dislike" or "neutral".
+func taste(id: String, item_id: String) -> String:
+	var npc = catalog.story.npcs[id]
+	if npc.favorite == item_id:
+		return "love"
+	if item_id in npc.likes:
+		return "like"
+	if item_id in npc.dislikes:
+		return "dislike"
+	return "neutral"
 
 
 func gift(s: FarmState, npc_id: String, item_id: String) -> Dictionary:
@@ -77,24 +107,75 @@ func gift(s: FarmState, npc_id: String, item_id: String) -> Dictionary:
 		return result(false, "今天已经送过礼物了，明天再来吧。")
 	if s.inventory[item_id] < 1 or catalog.items[item_id].kind == "seed":
 		return result(false, "口袋里没有这份礼物。")
-	var favorite = catalog.story.npcs[npc_id].favorite == item_id
+	var feeling = taste(npc_id, item_id)
+	var change = {"love": 12, "like": 8, "neutral": 4, "dislike": -4}[feeling]
+	if change > 0 and birthday_today(s, npc_id):
+		change *= 2
 	s.inventory[item_id] -= 1
-	s.relationships[npc_id] = mini(100, int(s.relationships[npc_id]) + (10 if favorite else 4))
+	s.relationships[npc_id] = clampi(int(s.relationships[npc_id]) + change, 0, 100)
 	s.daily.gifted.append(npc_id)
-	return result(true, "正是我喜欢的，谢谢你！关系 +10" if favorite else "谢谢你的心意。关系 +4")
+	var message = {
+		"love": "正是我最喜欢的，谢谢你！关系 %+d",
+		"like": "我很喜欢，谢谢。关系 %+d",
+		"neutral": "谢谢你的心意。关系 %+d",
+		"dislike": "呃……谢谢，不过这个我不太喜欢。关系 %+d",
+	}[feeling]
+	return result(true, message % change)
 
 
-func memory(s: FarmState, id: String) -> Dictionary:
-	if (
-		not catalog.story.npcs.has(id)
-		or int(s.relationships[id]) < 40
-		or s.development.memories.has(id)
-	):
-		return result(false, "这段回忆尚未解锁，或已经读过。")
-	s.development.memories.append(id)
+## The next unseen event this villager's friendship has unlocked, or {}.
+func available_event(s: FarmState, id: String) -> Dictionary:
+	for event in catalog.story.npcs[id].events:
+		if int(s.relationships[id]) >= int(event.at) and not s.development.events.has(event.id):
+			return event
+	return {}
+
+
+func is_heart_event(event_id: String) -> bool:
+	for id in catalog.story.npcs:
+		for event in catalog.story.npcs[id].events:
+			if event.id == event_id:
+				return true
+	return false
+
+
+## Joining a festival on the plaza between 09:00 and 14:00, once per year and festival.
+func attend_festival(s: FarmState) -> Dictionary:
+	var festival = catalog.calendar.festival_on(s.day)
+	if festival.is_empty() or s.current_map != catalog.calendar.plaza_map:
+		return result(false, "")
+	if s.minute < 9 * 60 or s.minute >= 14 * 60:
+		return result(false, "")
+	var key = "%d:%s" % [catalog.calendar.date(s.day).year, festival.id]
+	if s.festival_done.has(key):
+		return result(false, "")
+	s.festival_done.append(key)
 	s.gold += 30
-	s.inventory.turnip_seed += 3
-	return result(true, "收到友人的回礼：30 金币、3 份萝卜种子。")
+	for id in s.relationships:
+		s.relationships[id] = mini(100, int(s.relationships[id]) + 2)
+	return result(true, "参加了「%s」：%s 金币 +30，大家都近了一点。" % [festival.name, festival.text])
+
+
+func claim_event(s: FarmState, event_id: String) -> Dictionary:
+	for id in catalog.story.npcs:
+		for event in catalog.story.npcs[id].events:
+			if event.id != event_id:
+				continue
+			if int(s.relationships[id]) < int(event.at) or s.development.events.has(event_id):
+				return result(false, "这段回忆尚未解锁，或已经读过。")
+			s.development.events.append(event_id)
+			var parts: Array[String] = []
+			if int(event.reward.gold) > 0:
+				s.gold += int(event.reward.gold)
+				parts.append("%d 金币" % int(event.reward.gold))
+			for item in event.reward.items:
+				s.inventory[item] += int(event.reward.items[item])
+				parts.append("%s ×%d" % [catalog.items[item].name, int(event.reward.items[item])])
+			return result(true, "收到友人的回礼：" + "、".join(parts))
+	return result(false, "没有这段事件。")
+
+
+# ---------------------------------------------------------------------------- the land
 
 
 func gather(s: FarmState, node_id: String) -> Dictionary:
@@ -105,21 +186,28 @@ func gather(s: FarmState, node_id: String) -> Dictionary:
 			node = entry
 	if node.is_empty() or s.daily.gathered.has(node_id):
 		return result(false, "")
-	if s.stamina < 2:
+	var mine = GatherRules.is_mine(node)
+	var cost = 3 if mine else 2
+	if s.stamina < cost:
 		return result(false, "体力不足")
-	var amount = 2 if level(int(s.development.foraging_xp)) >= 3 else 1
-	s.inventory[node.item] += amount
-	s.stamina -= 2
-	s.development.foraging_xp += 3
+	var item = GatherRules.item_for(catalog, s, node)
+	var amount = 1
+	if not mine and level(int(s.development.foraging_xp)) >= 3:
+		amount = 2
+	s.inventory[item] += amount
+	s.stamina -= cost
+	if mine:
+		s.development.mining_xp += 4
+	else:
+		s.development.foraging_xp += 3
 	s.daily.gathered.append(node_id)
-	return result(true, "%s +%d" % [catalog.items[node.item].name, amount])
+	return result(true, "%s +%d" % [catalog.items[item].name, amount], {"item": item})
 
 
 func enter(s: FarmState, destination: String, arrival: Vector2) -> Dictionary:
-	if (
-		not catalog.regions.has(destination)
-		or (destination == "lake" and int(s.narrative.stage) < 3)
-	):
+	if not catalog.regions.has(destination):
+		return result(false, "那里没有路。")
+	if destination == "lake" and int(s.narrative.stage) < 3:
 		return result(false, "木桥还没修好。")
 	if catalog.blocked(
 		Vector2i(int(arrival.x / 32), int(arrival.y / 32)), destination, s.tree_damage
@@ -128,33 +216,6 @@ func enter(s: FarmState, destination: String, arrival: Vector2) -> Dictionary:
 	s.current_map = destination
 	s.player_position = arrival
 	return result(true, "")
-
-
-func upgrade(s: FarmState) -> Dictionary:
-	if int(s.development.watering_level) > 0:
-		return result(false, "水壶已经升级过了。")
-	if level(int(s.development.farming_xp)) < 2:
-		return result(false, "需要种植 Lv.2")
-	var error = missing(s, {"wood": 3, "stone": 2})
-	if not error.is_empty():
-		return result(false, error)
-	if s.gold < 40:
-		return result(false, "还需要 40 金币。")
-	s.gold -= 40
-	s.inventory.wood -= 3
-	s.inventory.stone -= 2
-	s.development.watering_level = 1
-	return result(true, "获得铜水壶")
-
-
-func cook(s: FarmState) -> Dictionary:
-	if s.inventory.berry < 2:
-		return result(false, "野莓粥需要 2 份野莓。")
-	if s.stamina >= FarmState.MAX_STAMINA:
-		return result(false, "现在体力充沛，饿了再吃吧。")
-	s.inventory.berry -= 2
-	s.stamina = mini(FarmState.MAX_STAMINA, s.stamina + 30)
-	return result(true, "吃下温热的野莓粥，恢复 30 体力。")
 
 
 func transfer(s: FarmState, id: String, deposit: bool) -> Dictionary:
