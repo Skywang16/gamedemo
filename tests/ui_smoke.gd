@@ -9,7 +9,6 @@ func run() -> void:
 		push_error("Use a fresh -- --save-dir=user://ui-test-UNIQUE")
 		quit(2)
 		return
-	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://screenshots"))
 	scene = load("res://scenes/main.tscn")
 	await spawn()
 	check(not game.initialized and game.front.screen == "title", "boots to title")

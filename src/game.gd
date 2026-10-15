@@ -50,9 +50,6 @@ func _ready() -> void:
 		add_child(player)
 		audio[kind] = player
 	_show_front()
-	for argument in OS.get_cmdline_user_args():
-		if argument.begins_with("--capture="):
-			capture_after_frame.call_deferred(argument.trim_prefix("--capture="))
 
 
 func _setup_input() -> void:
@@ -523,13 +520,6 @@ func _refresh() -> void:
 func _sound(kind: String) -> void:
 	if sound_on:
 		audio[kind].play()
-
-
-func capture_after_frame(path: String) -> void:
-	await get_tree().process_frame
-	await RenderingServer.frame_post_draw
-	var error = get_viewport().get_texture().get_image().save_png(path)
-	print("CAPTURE_SAVED ", path, " ", error)
 
 
 func _notification(what: int) -> void:

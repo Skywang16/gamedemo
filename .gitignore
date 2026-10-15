@@ -1,5 +1,6 @@
 .godot/
 *.tmp
+*.log
 .DS_Store
 build/
 __pycache__/
@@ -13,3 +14,8 @@ __pycache__/
 *.zip
 /dist/
 .idea/
+
+# Generated reports and recordings belong under build/.
+/screenshots/
+/preview.png
+/preview.png.import

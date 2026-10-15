@@ -1,108 +1,60 @@
-# 芽田农场 · 河灯归来
+# 芽田农场 · Sprout Valley
 
-Godot 4.7.2 / GDScript 的 PC 单机开发原型。当前可从标题、创建角色一路玩到第一章结尾，再继续开垦、种植、交友和升级工具。
+使用 Godot 4.7.2 / GDScript 开发的 PC 单机像素农场角色扮演游戏。玩家在青苇镇开垦荒地、经营农场、结识居民，逐步恢复停办的河灯夜。
 
-## 直接试玩
+当前开发版本为 0.5.0：支持标题菜单、角色创建、七张地图、耕种与清荒、村民关系、工具养成、存档和可完整完成的第一章「河灯归来」。后续章节、季节、动物、钓鱼与战斗仍在规划中。
 
-克隆工程，用 Godot 4.7.2 标准版导入 `project.godot`，按 F5 运行：
+## 运行
+
+安装 Godot 4.7.2 标准版，用编辑器导入 `project.godot`，按 F5 运行。素材、字体和音效已包含在仓库中，运行游戏不需要 Python。
 
 ```sh
-git clone https://github.com/Skywang16/gamedemo.git
-cd gamedemo
+git clone https://github.com/Skywang16/gamedemo.git sprout-valley
+cd sprout-valley
+./launch.command
 ```
 
-macOS 也可执行 `./launch.command`。脚本优先使用 `GODOT_BIN`，其次寻找本工作区的 Godot、`/Applications/Godot.app` 或 PATH 中的 `godot`。像素素材、字体和音效已包含在工程中，直接运行不需要 Python。
+macOS 可直接双击 `launch.command`。引擎查找顺序是 `GODOT_BIN`、PATH 中的 `godot` / `godot4`、`~/Applications/Godot.app`、`/Applications/Godot.app`。也可指定引擎：
 
-本地打包后，可打开上一级目录生成的 `Sprout Valley.app`，选择「开始新生活」。开发期不兼容旧存档；创建新角色后直接替换当前存档，不制作备份。
+```sh
+GODOT_BIN="/absolute/path/to/Godot" ./launch.command
+```
 
-![实际开局画面](preview.png)
+WASD / 方向键移动，Shift 跑步，E 交互，空格使用工具，数字键切换工具，M 地图，B 背包，J 手记，Esc 暂停。详细操作与已实现内容见 [玩法说明](docs/gameplay.md)。
 
-![实际运行：人物工具动作与倒树](screenshots/motion.gif)
+## 开发
 
-## 第一天
+开发工具需要 Python 3.11+、Make；macOS 自带的 `/usr/bin/python3` 可能低于所需版本。使用已安装的新版本 Python 创建环境：
 
-1. 创建姓名、农场名、肤色、发色、衣服和帽子后，直接进入农场。祖母的信放在农舍桌边，可以自愿阅读。
-2. 屋前找阿禾，按 E 交谈。农场最初只有草地、杂草、木枝、石块和树木，没有翻好的田和预种作物。
-3. 5 镰刀清草、6 斧头清理木枝、7 镐清理碎石。鼠标点击身边一格，或按空格使用面朝方向的工具。清理得到纤维、木材、石料，清理结果永久保留。
-4. 清地后，1 翻土、2 播种、3 浇水。Q 切换种子。萝卜需要 3 个浇水日，胡萝卜需要 4 个浇水日；干旱日不生长。
-5. 农舍门口按 E 进入室内，在床边休息；也可在 Esc 菜单中点「回家休息」。翌日在屋内醒来，直接继续游玩。4 收获成熟作物。
-6. J 打开故事手记查看目标。至少种 4 份萝卜能完成第一章的两次交付；多种的可以卖给屋前收货箱。
+```sh
+make setup                 # 创建 .venv 并安装固定版本工具
+make editor                # 打开 Godot 编辑器
+make check                 # GDScript 格式、Python 静态检查与格式、Shell 语法
+make test                  # 无窗口的规则和剧情测试
+make test-ui               # 原生窗口流程与动画测试，需要图形桌面
+make package               # 本地 macOS 应用包，输出到 build/macos/
+```
 
-WASD / 方向键移动，Shift 跑步，E 交互 / 进屋，M 打开当前地图和入口标记，B 背包，Esc 暂停。菜单与对话暂停时间。
+`make setup PYTHON=python3.12` 可指定 Python。素材重建、测试产物、存档、打包与清理约定见 [开发指南](docs/development.md)。
 
-## 界面与反馈
-
-场景占满窗口。右上显示日期、时间和金币，底部是工具与物品格，右侧竖条显示体力；手记、地图、背包按需打开。人物对话使用底部头像和文字框。标题、创建、商店与储物统一使用原创像素木框和纸面。
-
-工具使用四方向、六帧人物动作：屈肘、转肩、前倾、挥动与收势；手臂长度固定。蓄力到接触帧才改变世界，菜单暂停未完成动作。选错工具、空挥、对未翻土地播种、重复浇水、收获未成熟作物都不弹操作教学，也不扣资源；有效操作由土地、作物和粒子变化反馈。收获和清荒只短暂显示物品增加，缺少种子或体力时给出简短原因。自动保存静默，手动保存有确认。操作键位可在标题的「操作」页查询。
-
-## 已实现
-
-- 96×72 格农场（3072×2304 像素）、80×56 格小镇、80×64 格森林、88×60 格湖畔；室外镜头跟随，屏幕界面固定，鼠标正确换算世界坐标。
-- 农舍、小馆、工坊三张独立室内；房门进入、门口返回、真实碰撞。地图册显示本人、村民和交互点。
-- 动态标题（云层、水纹、炊烟、蝴蝶）；场景树叶与草丛轻摆、水纹、烟囱与河灯浮动；人物待机呼吸、奔跑和七种工具动作，浇水流线、土屑、木屑、石屑及收获物弹起。
-- 大树三次斧击倒下、再两次清理树桩；受击摇晃、倒树与落地碎屑，按阶段掉落木材，移除碰撞。砍伐进度跨地图、跨日、存档保留。
-- 清荒、两种作物、每日浇水生长、收获、购买种子、出售作物、体力、日夜色调、休息、自动 / 手动保存。
-- 四位村民、上午 / 下午两个位置、每日交谈与赠礼、关系 40 的专属回忆与一次性回礼。
-- 种植 / 采集经验；种植 2 级升级铜水壶，一次浇三格；采集 3 级增加野外采集产量；储物箱；野莓粥恢复体力。
-- 第一章完整剧情：欢迎 → 分享收成 → 采集修桥 → 湖边手记 → 准备聚餐 → 河灯心愿；修桥解锁湖畔，结局改变湖面与人物对白。
-- 原创像素素材由 Python / Pillow 直接绘制：独立透明角色、作物、树木、建筑、杂物和道具。地形背景是地图数据的渲染结果，交互对象和碰撞独立。
-
-第二、三章只有剧情大纲。当前没有季节轮替、钓鱼、战斗、婚恋或牲畜养殖；大树可砍倒并继续清理树桩，清理后的农场地块可开垦。当前可开发、可游玩，但内容和美术还需继续打磨。
-
-## 目录与职责
+## 项目结构
 
 ```text
+assets/          游戏使用的像素素材、字体和音效
+data/            物品、作物、剧情及独立地图配置
+scenes/          Godot 场景入口
 src/
-  game.gd              # 启动、输入路由、时间、区域切换与系统协调
-  core/                # 配置读取与索引；可序列化状态
-  gameplay/            # 清荒、种植、睡眠、买卖规则
-  story/               # 任务推进、社交、采集、技能、烹饪、储物规则
-  world/               # 角色移动、碰撞、镜头、物件与绘制
-  ui/                  # 共用皮肤、标题 / 创建、常驻 HUD、GameDialogs 菜单与对话、地图册
-  persistence/         # 文件读写与存档入口校验
-scenes/                # Godot 主场景
-data/                 # 物品、作物、人物和剧情
-  maps/                # 地图索引和每张地图独立 JSON
-assets/                # 游戏直接使用的 PNG、字体、音效
-tools/
-  build_art.py         # 素材重建入口
-  art/                 # 人物、环境、地形、室内、作物、界面皮肤与图标绘制
-  world/build_layouts.py # 确定性室外地图生成
-  package_macos.py     # macOS 开发包
-tests/                # 规则、剧情与原生窗口集成测试
-screenshots/           # 实际运行截图
+  core/          内容索引与游戏状态
+  gameplay/      清荒、耕种、时间与买卖规则
+  story/         剧情、社交、技能与养成规则
+  world/         人物、地图、碰撞、镜头与特效
+  ui/            标题、创建角色、HUD、菜单与对话
+  persistence/   存档读写与入口校验
+tests/           规则、剧情、界面与动画测试
+tools/           可重复使用的素材绘制、地图生成与打包工具
+docs/            架构、玩法、人物剧情和开发文档
+licenses/        第三方许可说明
+build/           本地产物，自动生成，不提交 Git
 ```
 
-数据入口校验一次，内部系统使用已经验证的状态。玩法规则不依赖场景树，不负责文件读写。素材生成器不参与游戏运行。
-
-## 开发与验证
-
-```sh
-python3 -m venv .venv
-.venv/bin/pip install -r requirements-dev.txt
-.venv/bin/python tools/world/build_layouts.py
-.venv/bin/python tools/build_art.py
-
-godot --headless --editor --path . --import
-godot --headless --path . --script res://tests/test_runner.gd
-godot --headless --path . --script res://tests/chapter_tests.gd
-godot --path . --script res://tests/ui_smoke.gd -- --save-dir=user://ui-test-UNIQUE
-godot --path . --script res://tests/animation_smoke.gd -- --save-dir=user://ui-test-animation-UNIQUE
-
-.venv/bin/gdformat --check src tests
-.venv/bin/ruff check tools
-.venv/bin/ruff format --check tools
-```
-
-UI 测试必须使用新的 `ui-test-` 目录名；需要图形桌面。测试会操作输入、保存截图；跨大区域通过定位角色缩短步行时间，不能替代真人对节奏和手感的体验。测试不修改正常存档。
-
-正常存档在 macOS `~/Library/Application Support/SproutValleyDemo/farm.json`。当前格式为 schema 4；只支持当前结构，临时文件写完后替换主文件。地图和结构发生破坏性修改时直接开新档，不编写迁移分支。
-
-```sh
-python3 tools/package_macos.py /absolute/path/to/Godot
-```
-
-这个 `.app` 使用 Godot 可执行文件加 PCK，是本地开发包；正式分发应改用导出模板和正式签名流程。
-
-人物设定与后续章节见 `STORY_DESIGN.md`；架构见 `DESIGN.md`；实际验收见 `VALIDATION.md`。原创绘制代码与游戏素材在工程内，字体及 Godot 的许可证位于 `assets/fonts/OFL.txt` 和 `licenses/`。
+模块职责和数据流见 [架构设计](docs/architecture.md)，人物与章节规划见 [故事设计](docs/story.md)。源代码与原创素材绘制工具保留在仓库；字体许可见 [OFL](assets/fonts/OFL.txt)，引擎许可见 [licenses/](licenses/)。

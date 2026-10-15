@@ -126,9 +126,17 @@ func capture(name: String) -> void:
 		game.hud.toast_remaining = 0
 		game.hud.toast_box.hide()
 		game.hud.toast_label.hide()
-	await game.capture_after_frame(
-		ProjectSettings.globalize_path("res://screenshots/" + name + ".png")
-	)
+	var output_dir = "res://build/test-results".path_join(folder.get_file())
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(output_dir))
+	var ignore_file = FileAccess.open("res://build/.gdignore", FileAccess.WRITE)
+	ignore_file.close()
+	await process_frame
+	# macOS can skip window draws while occluded; capture must not wait for visibility.
+	RenderingServer.force_draw()
+	var path = ProjectSettings.globalize_path(output_dir.path_join(name + ".png"))
+	var error = game.get_viewport().get_texture().get_image().save_png(path)
+	check(error == OK, "screenshot saved: " + name)
+	print("CAPTURE_SAVED ", path, " ", error)
 
 
 func spawn() -> void:
