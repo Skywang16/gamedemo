@@ -27,6 +27,7 @@ func run() -> void:
 	test_rain_and_seasons()
 	test_save()
 	test_data()
+	test_atmosphere()
 	print("CALENDAR_TESTS: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
 
@@ -253,3 +254,55 @@ func test_data() -> void:
 				),
 				"birthday is not on a festival: " + id
 			)
+
+
+func test_atmosphere() -> void:
+	for season in WorldAtmosphere.SEASON_GRADE:
+		for weather in WorldAtmosphere.WEATHER_GRADE:
+			var c = WorldAtmosphere.grade(season, weather)
+			check(c.r <= 1.0 and c.g <= 1.0 and c.b <= 1.0, "grade never over-brightens")
+			check(
+				c.get_luminance() > 0.45,
+				"grade never blacks out the world: %s %s" % [season, weather]
+			)
+	for weather in catalog.calendar.weather_names:
+		check(WorldAtmosphere.WEATHER_GRADE.has(weather), "every weather has a grade: " + weather)
+	check(WorldAtmosphere.dusk(12 * 60) == 0.0 and WorldAtmosphere.dusk(20 * 60) == 1.0, "dusk")
+	var noon = WorldAtmosphere.lit("spring", "sunny", 12 * 60)
+	var night = WorldAtmosphere.lit("spring", "sunny", 20 * 60)
+	check(noon == Color.WHITE and night.get_luminance() < noon.get_luminance(), "evening is darker")
+	var previous: Dictionary = {}
+	var order = WorldAtmosphere.SEASON_ORDER
+	for step in range(4 * 28 * 2):
+		var s = (step % 112) / 28
+		var d = step % 28 + 1
+		var w = WorldAtmosphere.season_weights(s, d, 28)
+		var sum = 0.0
+		for key in w:
+			sum += w[key]
+			check(w[key] >= 0.0 and w[key] <= 1.0, "weight in range")
+		check(is_equal_approx(sum, 1.0), "season weights sum to one")
+		check(w[order[s]] >= 0.5, "the current season always dominates")
+		if not previous.is_empty():
+			for key in w:
+				check(absf(w[key] - previous[key]) <= 0.126, "season look changes smoothly")
+		previous = w
+	var first = WorldAtmosphere.season_weights(2, 14, 28)
+	check(first.autumn == 1.0, "mid-season is pure")
+	var layer = WeatherLayer.new()
+	var counts = {}
+	for weather in ["sunny", "cloudy", "rain", "storm", "wind", "snow"]:
+		for season in order:
+			layer.configure(season, weather, false)
+			counts[weather + season] = layer.px.size()
+			for frame in 600:
+				layer._process(1.0 / 60.0)
+			for i in layer.px.size():
+				check(layer.px[i] > -150.0 and layer.px[i] < 1280.0 + 130.0, "x stays near screen")
+				check(layer.py[i] < 800.0 + 30.0, "y stays near screen")
+	check(counts.rainspring == 170 and counts.stormsummer == 300, "rain and storm density")
+	check(counts.snowwinter == 150 and counts.windautumn == 34, "snow and wind density")
+	check(counts.sunnysummer == 0 and counts.sunnyspring == 5, "calm days get few petals")
+	layer.configure("summer", "storm", true)
+	check(layer.px.size() == 150, "reduce motion halves the storm")
+	layer.queue_free()

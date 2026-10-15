@@ -24,6 +24,8 @@ func configure(texture: Texture2D, damage: int) -> void:
 	var pivot = Node2D.new()
 	pivot.name = "TrunkPivot"
 	pivot.add_child(trunk)
+	pivot.use_parent_material = true
+	trunk.use_parent_material = true
 	add_child(pivot)
 	trunk.visible = hits < 3
 	var body = StaticBody2D.new()

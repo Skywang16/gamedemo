@@ -38,6 +38,7 @@ test: import
 test-ui: import
 	$(GODOT) --script res://tests/ui_smoke.gd -- --save-dir=user://ui-test-$$(uuidgen)
 	$(GODOT) --script res://tests/animation_smoke.gd -- --save-dir=user://ui-test-animation-$$(uuidgen)
+	$(GODOT) --script res://tests/weather_smoke.gd -- --save-dir=user://ui-test-weather-$$(uuidgen)
 
 package:
 	$(VENV)/python tools/package_macos.py "$$($(GODOT) --print-path)"

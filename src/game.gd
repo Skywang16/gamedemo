@@ -167,8 +167,7 @@ func _process(delta: float) -> void:
 	if autosave_accumulator >= 30 and settings.get_value("autosave"):
 		autosave_accumulator = 0
 		_save(false)
-	var dusk = clampf(float(state.minute - 17 * 60) / 180.0, 0.0, 1.0)
-	world.modulate = Color.WHITE.lerp(Color(0.83, 0.78, 0.69), dusk * 0.45)
+	world.modulate = world.light_color()
 
 
 func _unhandled_input(event: InputEvent) -> void:

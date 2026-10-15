@@ -12,6 +12,11 @@ var effects: WorldEffects
 var ambient: WorldAmbient
 var tree_nodes: Dictionary = {}
 var ambient_time: float = 0.0
+var weather_layer: WeatherLayer
+var season_material: ShaderMaterial
+var season: String = "spring"
+var weather: String = "sunny"
+var outdoors: bool = false
 var reduce_motion: bool = false:
 	set(value):
 		reduce_motion = value
@@ -19,6 +24,8 @@ var reduce_motion: bool = false:
 			ambient.calm = value
 		for id in tree_nodes:
 			tree_nodes[id].calm = value
+		if weather_layer != null:
+			refresh_atmosphere()
 var background: Texture2D
 var region: Dictionary
 var npc_nodes: Dictionary = {}
@@ -38,11 +45,15 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	variation.base_font = load("res://assets/fonts/NotoSansSC.ttf")
 	variation.variation_opentype = {2003265652: 600.0}
 	map_font = variation
+	season_material = ShaderMaterial.new()
+	season_material.shader = load("res://assets/shaders/season.gdshader")
+	material = season_material
 	ambient = WorldAmbient.new()
 	add_child(ambient)
 	ambient.configure(region)
 	actors = Node2D.new()
 	actors.y_sort_enabled = true
+	actors.use_parent_material = true
 	add_child(actors)
 	for prop in region.props:
 		add_prop(
@@ -55,6 +66,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		var id = catalog.tree_cells[state.current_map][cell]
 		var tree = TreeProp.new()
 		tree.position = Vector2(cell) * 32 + Vector2(16, 16)
+		tree.use_parent_material = true
 		actors.add_child(tree)
 		tree.configure(
 			tex("tree_moving_%d" % ((cell.x + cell.y) % 4)), int(state.tree_damage.get(id, 0))
@@ -122,7 +134,41 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		player.add_child(camera)
 	camera.make_current()
 	camera.force_update_scroll()
+	var sky = CanvasLayer.new()
+	sky.layer = 4
+	add_child(sky)
+	weather_layer = WeatherLayer.new()
+	sky.add_child(weather_layer)
+	refresh_atmosphere()
 	queue_redraw()
+
+
+## Re-reads the season and weather for the current day and restarts the weather layer.
+func refresh_atmosphere() -> void:
+	season = catalog.calendar.season_of(state.day)
+	weather = catalog.weather.weather_on(state.world_seed, state.day)
+	outdoors = int(region.width) > 30
+	weather_layer.visible = outdoors
+	if outdoors:
+		weather_layer.configure(season, weather, reduce_motion)
+	var date = catalog.calendar.date(state.day)
+	set_season_look(
+		WorldAtmosphere.season_weights(
+			date.season_index, date.day, catalog.calendar.days_per_season
+		)
+	)
+
+
+func set_season_look(weights: Dictionary) -> void:
+	for key in ["summer", "autumn", "winter"]:
+		season_material.set_shader_parameter(key, float(weights.get(key, 0.0)))
+
+
+## The colour the whole world is multiplied by: season, weather and evening dusk.
+func light_color() -> Color:
+	if outdoors:
+		return WorldAtmosphere.lit(season, weather, state.minute)
+	return WorldAtmosphere.lit("spring", "sunny", state.minute)
 
 
 func add_collider(body: StaticBody2D, at: Vector2, size: Vector2) -> void:
@@ -157,6 +203,9 @@ func add_prop(id: String, ground: Vector2, offset: Vector2) -> Node2D:
 	sprite.centered = false
 	sprite.position = offset
 	anchor.add_child(sprite)
+	if id.begins_with("tree") or id.begins_with("weeds"):
+		anchor.use_parent_material = true
+		sprite.use_parent_material = true
 	actors.add_child(anchor)
 	return anchor
 
