@@ -25,7 +25,7 @@ make editor
 ```sh
 make maps        # tools/world/build_maps.py → data/maps/*.json、data/places.json
 make content     # 依赖 maps：故事、日历、物品、商店等 JSON，以及 02 / 09 / 13 号文档
-make art         # tools/build_art.py → assets/art、assets/ui（约 2 分钟）
+make art         # tools/build_art.py → 代码绘制的 assets/art、assets/ui，并重新烘焙地图背景（约 2 分钟）
 make audio       # tools/audio/build_audio.py → assets/audio 里的剧情与战斗音效
 make import      # 更新 Godot 导入缓存
 ```
@@ -40,7 +40,10 @@ make import      # 更新 Godot 导入缓存
 | `tools/world/build_map_doc.py` | `docs/design/09-world-map.md` |
 | `tools/content/build_story_doc.py` | `docs/design/14-main-story.md` |
 | `tools/audio/build_audio.py` | 剧情与战斗音效 |
-| `tools/build_art.py` | 全部像素美术 |
+| `tools/build_art.py` | 代码绘制的像素美术和地图背景 |
+| `tools/art/ai_assets.py` 等 `ai_*.py` | 图像模型绘制的建筑、地面、树石、装饰、室内（需要密钥，见下） |
+
+`ai_*.py` 调用图像生成接口，只在要新画或重画某个素材时运行（`python tools/art/ai_assets.py 名字 [--force]`）：密钥放在环境变量 `IMAGE2FREE_KEY` 或 `~/.config/gamedemo/image2free.key`，不进仓库；原图缓存在 `build/art-raw/`，没有缓存才会请求接口；每次请求自动附带风格板。规则见 [05 · 美术规范](design/05-art.md)。
 
 生成器发现引用错误会停止并列出问题。运行所需的 PNG、字体、音频及其 Godot `.import` 设置必须提交；`.gd.uid` 也属于稳定资源标识。`.godot/` 是可重建缓存，不提交。
 

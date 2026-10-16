@@ -1,141 +1,6 @@
-"""Shop fronts, farm buildings, mine gate, dock and other props for the new districts."""
+"""Small props for the districts; the buildings themselves are drawn by the image model (ai_assets.py)."""
 
 from PIL import Image, ImageDraw
-from .environment import house
-
-
-def sign(im, kind):
-    """A hanging board above the door with a small emblem for the shop type."""
-    d = ImageDraw.Draw(im)
-    d.rectangle((92, 124, 164, 152), fill="#4a3220")
-    d.rectangle((95, 127, 161, 149), fill="#d8b878")
-    d.line((97, 129, 159, 129), fill="#f0d898", width=2)
-    for x in (98, 156):
-        d.line((x, 118, x, 126), fill="#4a3220", width=2)
-    if kind == "store":
-        d.ellipse((116, 130, 140, 148), fill="#7a5028")
-        d.rectangle((120, 128, 136, 134), fill="#7a5028")
-        d.ellipse((119, 133, 137, 147), fill="#c8923a")
-        d.line((128, 135, 128, 145), fill="#7a5028", width=2)
-    elif kind == "smith":
-        d.polygon(
-            [
-                (106, 134),
-                (150, 134),
-                (150, 140),
-                (140, 142),
-                (136, 148),
-                (120, 148),
-                (116, 142),
-                (106, 140),
-            ],
-            fill="#3a3a44",
-        )
-        d.line((108, 135, 148, 135), fill="#7a7a88", width=2)
-    elif kind == "clinic":
-        d.rectangle((105, 130, 151, 148), fill="#f4f0e4")
-        d.rectangle((124, 132, 132, 146), fill="#c83a3a")
-        d.rectangle((117, 137, 139, 141), fill="#c83a3a")
-    elif kind == "tea":
-        d.polygon([(110, 148), (146, 148), (142, 138), (114, 138)], fill="#f4f0e4")
-        d.ellipse((112, 131, 144, 142), fill="#e8e0d0")
-        d.ellipse((116, 133, 140, 140), fill="#7a5028")
-        d.arc((140, 134, 152, 144), 270, 90, fill="#f4f0e4", width=2)
-        d.line((124, 130, 122, 126), fill="#ffffff", width=1)
-        d.line((132, 130, 134, 125), fill="#ffffff", width=1)
-    elif kind == "tackle":
-        d.ellipse((108, 133, 142, 146), fill="#4a7a9a")
-        d.polygon([(140, 139), (152, 132), (152, 147)], fill="#4a7a9a")
-        d.ellipse((114, 137, 118, 141), fill="#f4f4f4")
-    return im
-
-
-def shopfront(kind):
-    roof = {
-        "store": "green",
-        "smith": "slate",
-        "clinic": "white",
-        "tackle": "blue",
-        "tea": "brown",
-    }[kind]
-    im = house(roof)
-    return sign(im, kind)
-
-
-def barn():
-    im = Image.new("RGBA", (256, 224))
-    d = ImageDraw.Draw(im)
-    d.ellipse((12, 196, 244, 222), fill="#263b2860")
-    d.rectangle((26, 96, 230, 206), fill="#5a2a22")
-    d.rectangle((30, 100, 226, 202), fill="#a8483a")
-    for x in range(34, 226, 12):
-        d.line((x, 101, x, 201), fill="#8a3a2e", width=2)
-    d.polygon([(10, 100), (128, 22), (246, 100), (238, 112), (18, 112)], fill="#4a2a20")
-    d.polygon([(22, 100), (128, 32), (234, 100), (226, 108), (30, 108)], fill="#7a5a48")
-    for y in range(40, 104, 8):
-        d.line((60 + (y - 40) // 2, y, 196 - (y - 40) // 2, y), fill="#98745a")
-    d.rectangle((86, 130, 170, 206), fill="#f0e8d4")
-    d.rectangle((90, 134, 166, 202), fill="#d8452e")
-    d.line((90, 134, 166, 202), fill="#f0e8d4", width=5)
-    d.line((166, 134, 90, 202), fill="#f0e8d4", width=5)
-    d.rectangle((108, 60, 148, 88), fill="#4a3a2a")
-    d.rectangle((112, 64, 144, 84), fill="#2a2018")
-    d.rectangle((116, 112, 140, 124), fill="#f0e8d4")
-    return im
-
-
-def greenhouse():
-    """A glass house on a low stone footing: iron ribs, a pitched glass roof and rows of green."""
-    im = Image.new("RGBA", (256, 192))
-    d = ImageDraw.Draw(im)
-    d.ellipse((6, 168, 250, 190), fill="#263b2860")
-    d.rectangle((20, 140, 236, 176), fill="#6a6a70")
-    d.rectangle((24, 144, 232, 172), fill="#9a9aa0")
-    for x in range(26, 232, 24):
-        d.line((x, 145, x, 171), fill="#7a7a82", width=2)
-    d.rectangle((26, 70, 230, 146), fill="#4a6a62")
-    d.rectangle((30, 74, 226, 142), fill="#bfe4ea")
-    d.rectangle((30, 74, 226, 98), fill="#dff4f6")
-    for x in range(30, 230, 34):
-        d.line((x, 74, x, 142), fill="#3f5a54", width=3)
-    d.line((30, 108, 226, 108), fill="#3f5a54", width=3)
-    # Plants seen through the glass.
-    for x in range(40, 220, 22):
-        h = 14 + (x * 7) % 18
-        d.ellipse((x - 9, 142 - h - 8, x + 9, 142 - h + 8), fill="#4f9a3f")
-        d.ellipse((x - 5, 142 - h - 4, x + 3, 142 - h + 2), fill="#86c850")
-        d.line((x, 142 - h, x, 142), fill="#3f7a35", width=2)
-    d.ellipse((50, 118, 60, 128), fill="#d8402f")
-    d.ellipse((136, 122, 146, 132), fill="#e8c040")
-    d.ellipse((188, 116, 198, 126), fill="#d8402f")
-    d.polygon([(14, 74), (128, 16), (242, 74), (232, 80), (24, 80)], fill="#3f5a54")
-    d.polygon([(26, 74), (128, 24), (230, 74), (222, 78), (34, 78)], fill="#cfeef2")
-    d.polygon([(26, 74), (128, 24), (128, 36), (40, 76)], fill="#ffffff80")
-    for x in range(48, 214, 26):
-        d.line((x, 76, 128 + (x - 128) // 3, 28), fill="#3f5a54", width=2)
-    d.rectangle((110, 100, 146, 146), fill="#2f4a44")
-    d.rectangle((113, 104, 143, 146), fill="#bfe4ea")
-    d.line((128, 104, 128, 146), fill="#2f4a44", width=2)
-    d.rectangle((120, 128, 124, 132), fill="#e8c040")
-    return im
-
-
-def coop():
-    im = Image.new("RGBA", (160, 128))
-    d = ImageDraw.Draw(im)
-    d.ellipse((6, 108, 154, 126), fill="#263b2860")
-    d.rectangle((20, 52, 140, 112), fill="#6a4a30")
-    d.rectangle((24, 56, 136, 108), fill="#c8964e")
-    for x in range(26, 136, 10):
-        d.line((x, 57, x, 107), fill="#a8763a", width=2)
-    d.polygon([(8, 56), (80, 12), (152, 56), (144, 64), (16, 64)], fill="#5a3a2a")
-    d.polygon([(18, 56), (80, 20), (142, 56), (136, 60), (24, 60)], fill="#a8603a")
-    d.rectangle((62, 76, 98, 112), fill="#4a3220")
-    d.rectangle((66, 80, 94, 112), fill="#2a1e14")
-    d.rectangle((34, 72, 52, 88), fill="#e8dcb0")
-    d.rectangle((36, 74, 50, 86), fill="#f8ecc0")
-    d.rectangle((108, 90, 130, 112), fill="#e8d098")
-    return im
 
 
 def lot_sign():
@@ -147,31 +12,6 @@ def lot_sign():
     d.rectangle((12, 10, 52, 28), fill="#d8b878")
     d.line((14, 13, 50, 13), fill="#f0d898", width=2)
     d.rectangle((24, 17, 40, 24), fill="#a88848")
-    return im
-
-
-def mine_gate():
-    im = Image.new("RGBA", (192, 160))
-    d = ImageDraw.Draw(im)
-    d.ellipse((8, 140, 184, 158), fill="#263b2860")
-    d.polygon(
-        [(6, 150), (14, 52), (50, 18), (96, 8), (142, 18), (178, 52), (186, 150)], fill="#4a4a54"
-    )
-    d.polygon(
-        [(16, 148), (22, 56), (54, 26), (96, 16), (138, 26), (170, 56), (176, 148)], fill="#6a6a76"
-    )
-    for x, y, r in [(40, 60, 12), (140, 50, 14), (98, 34, 10), (28, 110, 10), (160, 100, 12)]:
-        d.ellipse((x - r, y - r, x + r, y + r), fill="#7a7a86")
-        d.ellipse((x - r + 2, y - r + 2, x + r - 6, y + r - 6), fill="#8e8e9a")
-    d.polygon(
-        [(56, 150), (56, 78), (74, 56), (96, 50), (118, 56), (136, 78), (136, 150)], fill="#16161c"
-    )
-    d.rectangle((50, 70, 58, 150), fill="#6a4a30")
-    d.rectangle((134, 70, 142, 150), fill="#6a4a30")
-    d.rectangle((46, 62, 146, 72), fill="#8a6038")
-    d.line((50, 64, 142, 64), fill="#b08850", width=2)
-    d.rectangle((88, 82, 104, 92), fill="#e8c860")
-    d.line((96, 72, 96, 82), fill="#4a3220", width=2)
     return im
 
 
@@ -216,29 +56,6 @@ def boat():
     return im
 
 
-def lighthouse():
-    im = Image.new("RGBA", (64, 160))
-    d = ImageDraw.Draw(im)
-    d.ellipse((4, 148, 60, 158), fill="#263b2860")
-    d.polygon([(14, 150), (22, 40), (42, 40), (50, 150)], fill="#e8e0d0")
-    for y in range(52, 140, 26):
-        d.polygon(
-            [
-                (22 - (y - 40) // 14, y),
-                (42 + (y - 40) // 14, y),
-                (42 + (y - 26) // 14, y + 14),
-                (22 - (y - 26) // 14, y + 14),
-            ],
-            fill="#c83a3a",
-        )
-    d.rectangle((18, 28, 46, 40), fill="#4a4a54")
-    d.rectangle((22, 14, 42, 28), fill="#f8e898")
-    d.rectangle((26, 16, 38, 26), fill="#fffbd0")
-    d.polygon([(18, 14), (32, 2), (46, 14)], fill="#c83a3a")
-    d.rectangle((28, 120, 36, 150), fill="#4a3220")
-    return im
-
-
 def mine_cart():
     im = Image.new("RGBA", (64, 48))
     d = ImageDraw.Draw(im)
@@ -255,17 +72,8 @@ def mine_cart():
 
 
 def build_buildings(output):
-    for kind in ("store", "smith", "clinic", "tackle", "tea"):
-        shopfront(kind).save(output / ("shop_" + kind + ".png"))
-    for roof in ("green", "blue", "brown", "gold"):
-        house(roof).save(output / ("home_" + roof + ".png"))
-    barn().save(output / "barn.png")
-    greenhouse().save(output / "greenhouse.png")
-    coop().save(output / "coop.png")
     lot_sign().save(output / "lot_sign.png")
-    mine_gate().save(output / "mine_gate.png")
     ore_node().save(output / "ore_node.png")
     dock().save(output / "dock.png")
     boat().save(output / "boat.png")
-    lighthouse().save(output / "lighthouse.png")
     mine_cart().save(output / "mine_cart.png")

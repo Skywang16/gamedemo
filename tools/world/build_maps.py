@@ -395,7 +395,7 @@ def build_farm():
             point("shipping", "出售农产品", "shipping", 46, 18),
         ],
     )
-    building(farm, "home_blue", (30, 17))
+    building(farm, "home_07", (30, 17))
     farm["paths"].append([29, 17, 10, 2])
     farm.update(
         plantable=[4, 18, 88, 49],
@@ -489,9 +489,9 @@ def build_town():
         path_style="cobble",
     )
     town["bridge_rect"] = [75, 28, 4, 5]
-    building(town, "home_gold", (12, 23))
+    building(town, "home_12", (12, 23))
     town["paths"].append([11, 23, 3, 5])
-    building(town, "home_blue", (30, 14))
+    building(town, "home_13", (30, 14))
     town["paths"].append([29, 14, 3, 14])
     for x in range(6, 74, 8):
         decor(town, "lamp", x, 27)
@@ -534,7 +534,7 @@ def build_forest():
         ],
         [],
     )
-    building(forest, "home_green", (46, 50))
+    building(forest, "home_08", (46, 50))
     forest["paths"].append([40, 50, 7, 1])
     for item, coords in [
         ("wood", [(34, 24), (43, 23), (52, 37), (26, 38)]),
@@ -604,7 +604,7 @@ def build_lake():
         [point("lantern", "灯台", "lantern", 37, 31)],
     )
     lake["lantern_area"] = [24 * 32, 7 * 32, 52 * 32, 14 * 32]
-    building(lake, "home_green", (10, 36))
+    building(lake, "home_09", (10, 36))
     lake["paths"].append([9, 31, 3, 5])
     for x in range(8, 70, 9):
         decor(lake, "lamp", x, 44)
@@ -649,12 +649,12 @@ def build_market():
         building(market, texture, (dx, 26))
         market["paths"].append([dx - 1, 26, 3, 4])
     for dx, texture in [
-        (10, "home_green"),
-        (24, "home_blue"),
-        (36, "home_brown"),
-        (60, "home_gold"),
-        (72, "home_green"),
-        (84, "home_blue"),
+        (10, "home_01"),
+        (24, "home_02"),
+        (36, "home_03"),
+        (60, "home_04"),
+        (72, "home_05"),
+        (84, "home_06"),
     ]:
         home_yard(market, texture, dx, 17)
     for fx, fy in [(42, 27), (52, 27), (42, 35), (52, 35)]:
@@ -705,7 +705,7 @@ def build_ranch():
         ],
         [[(8, 36), (14, 34), (24, 35), (28, 40), (22, 46), (12, 47), (6, 42)]],
         [[35, 12, 7, 3], [11, 14, 7, 3]],
-        [prop("barn", 38, 15, (-128, -216)), prop("home_brown", 14, 17, (-128, -216))],
+        [prop("barn", 38, 15, (-128, -216)), prop("home_11", 14, 17, (-128, -216))],
         [point("ranch_shop", "罗西的牧场", "shop", 38, 16, shop_id="ranch")],
     )
     fence_rect(ranch, 44, 6, 68, 21, gaps=[(46, 21), (47, 21)])
@@ -756,7 +756,7 @@ def build_seaside():
         path_style="boardwalk",
     )
     building(seaside, "shop_tackle", (20, 11))
-    building(seaside, "home_green", (70, 11))
+    building(seaside, "home_10", (70, 11))
     for x in range(8, 92, 8):
         if not 44 <= x <= 52:
             decor(seaside, "lamp", x, 11)
@@ -878,26 +878,26 @@ def build_all():
     maps["cottage"] = room(
         "cottage",
         "农舍",
-        [[6, 5, 3, 3], [19, 5, 3, 2], [12, 9, 4, 2], [6, 11, 2, 1], [20, 9, 3, 2]],
+        [[4, 4, 4, 3], [20, 4, 4, 2], [12, 8, 6, 3], [4, 9, 2, 3], [23, 7, 2, 7]],
         [
-            point("sleep", "床 / 休息", "bed", 8, 8),
-            point("letter", "祖母的信", "letter", 20, 7),
-            point("chest", "储物箱", "storage", 7, 12),
-            point("kitchen", "厨房 / 烹饪", "kitchen", 21, 11),
+            point("sleep", "床 / 休息", "bed", 6, 8),
+            point("letter", "祖母的信", "letter", 21, 6),
+            point("chest", "储物箱", "storage", 7, 10),
+            point("kitchen", "厨房 / 烹饪", "kitchen", 22, 10),
         ],
     )
     maps["inn"] = room(
         "inn",
         "玛戈的小酒馆",
-        [[7, 6, 4, 2], [18, 6, 4, 2]],
-        [point("kitchen", "灶台 / 烹饪", "kitchen", 20, 8)],
+        [[7, 7, 4, 3], [18, 7, 4, 3], [24, 5, 1, 5]],
+        [point("kitchen", "灶台 / 烹饪", "kitchen", 23, 8)],
     )
     maps["workshop"] = room(
         "workshop",
         "卡弗木工坊",
-        [[7, 6, 4, 2], [18, 6, 4, 2]],
+        [[7, 6, 5, 4], [18, 6, 5, 4], [13, 4, 5, 1]],
         [
-            point("builder", "建造台", "shop", 10, 8, shop_id="builder"),
+            point("builder", "建造台", "shop", 15, 6, shop_id="builder"),
         ],
     )
     maps["general_store"] = shop_room("general_store", "霍克杂货店", "general", "格雷戈尔的柜台")

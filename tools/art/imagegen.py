@@ -1,0 +1,224 @@
+"""Image-model client for game art: one shared style bible, async generation, cut-out, game scale.
+
+The key is read from $IMAGE2FREE_KEY or ~/.config/gamedemo/image2free.key (never from the repo).
+Raw downloads go to build/art-raw (gitignored); finished sprites are written by the callers.
+"""
+
+from pathlib import Path
+import base64
+import io
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+from PIL import Image
+
+BASE = "https://image2free.com"
+# Only the GPT Image 2.5 family is used for game art (sunburst: best quality).
+MODEL = "gpt-image-2.5-sunburst"
+RAW = Path(__file__).resolve().parents[2] / "build/art-raw"
+
+# Every prompt starts with this block, so all assets share one camera, one palette and one look.
+STYLE = (
+    "Original hand-painted 16-bit pixel art for a cozy riverside European-village farming game. "
+    "CAMERA: the classic 2D RPG top-down 3/4 view, camera tilted about 30 degrees above the horizon, looking straight at the "
+    "long front wall. The roof RIDGE RUNS LEFT TO RIGHT, parallel to the image edge, so we see the long eave wall and door "
+    "on the front, and above it only the front slope of the roof as a foreshortened, flattened band (roughly one third of the "
+    "object height). NO gable triangle facing the camera, no side wall, no corner view, no isometric diamond, no rotation, "
+    "no steep tall roof; gable ends are never visible. Orthographic, flat 2D sprite look. "
+    "LIGHT: from the upper left, gentle shading, shadow sides slightly darker with a cool teal tint instead of black. "
+    "RENDERING: crisp pixel art with a limited palette, dark warm-brown 1-pixel outlines, chunky readable pixel clusters, "
+    "soft storybook colours (terracotta, cream, moss, river teal, oak), gentle saturation, the same level of detail and the "
+    "same pixel size for every asset. "
+    "The subject is ONE single isolated object: no ground, no grass, no cast shadow, no frame, no border, "
+    "no text, no letters, no signboard writing, no watermark, no UI."
+)
+FLAT_BG = (
+    " The background is one perfectly flat solid pure magenta colour (#FF00FF) with nothing else on it, "
+    "and the object contains no magenta."
+)
+
+
+REFERENCE_NOTE = (
+    " The attached reference image is the STYLE BOARD of this game. Copy its art style exactly: the same outline weight, "
+    "pixel size, colour saturation, cel shading and cheerful daylight look. Do not copy its objects, only its style."
+)
+BOARD = [
+    "house",
+    "inn",
+    "home_05",
+    "home_09",
+    "shop_tea",
+    "tree_0",
+    "tree_1",
+    "rock_0",
+    "ground_grass_a",
+    "ground_cobble",
+]
+
+
+def style_board() -> str:
+    """One data-URL picture of approved game art, sent with every request so all assets share one look."""
+    art = Path(__file__).resolve().parents[2] / "assets/art"
+    width = 1600
+    board = Image.new("RGB", (width, 1400), (110, 160, 80))
+    x = y = 8
+    row_h = 0
+    for name in BOARD:
+        im = Image.open(art / (name + ".png")).convert("RGBA")
+        scale = 2
+        im = im.resize((im.width * scale, im.height * scale), Image.NEAREST)
+        if x + im.width > width:
+            x, y, row_h = 8, y + row_h + 8, 0
+        board.paste(im, (x, y), im)
+        x += im.width + 8
+        row_h = max(row_h, im.height)
+    board = board.crop((0, 0, width, y + row_h + 8))
+    RAW.mkdir(parents=True, exist_ok=True)
+    board.save(RAW / "style_board.png")
+    buf = io.BytesIO()
+    board.save(buf, "PNG", optimize=True)
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def key() -> str:
+    value = os.environ.get("IMAGE2FREE_KEY")
+    if value:
+        return value.strip()
+    return (Path.home() / ".config/gamedemo/image2free.key").read_text().strip()
+
+
+def call(method: str, path: str, body: dict | None = None, timeout: int = 60) -> dict:
+    data = None if body is None else json.dumps(body).encode()
+    req = urllib.request.Request(BASE + path, data=data, method=method)
+    req.add_header("Authorization", "Bearer " + key())
+    req.add_header("Content-Type", "application/json")
+    req.add_header("User-Agent", "gamedemo-art/1.0")
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as res:
+            return json.loads(res.read())
+    except urllib.error.HTTPError as err:
+        return json.loads(err.read() or b"{}") | {"http": err.code}
+
+
+def balance() -> float:
+    return call("GET", "/v1/me")["balance"]
+
+
+def fetch(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": "gamedemo-art/1.0"})
+    with urllib.request.urlopen(req, timeout=120) as res:
+        return res.read()
+
+
+def generate(
+    prompt: str,
+    model: str = MODEL,
+    quality: str = "hd",
+    transparent: bool = True,
+    keep_background: bool = False,
+    size: str = "1:1",
+    references: list[str] | None = None,
+    attempts: int = 6,
+) -> Image.Image:
+    """One transparent PNG. Upstream outages are retried; any other failure raises."""
+    body = {
+        "model": model,
+        "prompt": prompt,
+        "size": size,
+        "quality": quality,
+        "async": True,
+    }
+    if transparent:
+        body["background"] = "transparent"
+    elif not keep_background:
+        body["prompt"] += FLAT_BG
+    body["image_urls"] = references if references is not None else [style_board()]
+    body["prompt"] += REFERENCE_NOTE
+    last = None
+    for attempt in range(attempts):
+        sub = call("POST", "/v1/images/generations", body)
+        if "data" not in sub:
+            last = sub
+            time.sleep(8 * (attempt + 1))
+            continue
+        task = sub["data"][0]["task_id"]
+        while True:
+            time.sleep(6)
+            info = call("GET", "/v1/tasks/" + task)["data"]
+            if info["status"] == "done":
+                RAW.mkdir(parents=True, exist_ok=True)
+                (RAW / (task + ".json")).write_text(json.dumps(info, ensure_ascii=False))
+                url = info["result"]["images"][0]["url"]
+                url = url[0] if isinstance(url, list) else url
+                return Image.open(io.BytesIO(fetch(url))).convert("RGBA")
+            if info["status"] == "error":
+                last = info["error"]
+                break
+        time.sleep(8 * (attempt + 1))
+    raise RuntimeError(f"generation failed after {attempts} tries: {last}")
+
+
+def decode(b64: str) -> Image.Image:
+    return Image.open(io.BytesIO(base64.b64decode(b64))).convert("RGBA")
+
+
+def cut_out(im: Image.Image, key_magenta: bool = False) -> Image.Image:
+    """Clean alpha and trim. With key_magenta the flat #FF00FF background is keyed out (with despill
+    on the edge pixels); otherwise the model's own transparency is kept. Trims to the visible pixels."""
+    im = im.convert("RGBA")
+    if key_magenta:
+        px = im.load()
+        for y in range(im.height):
+            for x in range(im.width):
+                r, g, b, a = px[x, y]
+                # magenta-ness: red and blue both far above green
+                m = min(r, b) - g
+                if m > 110:
+                    px[x, y] = (0, 0, 0, 0)
+                elif m > 40:
+                    # edge: pull the pink tint back to the neighbouring colour and fade out
+                    px[x, y] = (
+                        min(r, g + 40),
+                        g,
+                        min(b, g + 40),
+                        max(0, 255 - (m - 40) * 255 // 70),
+                    )
+    box = im.getchannel("A").point(lambda a: 255 if a > 24 else 0).getbbox()
+    return im.crop(box) if box else im
+
+
+def pixel_lock(im: Image.Image, colors: int = 48) -> Image.Image:
+    """The one look every asset shares: hard 0/255 alpha and a small flat palette, no soft gradients."""
+    im = im.convert("RGBA")
+    alpha = im.getchannel("A").point(lambda a: 255 if a > 127 else 0)
+    flat = (
+        im.convert("RGB")
+        .quantize(colors=colors, method=Image.MEDIANCUT, dither=Image.NONE)
+        .convert("RGBA")
+    )
+    flat.putalpha(alpha)
+    return flat
+
+
+def to_game(
+    im: Image.Image,
+    max_w: int,
+    max_h: int,
+    canvas: tuple[int, int] | None = None,
+    bottom_pad: int = 4,
+) -> Image.Image:
+    """Fit inside max_w x max_h keeping the aspect ratio. With a canvas the sprite sits bottom-centred
+    on it (bottom_pad pixels above the lower edge), which is where the game anchors building doors."""
+    scale = min(max_w / im.width, max_h / im.height)
+    small = pixel_lock(
+        im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.BOX)
+    )
+    if canvas is None:
+        return small
+    out = Image.new("RGBA", canvas, (0, 0, 0, 0))
+    out.alpha_composite(
+        small, ((canvas[0] - small.width) // 2, canvas[1] - bottom_pad - small.height)
+    )
+    return out

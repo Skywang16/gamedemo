@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be3lyqcdqx46t"
-path="res://.godot/imported/home_gold.png-a81bdc4d6bc74ab2806777ab43942948.ctex"
+uid="uid://cluwg53d5mi6q"
+path="res://.godot/imported/decor_planter.png-ad9fb8b8aa236f0a493c920722bd2a71.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/art/home_gold.png"
-dest_files=["res://.godot/imported/home_gold.png-a81bdc4d6bc74ab2806777ab43942948.ctex"]
+source_file="res://assets/art/decor_planter.png"
+dest_files=["res://.godot/imported/decor_planter.png-ad9fb8b8aa236f0a493c920722bd2a71.ctex"]
 
 [params]
 

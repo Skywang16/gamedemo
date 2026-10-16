@@ -1,8 +1,8 @@
 """Original pixel UI skins, icons and title scenery, drawn on an integer grid."""
 
 from PIL import Image, ImageDraw
+from pathlib import Path
 import random
-from .environment import house, tree
 from .crops import crop
 
 
@@ -311,11 +311,10 @@ def title_scene():
         ],
         fill="#cfb47b",
     )
-    im.paste(
-        house().resize((154, 134), Image.Resampling.NEAREST),
-        (80, 184),
-        house().resize((154, 134), Image.Resampling.NEAREST),
+    farmhouse = Image.open(Path(__file__).resolve().parents[2] / "assets/art/house.png").resize(
+        (154, 134), Image.Resampling.NEAREST
     )
+    im.paste(farmhouse, (80, 184), farmhouse)
     for x, y, v, scale in [
         (-23, 245, 0, 1.5),
         (30, 224, 1, 1),
@@ -325,7 +324,9 @@ def title_scene():
         (348, 318, 0, 0.9),
         (589, 340, 0, 1.2),
     ]:
-        t = tree(v)
+        t = Image.open(Path(__file__).resolve().parents[2] / f"assets/art/tree_{v}.png").convert(
+            "RGBA"
+        )
         t = t.resize((int(t.width * scale), int(t.height * scale)), Image.Resampling.NEAREST)
         im.paste(t, (x, y), t)
     return im.resize((1280, 800), Image.Resampling.NEAREST)

@@ -42,9 +42,10 @@ tools/content/calendar_data.py 季节、星期、天气表、节日
 tools/content/reach.py       地图可达性（日程里的每个相邻停靠点必须走得通）
 tools/content/build_story.py 写出 story.json 与 calendar.json（校验：物品存在、地点存在、喜好有效、日程可达、导演提示合法、六盏灯顺序、三种结局的场景齐全）
 tools/content/build_cast_doc.py / build_routines_doc.py / build_story_doc.py / tools/world/build_map_doc.py   生成 02、13、14、09 号文档
-tools/world/shop_layouts.py   五家商店室内家具（碰撞与美术共用）
+tools/world/shop_layouts.py   五家商店室内家具的碰撞（对应画好的室内背景）
 tools/audio/build_audio.py   合成音效
-tools/build_art.py           全部像素美术
+tools/art/ai_*.py            图像模型绘制的建筑、地面、树石、装饰、室内
+tools/build_art.py           代码绘制的像素美术（不动图像模型的 PNG）
 ```
 
 命令：

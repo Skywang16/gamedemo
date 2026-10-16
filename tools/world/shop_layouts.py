@@ -1,4 +1,4 @@
-"""Furniture of the five shop rooms, shared by the map generator (collision) and the art.
+"""Collision of the furniture in the five shop rooms; it follows what the image-drawn room backgrounds show.
 
 Each entry is (kind, x, y, w, h) in cells. All of it is solid; wall decorations are painted on the
 back wall by the art and have no collision. Places used by schedules (see places.py) must stay
@@ -9,36 +9,36 @@ SHOP_FURNITURE = {
     "general_store": [
         ("sacks", 4, 4, 2, 2),
         ("barrels", 23, 4, 2, 2),
-        ("produce", 4, 10, 3, 2),
-        ("produce", 22, 9, 3, 2),
+        ("produce", 4, 9, 4, 4),
+        ("produce", 22, 8, 3, 4),
         ("crates", 23, 13, 2, 2),
     ],
     "blacksmith": [
-        ("anvil", 6, 9, 2, 2),
-        ("grindstone", 4, 13, 2, 2),
+        ("anvil", 4, 8, 3, 3),
+        ("grindstone", 4, 12, 3, 3),
         ("water_barrel", 23, 4, 2, 2),
-        ("ingots", 22, 9, 3, 2),
-        ("worktable", 19, 10, 3, 1),
+        ("ingots", 23, 9, 2, 3),
+        ("worktable", 19, 8, 4, 4),
     ],
     "clinic": [
-        ("bed", 4, 10, 3, 2),
-        ("bed", 21, 10, 3, 2),
+        ("bed", 4, 8, 2, 5),
+        ("bed", 23, 8, 2, 5),
         ("fern", 4, 4, 1, 2),
-        ("bench", 4, 14, 3, 1),
+        ("bench", 4, 13, 3, 2),
         ("fern", 24, 4, 1, 2),
     ],
     "tea_house": [
-        ("round_table", 6, 10, 3, 2),
-        ("round_table", 18, 10, 3, 2),
-        ("stove", 4, 4, 2, 2),
-        ("sofa", 23, 5, 2, 3),
+        ("round_table", 4, 10, 5, 3),
+        ("round_table", 20, 10, 5, 3),
+        ("stove", 5, 4, 2, 2),
+        ("sofa", 22, 4, 3, 4),
         ("fern", 23, 13, 2, 2),
     ],
     "tackle_shop": [
-        ("bait_crates", 4, 4, 2, 2),
-        ("bait_barrels", 4, 12, 2, 2),
-        ("lure_table", 6, 10, 3, 1),
-        ("tank", 22, 8, 3, 3),
-        ("rope", 23, 13, 2, 2),
+        ("bait_crates", 4, 4, 3, 3),
+        ("bait_barrels", 4, 12, 3, 3),
+        ("lure_table", 4, 8, 5, 4),
+        ("tank", 22, 6, 4, 5),
+        ("rope", 23, 12, 3, 3),
     ],
 }

@@ -190,23 +190,6 @@ def crop(stage):
     return im
 
 
-def soil(wet=False):
-    im = Image.new("RGBA", (32, 32), "#765135" if wet else P["earth"])
-    d = ImageDraw.Draw(im)
-    dark = "#543e2e" if wet else P["earth_dark"]
-    light = "#916849" if wet else P["earth_light"]
-    for y in (5, 13, 21, 29):
-        d.line([(0, y), (31, y)], fill=dark)
-        d.line([(0, y + 1), (31, y + 1)], fill=light)
-    for x, y in [(4, 2), (14, 9), (24, 18), (8, 25), (29, 8), (19, 27)]:
-        d.line([(x, y), (x + 2, y)], fill=light)
-        d.point((x + 1, y + 1), fill=dark)
-    if wet:
-        for x, y in [(8, 10), (24, 25), (18, 3)]:
-            d.line([(x, y), (x + 2, y)], fill="#a08a66")
-    return im
-
-
 def watering_can():
     im = blank()
     d = ImageDraw.Draw(im)

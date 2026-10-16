@@ -1881,7 +1881,7 @@
       ]
     },
     {
-      "texture": "home_green",
+      "texture": "home_01",
       "ground": [
         336,
         560
@@ -1892,7 +1892,7 @@
       ]
     },
     {
-      "texture": "home_blue",
+      "texture": "home_02",
       "ground": [
         784,
         560
@@ -1903,7 +1903,7 @@
       ]
     },
     {
-      "texture": "home_brown",
+      "texture": "home_03",
       "ground": [
         1168,
         560
@@ -1914,7 +1914,7 @@
       ]
     },
     {
-      "texture": "home_gold",
+      "texture": "home_04",
       "ground": [
         1936,
         560
@@ -1925,7 +1925,7 @@
       ]
     },
     {
-      "texture": "home_green",
+      "texture": "home_05",
       "ground": [
         2320,
         560
@@ -1936,7 +1936,7 @@
       ]
     },
     {
-      "texture": "home_blue",
+      "texture": "home_06",
       "ground": [
         2704,
         560

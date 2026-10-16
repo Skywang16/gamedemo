@@ -535,7 +535,7 @@
   false
  ],
  "blacksmith/table": [
-  20,
+  16,
   12,
   false
  ],
@@ -575,12 +575,12 @@
   false
  ],
  "tea_house/table_a": [
-  8,
+  11,
   12,
   false
  ],
  "tea_house/table_b": [
-  20,
+  18,
   12,
   false
  ],
@@ -610,8 +610,8 @@
   false
  ],
  "inn/table_a": [
-  8,
-  8,
+  5,
+  9,
   false
  ],
  "inn/table_b": [

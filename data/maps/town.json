@@ -1408,7 +1408,7 @@
       ]
     },
     {
-      "texture": "home_gold",
+      "texture": "home_12",
       "ground": [
         400,
         752
@@ -1419,7 +1419,7 @@
       ]
     },
     {
-      "texture": "home_blue",
+      "texture": "home_13",
       "ground": [
         976,
         464

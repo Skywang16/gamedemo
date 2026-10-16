@@ -1,7 +1,6 @@
 """Six hand-drawn poses per tool and direction, retaining every avatar palette."""
 
 import math
-from .environment import tree
 from PIL import Image, ImageDraw, ImageOps
 from .characters import actor, SKINS, SHIRTS
 from .crops import watering_can
@@ -136,25 +135,3 @@ def build_actions(output):
                                     (frame * 96, (index * 4 + row) * 112),
                                 )
                     sheet.save(output / ("action_%d_%d_%d_%d.png" % style))
-    for variant in range(4):
-        crown = tree(variant)
-        # Ground shadow stays anchored while the trunk falls.
-        px = crown.load()
-        for y in range(crown.height):
-            for x in range(crown.width):
-                if px[x, y][3] < 255:
-                    px[x, y] = (0, 0, 0, 0)
-        crown.save(output / f"tree_moving_{variant}.png")
-    stump = Image.new("RGBA", (32, 32))
-    d = ImageDraw.Draw(stump)
-    d.ellipse((2, 22, 30, 30), fill="#29473465")
-    d.polygon(
-        [(8, 9), (23, 9), (24, 23), (29, 27), (20, 26), (16, 23), (6, 28), (3, 25), (8, 21)],
-        fill="#67462d",
-    )
-    d.rectangle((10, 11, 21, 24), fill="#a67440")
-    d.line((12, 13, 11, 24), fill="#d0a262", width=2)
-    d.ellipse((7, 6, 24, 15), fill="#60442c")
-    d.ellipse((9, 7, 23, 13), fill="#dab57b")
-    d.ellipse((12, 9, 20, 12), outline="#a77a47")
-    stump.save(output / "tree_stump.png")
