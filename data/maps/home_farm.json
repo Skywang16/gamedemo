@@ -1047,7 +1047,7 @@
       "destination": "cottage",
       "arrival": [
         336,
-        496
+        528
       ]
     },
     {
@@ -1060,8 +1060,8 @@
       ],
       "destination": "hazel_home",
       "arrival": [
-        304,
-        528
+        240,
+        560
       ]
     }
   ],

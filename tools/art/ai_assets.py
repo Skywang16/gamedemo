@@ -95,7 +95,7 @@ ASSETS = {
     ),
     "lighthouse": (
         60,
-        150,
+        148,
         (64, 152),
         "SUBJECT: a seaside lighthouse. A tall round stone tower painted white with a red band, "
         "a small dark door at the base, a lantern room with a glowing yellow lamp and a red conical cap on top, "
@@ -141,7 +141,7 @@ def make(name: str, force: bool = False) -> str:
     if force or not cache.exists():
         raw = g.generate(g.STYLE + " " + subject, quality="standard", transparent=False)
         g.cut_out(raw, key_magenta=True).save(cache)
-    sprite = g.to_game(Image.open(cache), max_w, max_h, canvas)
+    sprite = g.to_game(Image.open(cache), max_w, max_h, canvas, 4, "band")
     sprite.save(OUT / (name + ".png"))
     return name
 

@@ -1,67 +1,187 @@
-"""Offline assembly of model-drawn walls and floors, from the playable floor plan.
+"""Offline assembly of a room's floor, walls, rugs and wall hangings from the playable floor plan.
 
-Furniture remains separate y-sorted sprites in the game. The preview command composites it
-only for inspection; it is never baked into the collision-free floor image.
+The picture is built like a tile map on the art grid (room_kit.py): continuous floor boards, a two-cell
+north wall face wherever the floor has no floor to its north, wall tops for every other wall, and shaded
+floor along the walls. Furniture is never baked in: it stays a separate y-sorted sprite in the game.
 """
 
 from pathlib import Path
+import sys
 from PIL import Image, ImageDraw
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from art import finish
+from art import room_kit as kit
+
 ART = Path(__file__).resolve().parents[2] / "assets/art"
+CELL = kit.CELL
 
 
-def background(region):
-    w, h = region["width"], region["height"]
-    image = Image.new("RGB", (w * 32, h * 32), "#182a2a")
-    floors = set()
-    floor_mask = Image.new("L", image.size)
-    mask_draw = ImageDraw.Draw(floor_mask)
+def classify(floors: dict, width: int, height: int) -> dict:
+    """Cell -> "face_up" | "face_low" | "cap" for every non-floor cell that shows a wall."""
+
+    def inside(c):
+        return 0 <= c[0] < width and 0 <= c[1] < height
+
+    low = set()
+    for y in range(height):
+        for x in range(width):
+            if (x, y) in floors:
+                continue
+            # A cell with floor on both sides is the top of a partition, not a wall face.
+            if (x - 1, y) in floors and (x + 1, y) in floors:
+                continue
+            below = (x, y + 1)
+            partition_top = (
+                below not in floors
+                and (x - 1, y + 1) in floors
+                and (x + 1, y + 1) in floors
+                and (x - 1, y) not in floors
+                and (x + 1, y) not in floors
+            )
+            if below in floors or partition_top:
+                low.add((x, y))
+    up = {(x, y - 1) for x, y in low}
+    if any(c in floors or not inside(c) for c in up):
+        raise ValueError("a north wall face overlaps floor or leaves the map")
+    kinds = {c: "face_low" for c in low} | {c: "face_up" for c in up}
+    shown = set(floors) | set(kinds)
+    for y in range(height):
+        for x in range(width):
+            cell = (x, y)
+            if cell in shown:
+                continue
+            near = ((x + dx, y + dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1))
+            if any(n in shown for n in near):
+                kinds[cell] = "cap"
+    return kinds
+
+
+def floor_cells(region: dict) -> dict:
+    cells = {}
     for room in region["floors"]:
-        x, y, rw, rh = room["rect"]
-        tile = Image.open(ART / ("room_floor_" + room["material"] + ".png")).convert("RGB")
-        # Global phase and native material scale keep adjacent floor patches seamless.
-        for yy in range(y * 32, (y + rh) * 32):
-            for xx in range(x * 32, (x + rw) * 32):
-                image.putpixel((xx, yy), tile.getpixel((xx % tile.width, yy % tile.height)))
-        mask_draw.rectangle((x * 32, y * 32, (x + rw) * 32 - 1, (y + rh) * 32 - 1), fill=255)
-        floors.update((xx, yy) for yy in range(y, y + rh) for xx in range(x, x + rw))
-    # North walls show the full elevation; side and south walls are cut away.
-    # Never stamp a horizontal wall texture into a vertical corridor.
-    wall = Image.open(ART / "room_wall.png").convert("RGB")
-    walls = image.copy()
-    d = ImageDraw.Draw(walls)
-    for x, y in sorted(floors, key=lambda cell: (cell[1], cell[0])):
-        if (x, y - 1) not in floors:
-            strip = wall.crop(((x * 32) % wall.width, 0, (x * 32) % wall.width + 32, 64))
-            walls.paste(strip, (x * 32, y * 32 - 64))
-        if (x - 1, y) not in floors:
-            d.rectangle((x * 32 - 10, y * 32, x * 32 - 1, y * 32 + 31), fill="#493b2f")
-            d.line((x * 32 - 3, y * 32, x * 32 - 3, y * 32 + 31), fill="#ba8c53", width=3)
-        if (x + 1, y) not in floors:
-            d.rectangle(((x + 1) * 32, y * 32, (x + 1) * 32 + 9, y * 32 + 31), fill="#493b2f")
-            d.line(
-                ((x + 1) * 32 + 2, y * 32, (x + 1) * 32 + 2, y * 32 + 31), fill="#ba8c53", width=3
-            )
-        if (x, y + 1) not in floors:
-            d.rectangle((x * 32, (y + 1) * 32, x * 32 + 31, (y + 1) * 32 + 7), fill="#493b2f")
-            d.line(
-                (x * 32, (y + 1) * 32 + 2, x * 32 + 31, (y + 1) * 32 + 2), fill="#ba8c53", width=2
-            )
-    # Preserve every walkable pixel; elevations extend only into solid wall space.
-    walls.paste(image, (0, 0), floor_mask)
-    image = walls
-    rug = Image.open(ART / "room_rug.png").convert("RGBA")
-    for x, y, rw, rh in region.get("rugs", []):
-        # A rug's weave has a fixed scale. Crop a repeat instead of stretching the motif.
-        patch = Image.new("RGBA", (rw * 32, rh * 32))
-        scale = min(patch.width / rug.width, patch.height / rug.height, 1.0)
-        size = (round(rug.width * scale), round(rug.height * scale))
-        scaled = rug.resize(size, Image.Resampling.NEAREST)
-        patch.alpha_composite(scaled, ((patch.width - size[0]) // 2, (patch.height - size[1]) // 2))
-        image.paste(patch, (x * 32, y * 32), patch)
-    for art in region.get("wall_art", []):
-        sprite = Image.open(ART / ("room_" + art["kind"] + ".png")).convert("RGBA")
-        x, y = art["cell"]
+        x, y, w, h = room["rect"]
+        for yy in range(y, y + h):
+            for xx in range(x, x + w):
+                cells[(xx, yy)] = room["material"]
+    return cells
+
+
+def wall_material(cell: tuple, floors: dict) -> str:
+    """The material of the nearest floor, looking below first: stone rooms get stone walls."""
+    x, y = cell
+    for dy in (1, 2, 3, 0, -1, -2, -3):
+        for dx in (0, -1, 1, -2, 2):
+            if (x + dx, y + dy) in floors:
+                return floors[(x + dx, y + dy)]
+    raise ValueError(f"wall at {cell} has no floor near it")
+
+
+def structure(region: dict) -> Image.Image:
+    """The room without rugs and hangings, at art-grid size."""
+    w, h = region["width"], region["height"]
+    floors = floor_cells(region)
+    kinds = classify(floors, w, h)
+    art = kit.blank(w, h)
+    px = art.load()
+
+    def kind(c):
+        if c in floors:
+            return "floor"
+        return kinds.get(c, "void")
+
+    for (cx, cy), material in floors.items():
+        n, s = kind((cx, cy - 1)), kind((cx, cy + 1))
+        west, east = kind((cx - 1, cy)), kind((cx + 1, cy))
+        for py in range(CELL):
+            for pxx in range(CELL):
+                x, y = cx * CELL + pxx, cy * CELL + py
+                colour = kit.floor_pixel(material, x, y)
+                strength = 0
+                if n in ("face_low", "face_up"):
+                    strength = max(strength, (55, 35, 18)[py] if py < 3 else 0)
+                elif n == "cap" and py < 2:
+                    strength = max(strength, (40, 20)[py])
+                if west != "floor" and west != "void" and pxx < 3:
+                    strength = max(strength, (50, 30, 15)[pxx])
+                if east == "cap" and pxx >= CELL - 2:
+                    strength = max(strength, (22, 10)[pxx - (CELL - 2)])
+                if s == "cap" and py >= CELL - 2:
+                    strength = max(strength, 10)
+                px[x, y] = kit.shade(colour, strength) if strength else colour
+    for (cx, cy), what in kinds.items():
+        if what == "cap":
+            n, s = kind((cx, cy - 1)), kind((cx, cy + 1))
+            west, east = kind((cx - 1, cy)), kind((cx + 1, cy))
+            material = wall_material((cx, cy), floors)
+            for py in range(CELL):
+                for pxx in range(CELL):
+                    px[cx * CELL + pxx, cy * CELL + py] = kit.cap_pixel(
+                        material, pxx, py, n == "void", s == "void", west == "void", east == "void"
+                    )
+            continue
+        material = wall_material((cx, cy), floors)
+        base = 0 if what == "face_up" else CELL
+        for py in range(CELL):
+            for pxx in range(CELL):
+                x = cx * CELL + pxx
+                colour = kit.face_pixel(material, x, base + py)
+                if kind((cx - 1, cy)) == "floor" and pxx < 2:
+                    colour = (
+                        kit.WALLS[material]["crown"] if pxx == 0 else kit.CAP[material]["light"]
+                    )
+                if kind((cx + 1, cy)) == "floor" and pxx >= CELL - 2:
+                    colour = (
+                        kit.CAP[material]["light"]
+                        if pxx == CELL - 2
+                        else kit.WALLS[material]["crown"]
+                    )
+                px[x, cy * CELL + py] = colour
+    return art
+
+
+def rug(width: int, height: int, seed: int) -> Image.Image:
+    """A woven rug of w x h art pixels: outline, orange and green borders, cream field, diamond."""
+    palettes = [
+        ((110, 50, 34), (200, 112, 60), (110, 130, 84), (240, 222, 178)),
+        ((60, 52, 92), (86, 124, 150), (214, 176, 98), (236, 226, 198)),
+        ((92, 40, 44), (176, 72, 62), (222, 188, 120), (238, 218, 184)),
+    ]
+    dark, edge, band, field = palettes[seed % len(palettes)]
+    im = Image.new("RGBA", (width, height), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rectangle((0, 1, width - 1, height - 2), fill=dark)
+    d.rectangle((1, 2, width - 2, height - 3), fill=edge)
+    d.rectangle((3, 4, width - 4, height - 5), fill=band)
+    d.rectangle((6, 7, width - 7, height - 8), fill=dark)
+    d.rectangle((7, 8, width - 8, height - 9), fill=field)
+    for x in range(5, width - 5, 4):
+        d.point((x, 5), fill=field)
+        d.point((x, height - 6), fill=field)
+    for y in range(6, height - 6, 4):
+        d.point((4, y), fill=field)
+        d.point((width - 5, y), fill=field)
+    cx, cy = width // 2, height // 2
+    reach = min(cx - 9, cy - 9)
+    for i in range(-reach, reach + 1):
+        d.point((cx + i, cy - (reach - abs(i))), fill=edge)
+        d.point((cx + i, cy + (reach - abs(i))), fill=edge)
+    d.rectangle((cx - 1, cy - 1, cx + 1, cy + 1), fill=dark)
+    for y in range(3, height - 3, 2):
+        d.point((0, y), fill=dark)
+        d.point((width - 1, y), fill=dark)
+    return im
+
+
+def background(region: dict) -> Image.Image:
+    art = finish.snap(structure(region)).convert("RGBA")
+    for i, (x, y, rw, rh) in enumerate(region.get("rugs", [])):
+        piece = finish.lock_art(rug(rw * CELL, rh * CELL, i + x))
+        art.alpha_composite(piece, (x * CELL, y * CELL))
+    image = finish.from_art(art).convert("RGB")
+    for hanging in region.get("wall_art", []):
+        sprite = Image.open(ART / ("room_" + hanging["kind"] + ".png")).convert("RGBA")
+        x, y = hanging["cell"]
         image.paste(sprite, (x * 32, (y + 1) * 32 - sprite.height), sprite)
     for station in region["stations"]:
         if station["kind"] != "exit":
@@ -75,7 +195,7 @@ def background(region):
     return image
 
 
-def preview(region, collisions=False):
+def preview(region: dict, collisions: bool = False) -> Image.Image:
     image = background(region).convert("RGBA")
     for prop in sorted(region["props"], key=lambda p: p["ground"][1]):
         sprite = Image.open(ART / (prop["texture"] + ".png")).convert("RGBA")
@@ -97,9 +217,8 @@ def preview(region, collisions=False):
     return image
 
 
-def main():
+def main() -> None:
     import json
-    import sys
 
     root = ART.parents[1]
     folder = root / "build/interior-previews"

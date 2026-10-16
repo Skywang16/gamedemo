@@ -30,7 +30,7 @@ def public_room(ident):
     material = "stone" if ident in ("clinic", "blacksmith") else "wood"
     r.floor(2, 3, split - 2, h - 5, front, material)
     r.floor(bx, 3, 7, h - 5, back, material)
-    r.doorway(split - 1, 9, 3, 2)
+    r.doorway(split - 1, 9, 3, 2, material=material)
     r.furnishing("counter", 4, 6)
     if shop:
         r.station(

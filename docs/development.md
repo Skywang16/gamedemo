@@ -43,7 +43,7 @@ make import      # 更新 Godot 导入缓存
 | `tools/build_art.py` | 代码绘制的像素美术和地图背景 |
 | `tools/art/ai_assets.py` 等 `ai_*.py` | 图像模型绘制的建筑、地面、树石、装饰、室内（需要密钥，见下） |
 
-`ai_*.py` 调用图像生成接口，只在要新画或重画某个素材时运行（`python tools/art/ai_assets.py 名字 [--force]`）：密钥放在环境变量 `IMAGE2FREE_KEY` 或 `~/.config/gamedemo/image2free.key`，不进仓库；原图缓存在 `build/art-raw/`，没有缓存才会请求接口；每次请求自动附带风格板。规则见 [05 · 美术规范](design/05-art.md)。
+`ai_*.py` 调用图像生成接口，只在要新画或重画某个素材时运行（`python tools/art/ai_assets.py 名字 [--force]`）：密钥放在环境变量 `IMAGE2FREE_KEY` 或 `~/.config/gamedemo/image2free.key`，不进仓库；原图缓存在 `build/art-raw/`，没有缓存才会请求接口；每次请求自动附带风格板；出图后的像素颗粒、调色板与接地阴影由 `tools/art/finish.py` 统一处理。规则见 [05 · 美术规范](design/05-art.md)。
 
 生成器发现引用错误会停止并列出问题。运行所需的 PNG、字体、音频及其 Godot `.import` 设置必须提交；`.gd.uid` 也属于稳定资源标识。`.godot/` 是可重建缓存，不提交。
 
@@ -113,16 +113,17 @@ make clean       # 删除 build/、Godot 导入缓存和 Ruff 缓存
 
 ## 室内素材与布局
 
-固定参考 `assets/reference/interior_style_v1.png` 是人工选择并锁定的输入，不能随构建重画。更换风格需另建版本，并同步缓存版本；当前 34 个室内素材均用这张参考调用 image2free 的 GPT Image 2.5 Sunburst 生成。
+固定参考 `assets/reference/interior_style_v2.png` 是人工选择并锁定的输入，不能随构建重画。家具源图提交在 `assets/library/interiors/`；`make art` 把它们落到美术网格与世界调色板并加接地阴影，墙与地板由代码搭建。
 
 ```sh
-.venv/bin/python tools/art/ai_room_assets.py bed desk     # 有原图缓存则只重新处理
-.venv/bin/python tools/art/ai_room_assets.py bed --force # 显式重新请求模型，有费用
+.venv/bin/python tools/art/ai_interior_library.py bed desk     # 有原图缓存则只重新导出
+.venv/bin/python tools/art/ai_interior_library.py bed --force  # 显式重新请求模型，有费用
 make content
+make art
 .venv/bin/python tools/art/room_backgrounds.py --collisions
 make test
 ```
 
-平面图改 `tools/world/interior_layouts.py`；住户、房门和个人物件改 `tools/world/residences.py`；家具提示词与占地改 `tools/art/room_assets.py`。不要只改 PNG 尺寸而不更新共享占地契约。
+平面图改 `tools/world/interior_layouts.py`；住户、房门和个人物件改 `tools/world/residences.py`；家具提示词与占地改 `tools/art/interior_asset_catalog.py`。不要只改 PNG 尺寸而不更新共享占地契约。
 
 `tests/interior_tests.gd` 作为 `make test` 的一部分，以无窗口、独立存档运行实际场景：进出全部 25 张室内、查看个人物件、重复交互无状态副作用、NPC 回家、镜头与天气分类、室内存读档和休息后的出生点。不调用系统输入，也不播放声音。

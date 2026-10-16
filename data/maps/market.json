@@ -2008,7 +2008,7 @@
       "destination": "pemberton_home",
       "arrival": [
         336,
-        560
+        592
       ]
     },
     {
@@ -2021,8 +2021,8 @@
       ],
       "destination": "felix_home",
       "arrival": [
-        304,
-        496
+        240,
+        528
       ]
     },
     {
@@ -2049,8 +2049,8 @@
       ],
       "destination": "amara_home",
       "arrival": [
-        304,
-        496
+        240,
+        528
       ]
     },
     {
@@ -2063,8 +2063,8 @@
       ],
       "destination": "theo_home",
       "arrival": [
-        304,
-        528
+        240,
+        560
       ]
     }
   ],

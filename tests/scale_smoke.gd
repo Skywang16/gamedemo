@@ -10,9 +10,9 @@ const SPOTS = {
 	"lake": Vector2i(37, 46),
 	"ranch": Vector2i(37, 25),
 	"seaside": Vector2i(47, 12),
-	"cottage": Vector2i(13, 20),
-	"inn": Vector2i(20, 24),
 }
+## Interiors are photographed where the player appears when entering.
+const ROOMS = ["cottage", "inn"]
 
 
 func run() -> void:
@@ -31,10 +31,14 @@ func run() -> void:
 	state.narrative.stage = 6
 	state.minute = 12 * 60
 	game._start_game(state)
-	for id in SPOTS:
+	var spots = SPOTS.duplicate()
+	for id in ROOMS:
+		var room = game.catalog.region(id)
+		spots[id] = Vector2i(floori(room.spawn[0] / 32.0), floori(room.spawn[1] / 32.0))
+	for id in spots:
 		check_routes(id)
 		game.state.current_map = id
-		game.state.player_position = Vector2(SPOTS[id]) * 32 + Vector2(16, 16)
+		game.state.player_position = Vector2(spots[id]) * 32 + Vector2(16, 16)
 		game._plan_day()
 		game._build_world()
 		game._refresh()

@@ -14,6 +14,8 @@ import urllib.error
 import urllib.request
 from PIL import Image
 
+from art import finish
+
 BASE = "https://image2free.com"
 # Only the GPT Image 2.5 family is used for game art (sunburst: best quality).
 MODEL = "gpt-image-2.5-sunburst"
@@ -187,36 +189,29 @@ def cut_out(im: Image.Image, key_magenta: bool = False) -> Image.Image:
     return im.crop(box) if box else im
 
 
-def pixel_lock(im: Image.Image, colors: int = 48) -> Image.Image:
-    """The one look every asset shares: hard 0/255 alpha and a small flat palette, no soft gradients."""
-    im = im.convert("RGBA")
-    alpha = im.getchannel("A").point(lambda a: 255 if a > 127 else 0)
-    flat = (
-        im.convert("RGB")
-        .quantize(colors=colors, method=Image.MEDIANCUT, dither=Image.NONE)
-        .convert("RGBA")
-    )
-    flat.putalpha(alpha)
-    return flat
-
-
 def to_game(
     im: Image.Image,
     max_w: int,
     max_h: int,
     canvas: tuple[int, int] | None = None,
     bottom_pad: int = 4,
+    shadow: str | None = None,
 ) -> Image.Image:
-    """Fit inside max_w x max_h keeping the aspect ratio. With a canvas the sprite sits bottom-centred
-    on it (bottom_pad pixels above the lower edge), which is where the game anchors building doors."""
+    """Fit inside max_w x max_h keeping the aspect ratio, then put it on the art grid and the world palette.
+
+    With a canvas the sprite sits bottom-centred on it (bottom_pad pixels above the lower edge), which is
+    where the game anchors doors and trunks. `shadow` ("ellipse" or "band") bakes a contact shadow into
+    that bottom padding."""
     scale = min(max_w / im.width, max_h / im.height)
-    small = pixel_lock(
-        im.resize((max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.BOX)
+    grain = finish.GRAIN
+    size = (
+        max(grain, round(im.width * scale / grain) * grain),
+        max(grain, round(im.height * scale / grain) * grain),
     )
+    small = finish.grain(im.resize(size, Image.BOX))
     if canvas is None:
         return small
     out = Image.new("RGBA", canvas, (0, 0, 0, 0))
-    out.alpha_composite(
-        small, ((canvas[0] - small.width) // 2, canvas[1] - bottom_pad - small.height)
-    )
-    return out
+    left = (canvas[0] - small.width) // (2 * grain) * grain
+    out.alpha_composite(small, (left, canvas[1] - bottom_pad - small.height))
+    return finish.shadow(out, shadow) if shadow else out

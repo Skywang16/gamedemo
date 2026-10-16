@@ -5,7 +5,6 @@
   "height": 17,
   "tile_size": 32,
   "environment": "interior",
-  "art_version": 2,
   "background": "tackle_shop_background",
   "spawn": [
     176,

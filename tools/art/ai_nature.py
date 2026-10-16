@@ -110,16 +110,16 @@ def fetch(name: str, subject: str, force: bool) -> Image.Image:
 def make(name: str, force: bool = False) -> str:
     if name in SINGLES:
         max_w, max_h, canvas, subject = SINGLES[name]
-        g.to_game(fetch(name, subject, force), max_w, max_h, canvas, 2).save(OUT / (name + ".png"))
+        sprite = g.to_game(fetch(name, subject, force), max_w, max_h, canvas, 4, "ellipse")
+        sprite.save(OUT / (name + ".png"))
         if name.startswith("tree_") and name != "tree_stump":
             # The felled-tree animation turns this sprite, so it is the same picture.
-            g.to_game(fetch(name, subject, False), max_w, max_h, canvas, 2).save(
-                OUT / ("tree_moving_" + name[-1] + ".png")
-            )
+            sprite.save(OUT / ("tree_moving_" + name[-1] + ".png"))
     else:
         max_w, max_h, canvas, subject = SHEETS[name]
         for i, part in enumerate(split_sheet(fetch(name, subject, force), 3)):
-            g.to_game(part, max_w, max_h, canvas, 2).save(OUT / f"{name}_{i}.png")
+            shape = None if name == "weeds" else "ellipse"
+            g.to_game(part, max_w, max_h, canvas, 4, shape).save(OUT / f"{name}_{i}.png")
     return name
 
 

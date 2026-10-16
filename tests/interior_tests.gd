@@ -195,15 +195,15 @@ func test_home_services() -> void:
 	check(game.hud.dialogs.modal_kind == "storage", "chest opens storage")
 	game.state.inventory.wood = 3
 	game.state.storage.wood = 0
-	game._on_action("store", {"id": "wood", "deposit": true})
+	game._on_action("transfer", {"id": "wood", "deposit": true, "category": "all", "page": 0})
 	check(game.state.storage.wood == 1 and game.state.inventory.wood == 2, "deposit moves one item")
 	game._save(false)
 	var loaded = game.store.load_slot(1)
 	check(loaded.state.storage.wood == 1, "storage survives reload")
-	game._on_action("store", {"id": "wood", "deposit": false})
+	game._on_action("transfer", {"id": "wood", "deposit": false, "category": "all", "page": 0})
 	check(game.state.storage.wood == 0 and game.state.inventory.wood == 3, "withdraw restores item")
 	use_station("kitchen")
-	check(game.hud.dialogs.modal_kind == "cooking", "kitchen opens recipes")
+	check(game.hud.dialogs.modal_kind == "kitchen", "kitchen opens recipes")
 	use_station("sleep")
 	check(game.hud.dialogs.modal_kind == "sleep", "bed offers sleep")
 	var day = game.state.day

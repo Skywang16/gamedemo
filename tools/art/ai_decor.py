@@ -17,6 +17,7 @@ from art import imagegen as g
 from art.ai_nature import split_sheet
 
 OUT = Path(__file__).resolve().parents[2] / "assets/art"
+SHADOW_PAD = 4
 
 # kind -> (max width, max height) in game pixels
 SIZES = {
@@ -70,7 +71,10 @@ def make(sheet: str, force: bool = False) -> str:
     parts = split_sheet(Image.open(cache), len(kinds))
     for kind, part in zip(kinds, parts):
         max_w, max_h = SIZES[kind]
-        g.to_game(part, max_w, max_h, (max_w, max_h), 0).save(OUT / f"decor_{kind}.png")
+        shape = None if kind.startswith("fence") else "ellipse"
+        # The bottom SHADOW_PAD pixels hold the baked contact shadow; decor.py anchors above it.
+        sprite = g.to_game(part, max_w, max_h, (max_w, max_h + SHADOW_PAD), SHADOW_PAD, shape)
+        sprite.save(OUT / f"decor_{kind}.png")
     return sheet
 
 

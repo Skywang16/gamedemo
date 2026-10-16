@@ -4,8 +4,8 @@ Every request carries the shared style board (imagegen.style_board).
 
     python tools/art/ai_terrain.py [name ...] [--force]
 
-Each tile is a flat top-down render (1K, no transparency needed), made seamless with a cross-fade and
-reduced to 256 px (8 x 8 game cells); soil tiles are single 32 px cells. Output: assets/art/ground_<name>.png (soil_dry.png and soil_wet.png for the plots).
+Each tile is a flat top-down render (1K, no transparency needed), cropped to the window that wraps best (nothing is blended) and
+reduced to 128 px (4 x 4 game cells) on the art grid; soil tiles are single 32 px cells. Output: assets/art/ground_<name>.png (soil_dry.png and soil_wet.png for the plots).
 """
 
 from concurrent.futures import ThreadPoolExecutor
@@ -14,7 +14,7 @@ import sys
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from art import imagegen as g
+from art import finish, imagegen as g
 
 OUT = Path(__file__).resolve().parents[2] / "assets/art"
 
@@ -37,15 +37,6 @@ TEXTURES = {
         256,
         "SUBJECT: short meadow grass, a calm mid-green base with small darker green blade clusters and rare "
         "lighter yellow-green tufts.",
-    ),
-    "grass_b": (
-        256,
-        "SUBJECT: lush darker green grass with a few tiny three-leaf clover patches and very small white and "
-        "pale yellow wildflowers scattered sparsely.",
-    ),
-    "grass_c": (
-        256,
-        "SUBJECT: sun-dried yellow-green grass with tiny dry stalks and a few small bare earth specks.",
     ),
     "dirt": (
         256,
@@ -89,6 +80,17 @@ TEXTURES = {
 
 
 ART_GRID = 170  # the model draws about 6 px per art pixel on a 1024 px render
+TILE = 128  # a ground tile is 4 x 4 map cells on the art grid
+# name -> (tones, flatten): calm ground gets few tones and its broad patches removed; paving keeps its stones.
+TONES = {
+    "grass_a": (5, 0.5),
+    "sand": (6, 0.0),
+    "cave": (6, 0.35),
+    "water": (5, 0.0),
+    "dirt": (6, 0.2),
+    "cobble": (8, 0.0),
+    "plank": (7, 0.0),
+}
 
 
 def edge_cost(a: list, b: list) -> int:
@@ -127,11 +129,6 @@ def seamless(im: Image.Image) -> Image.Image:
     return small.crop((best_x[1], best_y[1], best_x[2], best_y[2]))
 
 
-def lock(tile: Image.Image) -> Image.Image:
-    """A small flat palette, no dithering."""
-    return tile.quantize(colors=28, method=Image.MEDIANCUT, dither=Image.NONE).convert("RGB")
-
-
 def output_name(name: str) -> str:
     return name if name.startswith("soil") else "ground_" + name
 
@@ -147,8 +144,13 @@ def make(name: str, force: bool = False) -> str:
             keep_background=True,
         ).convert("RGB").save(cache)
     tile = Image.open(cache).convert("RGB")
-    tile = lock(tile.resize((size, size), Image.BOX) if size <= 32 else seamless(tile))
-    tile.save(OUT / (output_name(name) + ".png"))
+    tile = tile.resize((size, size), Image.BOX) if size <= 32 else seamless(tile)
+    if size <= 32:
+        finish.grain(tile).convert("RGB").save(OUT / (output_name(name) + ".png"))
+        return name
+    art = tile.resize((TILE // finish.GRAIN, TILE // finish.GRAIN), Image.BOX)
+    tones, flatten = TONES[name]
+    finish.from_art(finish.ramp(art, tones, flatten)).save(OUT / (output_name(name) + ".png"))
     return name
 
 

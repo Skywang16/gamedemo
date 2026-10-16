@@ -1,6 +1,7 @@
 """Interior authoring primitives. Floors, solid bases and interaction approaches share a grid."""
 
-from art.interior_asset_catalog import FURNITURE, CANVAS_PX
+from art.interior_asset_catalog import FURNITURE
+from art.room_assets import canvas, standing, SHADOW_PAD
 
 
 def pos(x, y):
@@ -16,7 +17,6 @@ class Interior:
             height=height,
             tile_size=32,
             environment="interior",
-            art_version=2,
             background=ident + "_background",
             spawn=pos(width // 2, height - 4),
             obstacles=[],
@@ -42,24 +42,26 @@ class Interior:
             self.map["rooms"].append(dict(name=name, rect=[x, y, w, h]))
         self.walk.update((xx, yy) for yy in range(y, y + h) for xx in range(x, x + w))
 
-    def doorway(self, x, y, w=2, h=2):
-        self.floor(x, y, w, h)
+    def doorway(self, x, y, w=2, h=2, material="wood"):
+        self.floor(x, y, w, h, material=material)
         self.map["doorways"].append([x, y, w, h])
 
     def furnishing(self, kind, x, y, ident="", text=""):
-        w, depth, height, _ = FURNITURE[kind]
+        w, depth, _height, _ = FURNITURE[kind]
         cells = {(xx, yy) for yy in range(y, y + depth) for xx in range(x, x + w)}
         if not cells <= self.walk or cells & self.solid:
             raise ValueError(f"{self.map['id']}: invalid {kind} footprint at {(x, y)}")
         self.solid.update(cells)
         rect = [x, y, w, depth]
         self.map["obstacles"].append(rect)
-        canvas = CANVAS_PX.get(kind, (w * 32, height * 32))
+        size = canvas(kind)
+        # A standing piece's last SHADOW_PAD rows are its shadow, which hangs below the ground line.
+        below = SHADOW_PAD if standing(kind) else 0
         self.map["props"].append(
             dict(
                 texture="room_" + kind,
                 ground=[(x + w / 2) * 32, (y + depth) * 32],
-                offset=[-canvas[0] // 2, -canvas[1]],
+                offset=[-size[0] // 2, -(size[1] - below)],
                 footprint=rect,
             )
         )
@@ -81,8 +83,17 @@ class Interior:
         self.map["entry"] = [x, y]
         self.map["spawn"] = pos(x, y - 1)
 
+    def check_walls(self):
+        """Every wall that faces north is two cells tall, so two free rows must lie above its floor."""
+        for x, y in sorted(self.walk):
+            if (x, y - 1) in self.walk:
+                continue
+            if y < 3 or (x, y - 2) in self.walk:
+                raise ValueError(f"{self.map['id']}: no room for a wall face above {(x, y)}")
+
     def finish(self):
         w, h = self.map["width"], self.map["height"]
+        self.check_walls()
         for y in range(h):
             x = 0
             while x < w:

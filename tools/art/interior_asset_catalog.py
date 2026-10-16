@@ -1,7 +1,6 @@
-"""Frozen v2 interior library contract, independent of integrated v1 maps.
+"""Furniture catalogue: (placement width, depth, canvas height, subject), in 32 px units.
 
-Furniture: (placement width, depth, canvas height, subject), in 32 px units.
-Changing subjects requires regenerating the affected 4K sheet.
+The subject text is the model prompt; changing it means regenerating the sheet that holds the piece.
 """
 
 FURNITURE = {
@@ -183,15 +182,7 @@ FURNITURE = {
 
 # Doorframe overhang is visual only; keep a one-tile opening for map authoring.
 CANVAS_PX = {"door": (48, 64)}
-
-SURFACES = {
-    "floor_wood": "seamless top-down warm honey oak interior floor, horizontal planks, sparse "
-    "knots, even lighting, no objects",
-    "floor_stone": "seamless top-down warm grey limestone interior floor, broad worn rectangular "
-    "slabs, even lighting, no objects",
-    "wall": "flat seamless horizontal interior wall elevation, muted sage wallpaper upper two "
-    "thirds, dark walnut vertical wainscoting lower third, thick wood crown moulding and "
-    "skirting, no floor, no objects, no perspective",
-    "rug": "one rectangular woven rug seen straight from above, muted terracotta and moss green "
-    "geometric border, cream centre, no tassels outside rectangle",
-}
+# Hung on the wall face or used as a passage: no ground shadow. Everything else stands on the floor.
+HANGING = {"window", "painting", "herbs", "coat"}
+PASSAGES = {"door", "stairs"}
+SHADOW_PAD = 4  # game pixels under a standing piece that hold its baked contact shadow

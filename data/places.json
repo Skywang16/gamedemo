@@ -481,11 +481,11 @@
  ],
  "cottage/table": [
   13,
-  15,
+  16,
   false
  ],
  "cottage/kitchen_side": [
-  15,
+  14,
   5,
   false
  ],
@@ -831,7 +831,7 @@
  ],
  "hazel_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "hawk_home/bed_gregor": [
@@ -865,13 +865,13 @@
   false
  ],
  "pemberton_home/bed_clara": [
-  12,
+  11,
   6,
   false
  ],
  "pemberton_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "felix_home/bed_felix": [
@@ -881,7 +881,7 @@
  ],
  "felix_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "quill_home/bed_odette": [
@@ -911,7 +911,7 @@
  ],
  "amara_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "theo_home/bed_theo": [
@@ -921,7 +921,7 @@
  ],
  "theo_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "ranch_home/bed_rosa": [
@@ -930,13 +930,13 @@
   false
  ],
  "ranch_home/bed_nora": [
-  12,
+  11,
   6,
   false
  ],
  "ranch_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "ranger_home/bed_jonas": [
@@ -946,7 +946,7 @@
  ],
  "ranger_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "wren_home/bed_wren": [
@@ -956,7 +956,7 @@
  ],
  "wren_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "ferry_home/bed_maeve": [
@@ -965,13 +965,13 @@
   false
  ],
  "ferry_home/bed_toby": [
-  12,
+  11,
   6,
   false
  ],
  "ferry_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "carver_loft/bed_eleanor": [
@@ -1025,13 +1025,13 @@
   false
  ],
  "smith_home/bed_declan": [
-  12,
+  11,
   6,
   false
  ],
  "smith_home/living": [
   5,
-  15,
+  16,
   false
  ],
  "clinic_home/bed_ambrose": [
@@ -1040,13 +1040,13 @@
   false
  ],
  "clinic_home/bed_juniper": [
-  12,
+  11,
   6,
   false
  ],
  "clinic_home/living": [
   5,
-  15,
+  16,
   false
  ]
 }

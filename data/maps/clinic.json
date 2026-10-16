@@ -5,7 +5,6 @@
   "height": 20,
   "tile_size": 32,
   "environment": "interior",
-  "art_version": 2,
   "background": "clinic_background",
   "spawn": [
     240,
@@ -547,7 +546,7 @@
       "destination": "clinic_home",
       "arrival": [
         336,
-        560
+        592
       ]
     }
   ],
@@ -581,7 +580,7 @@
         3,
         2
       ],
-      "material": "wood"
+      "material": "stone"
     }
   ],
   "rooms": [
