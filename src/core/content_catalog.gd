@@ -880,18 +880,9 @@ func _validate_region(id: String, area: Dictionary) -> String:
 	if not ResourceLoader.exists("res://assets/art/%s.png" % area.background):
 		return "缺少地图背景：" + id
 	if area.has("tile_layers"):
-		if not ResourceLoader.exists("res://assets/art/%s.png" % area.get("tile_atlas", "")):
-			return "缺少地图图块集：" + id
-		if not area.tile_layers is Array:
-			return "地图图层无效：" + id
-		for layer in area.tile_layers:
-			if not layer is Dictionary or not layer.has_all(["name", "cells"]):
-				return "地图图层字段无效：" + id
-			if not layer.cells is Array or layer.cells.size() != int(area.width * area.height):
-				return "地图图层尺寸无效：" + id
-			for gid in layer.cells:
-				if not natural(gid) or gid > 528 or gid in [10, 11, 12]:
-					return "地图图块编号无效：" + id
+		var problem = tile_map_problem(area)
+		if problem != "":
+			return problem + "：" + id
 	if (
 		area.has("tree_texture")
 		and not ResourceLoader.exists("res://assets/art/%s.png" % area.tree_texture)
@@ -1010,6 +1001,70 @@ static func avatar_path(profile: Dictionary) -> String:
 		"res://assets/art/avatar_%d_%d_%d_%d.png"
 		% [profile.skin, profile.hair, profile.outfit, profile.hat]
 	)
+
+
+## The compiled TileMap of an authored map: atlas sources, the animated block and every layer.
+func tile_map_problem(area: Dictionary) -> String:
+	if not area.get("tile_sources") is Array or area.tile_sources.is_empty():
+		return "地图图块集无效"
+	for source in area.tile_sources:
+		if (
+			not source is Dictionary
+			or not source.has_all(["texture", "columns", "rows"])
+			or not natural(source.columns)
+			or not natural(source.rows)
+			or source.columns < 1
+			or source.rows < 1
+		):
+			return "地图图块集字段无效"
+		if not ResourceLoader.exists("res://assets/art/%s.png" % source.texture):
+			return "缺少地图图块集"
+	var animation = area.get("tile_animation")
+	if (
+		not animation is Dictionary
+		or not animation.has_all(["source", "rect", "frames", "separation", "duration"])
+		or not natural(animation.source)
+		or animation.source >= area.tile_sources.size()
+		or not numeric_array(animation.rect, 4)
+		or not natural(animation.frames)
+		or animation.frames < 1
+		or not numeric_array(animation.separation, 2)
+		or not (animation.duration is float or animation.duration is int)
+		or animation.duration <= 0
+	):
+		return "地图图块动画无效"
+	var frames: Dictionary = {}
+	var r: Array = animation.rect
+	for y in range(int(r[1]), int(r[1] + r[3])):
+		for x in range(int(r[0]), int(r[0] + r[2])):
+			for frame in range(1, int(animation.frames)):
+				frames[Vector2i(x + frame * (1 + int(animation.separation[0])), y)] = true
+	if not area.tile_layers is Array:
+		return "地图图层无效"
+	for layer in area.tile_layers:
+		if (
+			not layer is Dictionary
+			or not layer.has_all(["name", "source", "offset", "width", "height", "cells"])
+			or not natural(layer.source)
+			or layer.source >= area.tile_sources.size()
+			or not numeric_array(layer.offset, 2)
+			or not natural(layer.width)
+			or not natural(layer.height)
+			or not layer.cells is Array
+			or layer.cells.size() != int(layer.width * layer.height)
+		):
+			return "地图图层字段无效"
+		var spec: Dictionary = area.tile_sources[int(layer.source)]
+		var columns = int(spec.columns)
+		var animated = int(layer.source) == int(animation.source)
+		for gid in layer.cells:
+			if not natural(gid) or gid > columns * int(spec.rows):
+				return "地图图块编号无效"
+			if animated and gid > 0:
+				var coords = Vector2i((int(gid) - 1) % columns, (int(gid) - 1) / columns)
+				if frames.has(coords):
+					return "地图图块落在动画帧上"
+	return ""
 
 
 func natural(value: Variant) -> bool:

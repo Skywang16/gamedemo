@@ -130,19 +130,20 @@ make test
 
 ## 农场：人工编辑的分层 TileMap
 
-地图唯一编辑源是 `tools/world/maps/home_farm.tmx`，可直接在 Tiled 打开。图块集引用 `farm_tiles.tsx`，物件图集引用 `farm_objects.tsx`；全部使用 32 像素网格。修改后保存为 CSV 编码的 TMX，再执行 `make content`、`make art`、`make import`。构建只读取这张地图，绝不重新排布它。无需在 Godot 中安装 Tiled 插件。
+地图唯一编辑源是 `tools/world/maps/home_farm.tmx`，可直接在 Tiled 打开，全部使用 32 像素网格。修改后保存为 CSV 编码的 TMX，再执行 `make content`、`make art`、`make import`。构建只读取这张地图，绝不重新排布它；无需在 Godot 中安装 Tiled 插件。
 
-- `Ground`：草地与林地地面；`Paths`：手工布置的道路和院落。
-- `Water`：4 帧循环水面；`Shore`：独立的静态池岸。岸边不跟着水面晃动。
-- `Props`：房屋、水井、出货箱、灌木、花丛、围栏和边界林木，以落地点参与人物纵向排序。
-- `Trees`、`Debris`：可砍树木和可清理杂物；不会烘焙进地面。
-- `Forest collision`、`Collision`、`No planting`、`Building sites`：碰撞、耕地限制和扩建位置。
-- `Gameplay`、`Places`、`Stations`：出口、出生点、教程田地、NPC 落脚点与交互点。移动建筑时同步调整这些标注。
+TMX 里画的是“每一格是什么”，画面由构建拼出来：
 
-`tools/world/tiled_farm.py` 编译地形与物件数据；`src/world/authored_tile_map.gd` 创建真实 `TileMapLayer` 和带动画的 `TileSetAtlasSource`。游戏地图不渲染整体背景 PNG；`home_farm_background.png` 仅为地图总览使用的离线缩略底图。
+- `Forest`、`Paths`、`Water`：用 `farm_terrain.tsx` 的三种标记逐格画林地、土路（含院子）和池塘。林地不可走（土路穿过的格子除外），土路不能耕种，水面不可走、可在岸边钓鱼；土路不能画在水上。
+- `Details`：`farm_details.tsx` 的地面小花、草丛、石子、蘑菇、蕨类和踏脚石，只是画面，不挡路也不挡耕种，翻土后被土块盖住。
+- `Props`：`farm_objects.tsx` 的房屋、水井、出货箱、边界林木、灌木、石墙、石头、树桩、倒木、芦苇、睡莲和院子小物，以落地点参与人物纵向排序；图块属性 `block` 给出它挡住的格子（相对落地点所在格的 `dx,dy,w,h`）。
+- `Trees`、`Debris`：可砍的树和可清理的杂草、木枝、石块。
+- `No planting`、`Building sites`：额外的禁耕范围和扩建位置。
+- `Gameplay`、`Places`、`Stations`：出口、出生点、教程田地、NPC 落脚点与交互点；编译时检查它们没有落在被挡住的格子上。
+- `Preview`：锁定的图片层，显示构建出的地面（`home_farm_background.png`），在 Tiled 里对照着画。
 
-`assets/library/maps/farm/scene.png` 是 AI 美术概念参考，不能作为可玩地图打底。`tools/art/farm_tiles.py` 从批准的参考中取草地和土路色彩样本、提取独立物件，制作可复用的道路/池岸过渡图块；水面单独制作 4 帧动画。图块是 16 像素原生美术、2 倍整数导出，不将整张概念图切片伪装成 TileMap。布局来自 TMX，与美术图的坐标无关。
+`tools/world/tiled_farm.py` 把三种地形编成双网格图层：可见图块错开半格，每块由它四个角所在的格子决定形状（`tools/world/farm_atlas.py` 规定图集排布）。游戏里是 5 层真实 `TileMapLayer`：`Ground`（草地与林地地面）、`Water`（开阔水面，4 帧动画）、`Shore`（静止的泥岸）、`Paths`、`Details`，由 `src/world/authored_tile_map.gd` 创建。地面纹理每 8 格重复一次，每块图块按它在周期里的位置绘制，所以纹理跨图块连续；边缘是一张连续的场（四角平滑混合 + 周期噪声），相邻图块在接缝上取同一个值，过渡是弯曲的、没有接缝也没有直角台阶。`home_farm_background.png` 是同一组图层的整图，用于地图总览和 Tiled 预览，游戏地图本身不画它。
 
-生成新的概念参考用 `tools/art/ai_farm_scene.py generate`，独立树木用 `tree`，都会调用 Image2Free；已有源图时拒绝覆盖。常规构建无网络调用。提示词与源图保存在素材库，密钥不进入仓库。
+美术素材组在 `assets/library/maps/farm/kit/`：草地、土路、林地、水面四张无缝纹理，以及树、花草、水边与林缘、石墙、院子小物五张素材板，全部由 `tools/art/ai_farm_kit.py` 以批准的概念图 `assets/library/maps/farm/scene.png` 为唯一风格参考生成（`python tools/art/ai_farm_kit.py 名字 [--force]`，已有源图时不加 `--force` 拒绝覆盖）。房屋、水井、出货箱按 `cutouts.json` 的轮廓从概念图里取出。`tools/art/farm_tiles.py` 无网络地把它们做成地形图集 `farm_tiles.png`、地面装饰图集 `farm_details.png`、物件精灵 `farm_*.png` 和三个 TSX，图块是 16 像素原生美术、2 倍整数导出。生成新的概念图用 `tools/art/ai_farm_scene.py generate`。提示词与源图保存在素材库，密钥不进入仓库。
 
 验收可运行 `tests/scale_smoke.gd`，追加 `--farm-only` 和新的独立 `--save-dir=user://ui-test-scale-...`。测试只调用游戏场景，不控制系统鼠标。地图布局变更可能使旧存档的树木编号、田地或角色位置不再有效；不修改或覆盖个人存档。

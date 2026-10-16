@@ -1,4 +1,5 @@
-"""Whole-scene farm art. Network calls are explicit; normal builds install committed art only.
+"""The approved farm concept: art direction for the farm tile kit and the source of the cottage,
+well and shipping chest. Network calls are explicit; normal builds install committed art only.
 
     python tools/art/ai_farm_scene.py guide
     python tools/art/ai_farm_scene.py generate
@@ -153,37 +154,6 @@ def guide() -> Path:
 
 def main() -> None:
     command = sys.argv[1] if len(sys.argv) > 1 else "guide"
-    if command == "tree":
-        destination = LIBRARY / "tree.png"
-        if destination.exists():
-            raise SystemExit("tree.png already exists")
-        prompt = (
-            "Create ONE isolated leafy oak tree sprite for the attached farming game map. "
-            "Match its painted pixel clusters, warm yellow-green highlights, deep teal leaf shadows, "
-            "brown trunk and top-down three-quarter camera EXACTLY. A full broad oval canopy, "
-            "visible forked trunk and roots below; height about 1.3 times width. "
-            "This will be a chop-able medium orchard tree inside the same farm, so it must look "
-            "like it belongs to that painted woodland. Do not copy the map or include any landscape. "
-            "Center the entire tree with a small clear margin on every side. Fully transparent "
-            "background, no grass tile or ground plane, no cast shadow, no other objects, no text."
-        )
-        reference_image = Image.open(LIBRARY / "scene.png").convert("RGB")
-        reference_image.thumbnail((1536, 1152))
-        buffer = io.BytesIO()
-        reference_image.save(buffer, format="JPEG", quality=92)
-        reference = "data:image/jpeg;base64," + base64.b64encode(buffer.getvalue()).decode()
-        tree = g.generate(
-            prompt,
-            quality="hd",
-            transparent=True,
-            references=[reference],
-            attempts=1,
-            reference_note="",
-        )
-        tree.save(destination)
-        (LIBRARY / "tree.prompt.txt").write_text(prompt, encoding="utf-8")
-        print("Matching farm tree saved:", destination, flush=True)
-        return
     layout = guide()
     if command == "guide":
         print(layout)

@@ -1,6 +1,14 @@
 class_name WorldAmbient
 extends Node2D
 
+## Top of the chimney inside each building sprite that smokes.
+const CHIMNEYS = {
+	"house": Vector2(205, 22),
+	"inn": Vector2(205, 22),
+	"workshop": Vector2(205, 22),
+	"farm_house": Vector2(191, 18),
+}
+
 var time: float = 0
 var ripples: Array[Vector2] = []
 var smoke_sources: Array[Vector2] = []
@@ -20,9 +28,12 @@ func configure(region: Dictionary) -> void:
 				if Geometry2D.is_point_in_polygon(at, points):
 					ripples.append(at)
 	for prop in region.props:
-		if prop.texture in ["house", "inn", "workshop"]:
+		if CHIMNEYS.has(prop.texture):
 			smoke_sources.append(
-				Vector2(prop.ground[0] + prop.offset[0] + 205, prop.ground[1] + prop.offset[1] + 22)
+				(
+					Vector2(prop.ground[0] + prop.offset[0], prop.ground[1] + prop.offset[1])
+					+ CHIMNEYS[prop.texture]
+				)
 			)
 
 

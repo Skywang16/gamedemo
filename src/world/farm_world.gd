@@ -62,7 +62,7 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 	if region.has("tile_layers"):
 		tile_map = AuthoredTileMap.new()
 		add_child(tile_map)
-		tile_map.configure(region, tex(region.tile_atlas))
+		tile_map.configure(region)
 	ambient = WorldAmbient.new()
 	add_child(ambient)
 	ambient.configure(region)
@@ -231,7 +231,7 @@ func add_prop(id: String, ground: Vector2, offset: Vector2) -> Node2D:
 	sprite.centered = false
 	sprite.position = offset
 	anchor.add_child(sprite)
-	if id.begins_with("tree") or id.begins_with("weeds") or id.begins_with("farm_scene_"):
+	if id.begins_with("tree") or id.begins_with("weeds") or id.begins_with("farm_"):
 		anchor.use_parent_material = true
 		sprite.use_parent_material = true
 	actors.add_child(anchor)

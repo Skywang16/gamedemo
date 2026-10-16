@@ -1,53 +1,62 @@
 class_name AuthoredTileMap
 extends Node2D
 
-## Runtime rendering of the authored Tiled layers. Cells remain independently editable data.
-const WATER = Vector2i(8, 0)
-var atlas: TileSetAtlasSource
+## The compiled layers of an authored map as real TileMapLayers over atlas sources.
+## Terrain layers sit on a dual grid (offset by half a cell); open water is an animated tile.
 var tile_set: TileSet
-var water_layer: TileMapLayer
+var animation: Dictionary
+var animated: Array[Vector2i] = []
 
 
-func configure(region: Dictionary, texture: Texture2D) -> void:
+func configure(region: Dictionary) -> void:
 	name = "AuthoredTerrain"
 	z_index = -10
 	use_parent_material = true
-	atlas = TileSetAtlasSource.new()
-	atlas.texture = texture
-	atlas.texture_region_size = Vector2i(32, 32)
-	for index in 528:
-		if index in [9, 10, 11]:
-			continue  # Reserved by the four-frame water tile at (8, 0).
-		atlas.create_tile(Vector2i(index % 16, index / 16))
-	atlas.set_tile_animation_columns(WATER, 4)
-	set_calm(false)
+	animation = region.tile_animation
 	tile_set = TileSet.new()
 	tile_set.tile_size = Vector2i(32, 32)
-	tile_set.add_source(atlas, 0)
+	for index in region.tile_sources.size():
+		var atlas = TileSetAtlasSource.new()
+		atlas.texture = load("res://assets/art/%s.png" % region.tile_sources[index].texture)
+		atlas.texture_region_size = Vector2i(32, 32)
+		tile_set.add_source(atlas, index)
+	var r: Array = animation.rect
+	var moving = Rect2i(int(r[0]), int(r[1]), int(r[2]), int(r[3]))
 	for definition in region.tile_layers:
 		var layer = TileMapLayer.new()
 		layer.name = definition.name
 		layer.tile_set = tile_set
+		layer.position = Vector2(definition.offset[0], definition.offset[1])
 		layer.use_parent_material = true
-		layer.collision_enabled = false  # The same authored cells feed the shared gameplay collider.
+		layer.collision_enabled = false  # Collision comes from the shared gameplay cells.
 		add_child(layer)
+		var source = int(definition.source)
+		var atlas: TileSetAtlasSource = tile_set.get_source(source)
+		var columns = int(region.tile_sources[source].columns)
+		var width = int(definition.width)
 		for index in definition.cells.size():
 			var gid = int(definition.cells[index])
 			if gid == 0:
 				continue
-			var tile = gid - 1
-			layer.set_cell(
-				Vector2i(index % int(region.width), index / int(region.width)),
-				0,
-				Vector2i(tile % 16, tile / 16)
-			)
-		if definition.name == "Water":
-			water_layer = layer
+			var coords = Vector2i((gid - 1) % columns, (gid - 1) / columns)
+			if not atlas.has_tile(coords):
+				atlas.create_tile(coords)
+				if source == int(animation.source) and moving.has_point(coords):
+					atlas.set_tile_animation_separation(
+						coords, Vector2i(int(animation.separation[0]), int(animation.separation[1]))
+					)
+					animated.append(coords)
+			layer.set_cell(Vector2i(index % width, index / width), source, coords)
+	set_calm(false)
 
 
+## With reduced motion the water rests on its first frame.
 func set_calm(calm: bool) -> void:
-	if atlas == null:
+	if tile_set == null:
 		return
-	atlas.set_tile_animation_frames_count(WATER, 1 if calm else 4)
-	for frame in 1 if calm else 4:
-		atlas.set_tile_animation_frame_duration(WATER, frame, 0.28)
+	var atlas: TileSetAtlasSource = tile_set.get_source(int(animation.source))
+	var frames = 1 if calm else int(animation.frames)
+	for coords in animated:
+		atlas.set_tile_animation_frames_count(coords, frames)
+		for frame in frames:
+			atlas.set_tile_animation_frame_duration(coords, frame, float(animation.duration))

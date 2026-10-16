@@ -359,8 +359,7 @@ def build_farm():
     )
     farm.update(authored)
     farm.update(
-        tile_atlas="farm_tiles",
-        tree_texture="farm_scene_tree",
+        tree_texture="farm_tree",
         plantable=[3, 14, 58, 30],
         starting_gold=40,
         starting_inventory={"turnip_seed": 8, "carrot_seed": 4},
