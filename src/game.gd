@@ -14,6 +14,7 @@ var fishing: FishingRules
 var animals: AnimalRules
 var happenings: EventRules
 var board: BoardRules
+var combat: CombatRules
 var planner: NpcPlanner
 var store: SaveStore
 var settings: GameSettings
@@ -35,8 +36,16 @@ var autosave_accumulator: float = 0.0
 var audio: Dictionary = {}
 var initialized: bool = false
 var pages: Array = []
+var scene_id: String = ""
+var scene_kind: String = ""
 var scene_event: String = ""
 var scene_index: int = 0
+var scene_queue: Array = []
+var pending_ending: bool = false
+var player_hp: int = 40
+var hit_cooldown: float = 0.0
+var defeated_today: Dictionary = {}
+var drop_rng := RandomNumberGenerator.new()
 
 
 func _ready() -> void:
@@ -55,6 +64,8 @@ func _ready() -> void:
 	animals = AnimalRules.new(catalog)
 	happenings = EventRules.new(catalog)
 	board = BoardRules.new(catalog)
+	combat = CombatRules.new(catalog)
+	drop_rng.randomize()
 	var directory = "user://"
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--save-dir="):
@@ -65,7 +76,23 @@ func _ready() -> void:
 	settings.apply()
 	fade = ScreenFade.new()
 	add_child(fade)
-	for kind in ["action", "harvest", "day"]:
+	for kind in [
+		"action",
+		"harvest",
+		"day",
+		"bell",
+		"chime",
+		"lantern",
+		"water",
+		"cheer",
+		"wedding",
+		"hit",
+		"rumble",
+		"tick",
+		"swing",
+		"hurt",
+		"defeat"
+	]:
 		var player = AudioStreamPlayer.new()
 		player.stream = load("res://assets/audio/%s.wav" % kind)
 		player.volume_db = -8
@@ -128,6 +155,12 @@ func _start_game(initial_state: FarmState) -> void:
 	add_child(hud)
 	hud.configure(catalog, state)
 	hud.action_requested.connect(_on_action)
+	hud.dialogs.cutscene_sound.connect(_sound)
+	player_hp = combat.hero_hp()
+	hit_cooldown = 0.0
+	defeated_today.clear()
+	scene_queue.clear()
+	pending_ending = false
 	_plan_day()
 	_build_world()
 	initialized = true
@@ -140,7 +173,9 @@ func _start_game(initial_state: FarmState) -> void:
 	_save(false, true)
 	fade.reveal(0.7)
 	if not state.narrative.active_scene.is_empty():
-		_start_scene(state.narrative.active_scene)
+		_start_scene(state.narrative.active_scene, _kind_of(state.narrative.active_scene))
+	else:
+		_check_wedding()
 
 
 ## The first crop that can be planted today, so the seed slot starts on something useful.
@@ -161,6 +196,7 @@ func _plan_day() -> void:
 		"stage": int(state.narrative.stage),
 		"birthdays": catalog.calendar.birthdays_on(state.day, catalog.story.npcs),
 		"festival": catalog.calendar.is_festival(state.day),
+		"spouse": stories.spouse(state),
 	}
 	planner.plan_day(context)
 
@@ -180,7 +216,11 @@ func _build_world() -> void:
 	world.configure(catalog, state, planner)
 	world.player.action_contact.connect(_tool_contact)
 	world.player.can_move = false
+	world.player_hit.connect(_on_player_hit)
+	world.enemy_defeated.connect(_on_enemy_defeated)
 	_apply_settings()
+	_spawn_enemies()
+	hud.set_hp(player_hp, combat.hero_hp())
 	world_display = TextureRect.new()
 	world_display.position = WORLD_RECT.position
 	world_display.size = WORLD_RECT.size
@@ -199,6 +239,7 @@ func _process(delta: float) -> void:
 	if not initialized:
 		return
 	world.player.can_move = not hud.is_modal()
+	hit_cooldown = maxf(0.0, hit_cooldown - delta)
 	if world.player.velocity.length_squared() > 0.1:
 		mouse_aim = false
 	world.update_target(mouse_aim, _pointer_in_world())
@@ -227,6 +268,15 @@ func _on_tick() -> void:
 		return
 	if state.minute == 24 * 60:
 		hud.toast("已经很晚了，该回家睡觉了。")
+	if (
+		stories.clock_ringing(state)
+		and state.minute % 60 == 0
+		and state.minute >= 7 * 60
+		and state.minute <= 22 * 60
+	):
+		var strokes = int(state.minute / 60) % 12
+		hud.toast("钟楼敲了 %d 下。" % (12 if strokes == 0 else strokes))
+		_sound("bell")
 	var festival = stories.attend_festival(state)
 	if festival.ok:
 		hud.toast(festival.message, 5)
@@ -243,13 +293,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		mouse_aim = true
 	if hud.modal_kind == "dialogue":
 		if event.is_action_pressed("use_tool") or event.is_action_pressed("interact"):
+			get_viewport().set_input_as_handled()
+			if hud.dialogs.cutscene_skip():
+				return
 			if scene_index < pages.size() - 1:
 				_on_action("dialogue_next", {})
-			elif scene_event not in ["festival", "prologue"]:
+			elif _choices_for(scene_event).is_empty():
 				_on_action("dialogue_finish", {})
-		elif event.is_action_pressed("menu"):
+		elif event.is_action_pressed("menu") and scene_kind != "wedding":
 			state.narrative.active_scene = ""
 			state.narrative.page = 0
+			scene_queue.clear()
+			pending_ending = false
 			hud.close_modal()
 			_save(false)
 		return
@@ -292,11 +347,16 @@ func _unhandled_input(event: InputEvent) -> void:
 func _use_tool() -> void:
 	if selected_tool == "rod":
 		_cast()
+	elif selected_tool == "sword":
+		_swing_sword()
 	elif world.player.swing_tool(selected_tool, world.target):
 		action_crop = selected_crop
 
 
 func _tool_contact(tool: String, cell: Vector2i) -> void:
+	if tool == "sword":
+		_sword_hit()
+		return
 	var response = rules.apply_tool(state, tool, cell, world.player.cell(), action_crop)
 	_feedback(response, false)
 	if response.ok:
@@ -363,25 +423,18 @@ func _interact() -> void:
 			_talk_npc(station.id)
 		"gather":
 			_feedback(stories.gather(state, station.id))
-		"bridge":
-			if state.narrative.stage >= 3:
-				_travel(
-					"lake",
-					Vector2(catalog.region("lake").spawn[0], catalog.region("lake").spawn[1])
-				)
-			elif stories.quest(state).event == "bridge":
-				_request_scene("bridge")
+		"bridge", "lantern", "story":
+			_story_station(station)
+		"ferry":
+			if stories.ferry_open(state):
+				_travel(station.destination, Vector2(station.arrival[0], station.arrival[1]))
 			else:
-				hud.toast("桥面断了，下面是湍急的水。")
-		"lantern":
-			if state.narrative.stage == 5:
-				_request_scene("festival")
-			elif state.narrative.stage == 6:
-				hud.dialogs.show_ending()
-			else:
-				hud.toast("灯台空着，还没人过来。")
+				hud.toast("渡口的老船还搁浅在泥滩上。")
 		"letter":
-			_start_scene("letter" if state.narrative.intro_seen else "prologue")
+			if state.narrative.intro_seen:
+				_start_scene("letter", "letter")
+			else:
+				_start_scene("prologue", "prologue")
 		"storage":
 			hud.dialogs.show_bag(true)
 		"kitchen":
@@ -401,8 +454,11 @@ func _open_shop(shop_id: String) -> void:
 
 
 func _travel(destination: String, at: Vector2) -> void:
+	var from_mine = state.current_map.begins_with("mine_")
 	var response = stories.enter(state, destination, at)
 	if response.ok:
+		if destination.begins_with("mine_") and not from_mine:
+			player_hp = combat.hero_hp()
 		_build_world()
 		hud.close_modal()
 		_refresh()
@@ -421,9 +477,27 @@ func _talk_npc(id: String) -> void:
 	var event = quest.event if quest.npc == id else ""
 	_save(false)
 	if event == "welcome":
-		_start_scene(event)
+		_start_scene(event, "quest")
 	else:
 		hud.dialogs.show_npc(id, line, event, _activity_of(id))
+
+
+## Bridge, lantern stand and old shrine: each is where one step of the story happens, and
+## otherwise only shows what it is.
+func _story_station(station: Dictionary) -> void:
+	var quest = stories.quest(state)
+	if quest.station == station.id:
+		_request_scene(quest.event)
+	elif station.kind == "bridge":
+		if stories.bridge_open(state):
+			var spawn = catalog.region("lake").spawn
+			_travel("lake", Vector2(spawn[0], spawn[1]))
+		else:
+			hud.toast("桥面断了，下面是湍急的水。")
+	elif station.kind == "lantern":
+		hud.toast("灯台上，%d 盏灯亮着。" % stories.lamps(state), 3)
+	else:
+		hud.toast(str(station.get("idle", "")))
 
 
 func _request_scene(event: String) -> void:
@@ -431,50 +505,92 @@ func _request_scene(event: String) -> void:
 	if not error.is_empty():
 		hud.toast(error, 6)
 		return
-	_start_scene(event)
+	_start_scene(event, "quest")
 
 
-func _start_scene(event: String) -> void:
-	scene_event = event
-	if event == "letter":
-		pages = catalog.story.scenes.prologue
-	else:
-		pages = catalog.story.scenes[event].duplicate(true)
-	scene_index = int(state.narrative.page) if state.narrative.active_scene == event else 0
+func _start_scene(id: String, kind: String) -> void:
+	scene_event = id
+	scene_kind = kind
+	scene_id = "prologue" if id == "letter" else id
+	pages = stories.scene_pages(state, scene_id)
+	scene_index = int(state.narrative.page) if state.narrative.active_scene == id else 0
 	scene_index = clampi(scene_index, 0, pages.size() - 1)
-	if event != "letter":
-		state.narrative.active_scene = event
+	if kind != "letter":
+		state.narrative.active_scene = id
 		state.narrative.page = scene_index
 		_save(false)
-	hud.dialogs.show_dialogue(pages, scene_index, event)
+	hud.dialogs.show_dialogue(pages, scene_index, scene_id, _choices_for(id), id)
+
+
+## What kind of scene a saved scene id is, so an interrupted scene resumes the right way.
+func _kind_of(id: String) -> String:
+	if id == "prologue":
+		return "prologue"
+	if catalog.quest_index(id) >= 0:
+		return "quest"
+	if stories.is_heart_event(id):
+		return "heart"
+	if id.begins_with("wedding_"):
+		return "wedding"
+	if id.begins_with("dating_") or id.begins_with("engage_"):
+		return "romance"
+	return "follow"
+
+
+## The closing answers of a scene: the letter's two, or the current step's own choices.
+func _choices_for(id: String) -> Array:
+	if id == "prologue":
+		return catalog.story.prologue_choices
+	var quest = stories.quest(state)
+	if quest.event == id:
+		return quest.choice
+	return []
 
 
 func _finish_scene(choice: String) -> void:
 	var response = {"ok": true, "message": ""}
 	var before = int(state.narrative.stage)
-	if stories.is_heart_event(scene_event):
-		response = stories.claim_event(state, scene_event)
-	elif scene_event != "letter":
-		response = stories.complete(state, scene_event, choice)
+	var follow: Array = []
+	match scene_kind:
+		"quest":
+			response = stories.complete(state, scene_event, choice)
+			follow = response.get("follow", [])
+		"prologue":
+			response = stories.complete(state, "prologue", choice)
+		"heart":
+			response = stories.claim_event(state, scene_event)
+		"wedding":
+			response = stories.wed(state, scene_event.trim_prefix("wedding_"))
 	if not response.ok:
 		hud.toast(response.message)
 		return
-	if scene_event != "letter":
+	if scene_kind != "letter":
 		state.narrative.active_scene = ""
 		state.narrative.page = 0
 	hud.close_modal()
-	if int(state.narrative.stage) != before:
-		# The bridge or the lantern changed what villagers can do today.
+	if int(state.narrative.stage) != before or scene_kind == "wedding":
+		# The bridge, a lamp or a marriage changes where people are and what can be done.
 		_plan_day()
 		_build_world()
 	_refresh()
 	_save(false)
 	world.queue_redraw()
 	if scene_event == "festival":
+		pending_ending = true
+	scene_queue = follow
+	if not response.message.is_empty():
+		hud.toast(response.message)
+	_next_in_queue()
+
+
+## Plays the next follow-up scene (a reply, an epilogue), or the closing card of the first story.
+func _next_in_queue() -> void:
+	if not scene_queue.is_empty():
+		_start_scene(scene_queue.pop_front(), "follow")
+	elif pending_ending:
+		pending_ending = false
 		hud.dialogs.show_ending()
 		_sound("day")
-	elif not response.message.is_empty():
-		hud.toast(response.message)
 
 
 # ---------------------------------------------------------------------------- menu actions
@@ -518,6 +634,18 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			hud.dialogs.show_collection()
 		"story":
 			_request_scene(payload.event)
+		"confess":
+			var response = stories.confess(state, payload.npc)
+			hud.close_modal()
+			_feedback(response)
+			if response.ok:
+				_start_scene(response.scene, "romance")
+		"propose":
+			var response = stories.propose(state, payload.npc)
+			hud.close_modal()
+			_feedback(response)
+			if response.ok:
+				_start_scene(response.scene, "romance")
 		"gift_menu":
 			hud.dialogs.show_gifts(payload.npc, int(payload.get("page", 0)))
 		"gift":
@@ -526,14 +654,16 @@ func _on_action(action: String, payload: Dictionary) -> void:
 			_feedback(response)
 		"heart_event":
 			if not stories.available_event(state, payload.npc).is_empty():
-				_start_scene(payload.event)
+				_start_scene(payload.event, "heart")
 		"dialogue_next":
 			if scene_index < pages.size() - 1:
 				scene_index += 1
 				if scene_event != "letter":
 					state.narrative.page = scene_index
 					_save(false)
-				hud.dialogs.show_dialogue(pages, scene_index, scene_event)
+				hud.dialogs.show_dialogue(
+					pages, scene_index, scene_id, _choices_for(scene_event), scene_event
+				)
 		"dialogue_finish":
 			if scene_index == pages.size() - 1:
 				_finish_scene(payload.get("choice", ""))
@@ -645,21 +775,32 @@ func _next_day() -> void:
 	var happening = happenings.roll(state)
 	if not happening.is_empty():
 		happenings.apply(state, happening)
+	var chore = stories.spouse_morning(state)
 	board.refresh(state)
 	hud.close_modal()
 	clock_accumulator = 0
+	defeated_today.clear()
+	player_hp = combat.hero_hp()
 	stories.enter(state, "cottage", Vector2(464, 464))
 	_plan_day()
 	_build_world()
 	world.modulate = Color.WHITE
 	hud.toast(_morning_message(morning, happening))
-	fade.reveal(1.1, _day_card(morning, happening))
+	fade.reveal(1.1, _day_card(morning, happening, chore))
 	_sound("day")
 	_refresh()
 	_save(false)
+	_check_wedding()
 
 
-func _day_card(morning: Dictionary, happening: Dictionary) -> String:
+## The wedding scene starts on the morning three days after the ring.
+func _check_wedding() -> void:
+	var id = stories.wedding_due(state)
+	if id != "" and not hud.is_modal():
+		_start_scene("wedding_" + id, "wedding")
+
+
+func _day_card(morning: Dictionary, happening: Dictionary, chore: Dictionary) -> String:
 	var date = catalog.calendar.date(state.day)
 	var lines = [
 		"第 %d 年 · %s季" % [date.year, date.season_name],
@@ -686,8 +827,12 @@ func _day_card(morning: Dictionary, happening: Dictionary) -> String:
 		recap.append("钓到 %d 条鱼" % int(summary.caught))
 	if int(summary.cooked) > 0:
 		recap.append("做了 %d 道菜" % int(summary.cooked))
+	if int(summary.defeated) > 0:
+		recap.append("击退 %d 只怪物" % int(summary.defeated))
 	if not recap.is_empty():
 		lines.append("，".join(recap))
+	if not chore.is_empty():
+		lines.append(chore.text)
 	if not happening.is_empty():
 		lines.append(happening.text)
 	return "\n".join(lines)
@@ -737,6 +882,7 @@ func _save(show_toast: bool, force: bool = false) -> String:
 func _refresh() -> void:
 	var fresh = rules.record_collection(state)
 	hud.refresh(selected_tool, selected_crop)
+	hud.set_hp(player_hp, combat.hero_hp())
 	world.queue_redraw()
 	if not fresh.is_empty() and hud.toast_remaining <= 0.0:
 		hud.toast("图志新增：%s" % catalog.items[fresh[0]].name)
@@ -752,3 +898,93 @@ func _notification(what: int) -> void:
 			_on_action("quit", {})
 		else:
 			get_tree().quit()
+
+
+# ---------------------------------------------------------------------------- the mine
+
+
+## Fills a mine floor with today's monsters, skipping the ones already beaten today.
+func _spawn_enemies() -> void:
+	if not catalog.spawns.has(state.current_map):
+		return
+	var region = catalog.region(state.current_map)
+	var open: Array = []
+	for y in range(int(region.height)):
+		for x in range(int(region.width)):
+			var cell = Vector2i(x, y)
+			if (
+				not catalog.blocked(cell, state.current_map, state.tree_damage)
+				and not catalog.is_water(cell, state.current_map)
+			):
+				open.append(cell)
+	var boss_cell = Vector2i(32, 8)
+	for cell in open:
+		if absi(cell.x - 32) + absi(cell.y - 8) < absi(boss_cell.x - 32) + absi(boss_cell.y - 8):
+			boss_cell = cell
+	if not open.has(boss_cell):
+		boss_cell = open[0]
+	var plan = combat.spawn_plan(state, state.current_map, open, boss_cell)
+	var beaten: Array = defeated_today.get(state.current_map, [])
+	world.add_enemies(plan.filter(func(e): return not beaten.has(_enemy_key(e.kind, e.cell))))
+
+
+func _enemy_key(kind: String, cell: Vector2i) -> String:
+	return "%s:%d,%d" % [kind, cell.x, cell.y]
+
+
+func _swing_sword() -> void:
+	if world.player.action_remaining > 0:
+		return
+	var response = combat.swing(state)
+	if not response.ok:
+		hud.toast(response.message)
+		return
+	_sound("swing")
+	world.player.swing_tool("sword", world.player.cell() + world.player.facing)
+	_refresh()
+
+
+func _sword_hit() -> void:
+	var centre = world.player.position + Vector2(world.player.facing) * 26.0 + Vector2(0, -10)
+	var hits = world.strike_enemies(centre, 30.0, combat.damage(state), combat.knockback())
+	if hits > 0:
+		_sound("hit")
+
+
+func _on_enemy_defeated(kind: String, at: Vector2) -> void:
+	var response = combat.defeat(state, kind, drop_rng)
+	var cell = Vector2i(floori(at.x / 32.0), floori(at.y / 32.0))
+	var beaten: Array = defeated_today.get(state.current_map, [])
+	beaten.append(_enemy_key(kind, cell))
+	defeated_today[state.current_map] = beaten
+	for item in response.drops:
+		world.effects.pickup(world.tex(catalog.items[item].icon), at + Vector2(0, -14))
+	_sound("defeat")
+	_feedback(response, false)
+	if catalog.enemies[kind].boss:
+		hud.toast("守渠石像倒下了！把核心拿给德克兰。", 5)
+
+
+func _on_player_hit(damage: int, direction: Vector2) -> void:
+	if hit_cooldown > 0.0 or hud.is_modal():
+		return
+	hit_cooldown = 1.1
+	player_hp = maxi(0, player_hp - damage)
+	world.player.move_and_collide(direction * combat.knockback())
+	_sound("hurt")
+	_refresh()
+	if player_hp <= 0:
+		_faint()
+
+
+## Knocked out: villagers carry you to the mine gate. Nothing is lost.
+func _faint() -> void:
+	hud.toast("你被打晕了，路过的矿工把你抬出了洞口。", 5)
+	state.stamina = maxi(20, int(state.stamina / 2))
+	player_hp = combat.hero_hp()
+	var gate = Vector2(38 * 32 + 16, 10 * 32 + 16)
+	stories.enter(state, "forest", gate)
+	_build_world()
+	fade.reveal(0.8)
+	_refresh()
+	_save(false)

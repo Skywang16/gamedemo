@@ -2,10 +2,12 @@ class_name ShopRules
 extends RefCounted
 
 var catalog: ContentCatalog
+var stories: StoryRules
 
 
 func _init(content: ContentCatalog) -> void:
 	catalog = content
+	stories = StoryRules.new(content)
 
 
 func result(ok: bool, message: String, extra: Dictionary = {}) -> Dictionary:
@@ -40,7 +42,7 @@ func stock(shop_id: String, s: FarmState) -> Array:
 		var season = catalog.calendar.season_of(s.day)
 		for crop_id in catalog.crops:
 			var crop = catalog.crops[crop_id]
-			if crop.seasons.has(season):
+			if crop.seasons.has(season) or stories.greenhouse(s):
 				out.append(
 					{"item": crop.seed_item, "price": int(catalog.items[crop.seed_item].buy_price)}
 				)

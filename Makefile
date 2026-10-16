@@ -2,7 +2,7 @@ PYTHON ?= python3
 VENV := .venv/bin
 GODOT := ./tools/godot.sh
 
-.PHONY: setup import run editor art maps content check test test-ui package clean
+.PHONY: setup import run editor art maps content check test test-ui audio package clean
 
 setup:
 	$(PYTHON) -m venv .venv
@@ -17,6 +17,9 @@ run:
 editor: import
 	$(GODOT) --editor
 
+audio:
+	$(VENV)/python tools/audio/build_audio.py
+
 art:
 	$(VENV)/python tools/build_art.py
 
@@ -28,6 +31,7 @@ content: maps
 	$(VENV)/python tools/content/build_story.py
 	$(VENV)/python tools/content/build_routines_doc.py
 	$(VENV)/python tools/content/build_cast_doc.py
+	$(VENV)/python tools/content/build_story_doc.py
 
 check:
 	$(VENV)/gdformat --check src tests
@@ -43,11 +47,14 @@ test: import
 	$(GODOT) --headless --script res://tests/motion_tests.gd
 	$(GODOT) --headless --script res://tests/world_tests.gd
 	$(GODOT) --headless --script res://tests/rules_tests.gd
+	$(GODOT) --headless --script res://tests/story_tests.gd
+	$(GODOT) --headless --script res://tests/combat_tests.gd
 
 test-ui: import
 	$(GODOT) --script res://tests/ui_smoke.gd -- --save-dir=user://ui-test-$$(uuidgen)
 	$(GODOT) --script res://tests/animation_smoke.gd -- --save-dir=user://ui-test-animation-$$(uuidgen)
 	$(GODOT) --script res://tests/weather_smoke.gd -- --save-dir=user://ui-test-weather-$$(uuidgen)
+	$(GODOT) --script res://tests/story_smoke.gd -- --save-dir=user://ui-test-story-$$(uuidgen)
 	$(GODOT) --script res://tests/map_tour.gd -- --save-dir=user://ui-test-tour-$$(uuidgen)
 
 package:

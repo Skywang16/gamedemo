@@ -241,6 +241,9 @@ func test_farming() -> void:
 	)
 	await key(KEY_8)
 	check(game.selected_tool == "rod", "the fishing rod sits on key eight")
+	await key(KEY_9)
+	check(game.selected_tool == "sword", "the sword sits on key nine")
+	check(not game.hud.hp_group.visible, "the life bar stays away from the farm")
 	await key(KEY_1)
 
 
@@ -344,6 +347,10 @@ func test_story_and_people() -> void:
 	game._talk_npc("hazel")
 	await process_frame
 	check(game.hud.modal_kind == "dialogue", "the neighbour's first words are a scene")
+	await create_timer(0.9).timeout
+	await capture("chapter-one-card")
+	game.hud.dialogs.cutscene_skip()
+	await create_timer(0.8).timeout
 	await capture("dialogue")
 	await dialogue()
 	check(game.state.narrative.stage == 1, "welcome advances the quest")

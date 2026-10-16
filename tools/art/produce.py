@@ -531,6 +531,18 @@ def fishing_rod():
     return outlined(im, "#2a2018")
 
 
+def sword_icon():
+    im = blank()
+    d = ImageDraw.Draw(im)
+    d.polygon([(26, 3), (29, 6), (13, 22), (10, 19)], fill="#c8d4dc")
+    d.polygon([(26, 3), (29, 6), (27, 8), (24, 5)], fill="#ffffff")
+    d.line((12, 20, 27, 5), fill="#8a98a4", width=1)
+    d.polygon([(7, 19), (13, 25), (11, 27), (5, 21)], fill="#a8802a")
+    d.line((9, 22, 4, 28), fill="#513e2d", width=3)
+    d.ellipse((2, 26, 6, 30), fill="#e8c050")
+    return outlined(im, "#2a2018")
+
+
 # ----------------------------------------------------------------- shapes for the second wave
 
 
@@ -656,6 +668,71 @@ def extra_icon(shape, colours, green="#4f9a3f"):
             leaf(d, 16, 13, 16 + dx, 13 + dy, 1.8, green)
         ball(d, 16, 20, 9, 8, a)
         d.line((16, 28, 16, 31), fill=mix(a, "#000000", 0.4))
+    elif shape == "glass":
+        d.polygon([(6, 8), (26, 6), (27, 24), (7, 26)], fill=c)
+        d.polygon([(8, 10), (24, 8), (25, 22), (9, 24)], fill=a)
+        d.polygon([(8, 10), (14, 9), (9, 18)], fill=b)
+        d.line((18, 9, 12, 24), fill=b)
+        d.line((6, 8, 26, 6), fill=b)
+    elif shape == "rope":
+        for i in range(4):
+            d.ellipse((6 + i, 8 + i, 26 - i, 26 - i), outline=a if i % 2 else b, width=2)
+        d.ellipse((13, 15, 19, 20), fill=c)
+        d.line((24, 22, 29, 28), fill=a, width=2)
+        d.line((29, 28, 27, 31), fill=b, width=2)
+    elif shape == "gel":
+        d.polygon([(6, 26), (7, 17), (11, 11), (16, 8), (21, 11), (25, 17), (26, 26)], fill=c)
+        d.polygon([(8, 25), (9, 18), (12, 13), (16, 11), (20, 13), (23, 18), (24, 25)], fill=a)
+        d.ellipse((11, 13, 15, 17), fill=b)
+        d.point((13, 15), fill="#ffffff")
+        d.line((9, 25, 23, 25), fill=c)
+    elif shape == "wing":
+        d.polygon(
+            [(4, 12), (10, 8), (16, 14), (22, 8), (28, 12), (24, 24), (18, 20), (14, 24), (8, 20)],
+            fill=c,
+        )
+        d.polygon(
+            [
+                (7, 13),
+                (11, 11),
+                (16, 16),
+                (21, 11),
+                (25, 13),
+                (22, 21),
+                (18, 18),
+                (14, 21),
+                (10, 18),
+            ],
+            fill=a,
+        )
+        for x in (10, 14, 19, 22):
+            d.line((16, 16, x, 21), fill=b)
+    elif shape == "heart_stone":
+        ball(d, 16, 17, 11, 10, a)
+        d.polygon([(16, 24), (8, 15), (10, 11), (16, 14), (22, 11), (24, 15)], fill=c)
+        d.polygon([(16, 22), (11, 16), (12, 13), (16, 15), (20, 13), (21, 16)], fill=b)
+        d.point((13, 14), fill="#ffffff")
+    elif shape == "core":
+        d.polygon([(16, 3), (26, 14), (16, 29), (6, 14)], fill=c)
+        d.polygon([(16, 3), (21, 14), (16, 29), (11, 14)], fill=a)
+        d.polygon([(16, 7), (19, 14), (16, 22), (13, 14)], fill=b)
+        d.line((6, 14, 26, 14), fill=b)
+        d.line((16, 1, 16, 3), fill=b)
+        d.point((14, 10), fill="#ffffff")
+    elif shape == "lantern":
+        d.rectangle((13, 3, 19, 6), fill=c)
+        d.rectangle((8, 6, 24, 9), fill=c)
+        d.rectangle((9, 9, 23, 24), fill=a)
+        d.rectangle((11, 11, 21, 22), fill=b)
+        d.rectangle((8, 24, 24, 27), fill=c)
+        d.line((16, 9, 16, 24), fill=a)
+        d.line((16, 27, 16, 30), fill=c)
+    elif shape == "ring":
+        d.ellipse((5, 8, 27, 28), outline=c, width=4)
+        d.ellipse((7, 10, 25, 26), outline=a, width=2)
+        d.polygon([(16, 2), (21, 7), (16, 11), (11, 7)], fill="#bfe4ea")
+        d.polygon([(16, 2), (19, 7), (16, 8), (13, 7)], fill="#ffffff")
+        d.line((7, 18, 12, 26), fill=b)
     elif shape == "shoot_g":
         for dx in (-6, 0, 6):
             d.polygon([(16 + dx - 2, 28), (16 + dx + 2, 28), (16 + dx, 6 + abs(dx) // 2)], fill=a)

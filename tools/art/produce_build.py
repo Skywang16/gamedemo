@@ -12,6 +12,7 @@ from .produce import (  # noqa: E402
     extra_icon,
     fish_icon,
     fishing_rod,
+    sword_icon,
     forage_icon,
     packet,
     plant,
@@ -42,3 +43,4 @@ def build_produce(output):
     for spec in all_dishes():
         save("dish_" + spec[0], dish_icon(spec))
     save("fishing_rod", fishing_rod())
+    save("sword", sword_icon())

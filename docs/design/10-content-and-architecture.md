@@ -4,7 +4,7 @@
 
 | 内容 | 数量 | 数据文件 |
 | --- | --- | --- |
-| 物品 | 687 | `data/items.json` |
+| 物品 | 695 | `data/items.json` |
 | 作物 | 63（春 25、夏 30、秋 24、冬 16） | `data/crops.json` |
 | 鱼 | 65（春 39、夏 45、秋 41、冬 22） | `data/fish.json` |
 | 食谱 | 411 | `data/recipes.json` |
@@ -12,12 +12,14 @@
 | 商店、鱼竿、工具档位、熔炼 | 8 家 / 4 档鱼竿 / 4 档工具 | `data/shops.json` |
 | 动物、建筑 | 9 种 / 2 座 | `data/animals.json`、`data/buildings.json` |
 | 清晨小事 | 20 | `data/events.json` |
-| 村民、主线阶段、场景 | 30 / 7 / 121 | `data/story.json` |
+| 村民、主线步骤、场景 | 30 / 36 / 240 | `data/story.json`（含剧情标记、来宾、序章选项） |
+| 怪物、出没、剑 | 4 种怪物 / 3 层 / 5 档剑 | `data/enemies.json` |
+| 伴侣每天清晨做的事 | 12 位 | `data/spouses.json` |
 | 日历、节日、天气表、广场站位 | 13 个节日 / 40 个站位 | `data/calendar.json` |
 | 地点（日程用的名字） | 123 | `data/places.json` |
-| 地图 | 18 | `data/maps/*.json` |
+| 地图 | 19 | `data/maps/*.json` |
 
-物品种类：种子 63、农产品 73、鱼 65、野外采集物 42、矿物 22、食物 415、材料 7。
+物品种类：种子 63、农产品 73、鱼 65、野外采集物 42、矿物 22、食物 415、材料 11、战利品 4。
 
 ## 2. 数据驱动的生成流程
 
@@ -30,12 +32,18 @@ tools/content/specs.py       作物、鱼、采集物、矿物、动物产物、
 tools/content/dishes.py      食谱模板（把食材套进菜式，生成 411 个食谱）
 tools/content/economy.py     商店、鱼竿、工具档位、熔炼、动物、建筑、采集表、小事
 tools/content/build_content.py 校验并写出物品 / 作物 / 鱼 / 食谱 / 商店 / 动物 / 建筑 / 采集表 / 小事
-tools/content/story_data.py  主线阶段、场景、30 位村民与心事件
+tools/content/scene_kit.py    写剧情的工具：对白、导演提示、步骤定义
+tools/content/ch1.py … ch4.py 序章与四章主线的步骤和场景
+tools/content/replies.py     选择之后的回应场景
+tools/content/romance.py     12 位村民的恋爱、婚礼与婚后内容
+tools/content/story_data.py  汇总主线，30 位村民与心事件
 tools/content/schedules.py   30 位村民的日程规则
 tools/content/calendar_data.py 季节、星期、天气表、节日
 tools/content/reach.py       地图可达性（日程里的每个相邻停靠点必须走得通）
-tools/content/build_story.py 写出 story.json 与 calendar.json（校验：物品存在、地点存在、喜好有效、日程可达）
-tools/content/build_cast_doc.py / build_routines_doc.py / tools/world/build_map_doc.py   生成 02、13、09 号文档
+tools/content/build_story.py 写出 story.json 与 calendar.json（校验：物品存在、地点存在、喜好有效、日程可达、导演提示合法、六盏灯顺序、三种结局的场景齐全）
+tools/content/build_cast_doc.py / build_routines_doc.py / build_story_doc.py / tools/world/build_map_doc.py   生成 02、13、14、09 号文档
+tools/world/shop_layouts.py   五家商店室内家具（碰撞与美术共用）
+tools/audio/build_audio.py   合成音效
 tools/build_art.py           全部像素美术
 ```
 
@@ -45,6 +53,7 @@ tools/build_art.py           全部像素美术
 make maps      # 地图与 places.json
 make content   # maps 之后的内容与文档（story、calendar、cast、routines）
 make art       # 全部美术
+make audio     # 合成音效
 make import    # Godot 导入缓存
 ```
 
@@ -56,11 +65,12 @@ make import    # Godot 导入缓存
 src/
   core/         ContentCatalog（读取并校验全部内容）、FarmState（存档状态）、GameCalendar、GameSettings
   gameplay/     纯规则：FarmRules、ShopRules、GatherRules、CookingRules、FishingRules、AnimalRules、
-                EventRules、BoardRules、WeatherRules
+                CombatRules、EventRules、BoardRules、WeatherRules
   story/        StoryRules（主线阶段、交谈、送礼、心事件、节日、采集、换图）
-  world/        FarmWorld（地图、玩家、村民、特效）、NpcPlanner（日程与路线）、Farmer / ToolMotion（动作）、
-                WorldAtmosphere / WeatherLayer / WorldEffects / WorldAmbient / TreeProp
-  ui/           FrontMenu（标题、存档位、创建角色、设置）、FarmHUD、GameDialogs 及各个面板
+  world/        FarmWorld（地图、玩家、村民、怪物、特效）、NpcPlanner（日程与路线）、MineEnemy（怪物）、
+                Farmer / ToolMotion（动作）、WorldAtmosphere / WeatherLayer / WorldEffects / WorldAmbient / TreeProp
+  ui/           FrontMenu（标题、存档位、创建角色、设置）、FarmHUD、GameDialogs 及各个面板、
+                CutsceneView / CutsceneCanvas / CutscenePaint（剧情动画）
   persistence/  SaveStore（三个存档位）、SaveValidator（入口校验）
   game.gd       主控制器：输入 → 规则 → 画面 / 界面 / 存档
 ```
@@ -79,7 +89,8 @@ src/
 ## 4. 关键设计
 
 - **ContentCatalog** 在启动时校验全部内容（引用、类型、坐标、素材是否存在、日程规则是否合法），任何一处不合格都会返回错误并拒绝启动，不会带着坏数据运行。
-- **FarmState** 的存档格式有 schema 版本号（当前 6）；`SaveValidator` 在入口检查每一个字段的类型、范围和引用，通过后才构造状态。
+- **FarmState** 的存档格式有 schema 版本号（当前 7）；`SaveValidator` 在入口检查每一个字段的类型、范围和引用，通过后才构造状态。
+- **剧情是数据**：步骤、场景、导演提示、选择、结局算法的输入都在 `data/story.json`；`StoryRules` 只做通用的推进、记标记、点灯、求婚等，没有写死某一章；`CutsceneView` 只解释导演提示。
 - **确定性**：天气、清晨小事、采集结果、公告栏委托都是“世界种子 + 日期（+ 采集点 / 周数）”的纯函数，所以存档不需要保存它们，预报永远正确。
 - **村民位置不保存**：`NpcPlanner` 按“当天条件 + 当前分钟”推出每个人在哪里、在做什么、朝哪走。读档、换图、睡觉回来都一致。
 - **路线**：每张地图一个 `AStarGrid2D`，跨地图时在“出口图”上做广度优先搜索，得到逐格路径；出发时间按到达时间倒推。

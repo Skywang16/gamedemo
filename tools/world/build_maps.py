@@ -104,6 +104,8 @@ LINKS = [
 # The lake is entered over the town's bridge; only the way back is a normal exit.
 BRIDGE_CELL = (74, 30)
 LAKE_EXIT = ((2, 29), (73, 30))
+# The ferry boards at the lake shore (cell, arrival cell when coming back from the far shore).
+FERRY = ((49, 35), (48, 35))
 
 # Cells that must stay open on each map: exits, the cells people arrive on, and the bridge.
 RESERVED = {}
@@ -111,7 +113,8 @@ for _a, _ac, _ai, _an, _b, _bc, _bi, _bn in LINKS:
     RESERVED.setdefault(_a, []).extend([_ac, _ai])
     RESERVED.setdefault(_b, []).extend([_bc, _bi])
 RESERVED["town"].extend([BRIDGE_CELL, LAKE_EXIT[1], (35, 30)])
-RESERVED["lake"] = [LAKE_EXIT[0], (4, 29)]
+RESERVED["lake"] = [LAKE_EXIT[0], (4, 29), FERRY[0], FERRY[1]]
+RESERVED["far_shore"] = [(4, 44), (5, 44), (6, 44), (29, 16)]
 RESERVED["home_farm"].extend([(53, 18), (46, 18)])
 for _key, _entry in PLACES.items():
     _map_id, _name = _key.split("/")
@@ -373,7 +376,14 @@ def build_farm():
             [(8, 31), (10, 27), (17, 25), (23, 28), (25, 35), (21, 41), (12, 42), (7, 37)],
             [(80, 46), (86, 43), (92, 47), (93, 58), (87, 62), (81, 58)],
         ],
-        [[37, 12, 7, 3], [51, 14, 4, 3], [45, 16, 2, 1], [60, 22, 5, 2], [68, 22, 7, 3]],
+        [
+            [37, 12, 7, 3],
+            [51, 14, 4, 3],
+            [45, 16, 2, 1],
+            [60, 22, 5, 2],
+            [68, 22, 7, 3],
+            [62, 30, 7, 4],
+        ],
         [
             prop("house", 40, 15, (-128, -216)),
             prop("shop", 53, 17, (-64, -96)),
@@ -404,6 +414,12 @@ def build_farm():
                 "door": [71, 25],
                 "texture": "barn",
                 "offset": [-128, -216],
+            },
+            "greenhouse": {
+                "rect": [62, 30, 7, 4],
+                "door": [65, 34],
+                "texture": "greenhouse",
+                "offset": [-128, -176],
             },
         },
     )
@@ -804,6 +820,44 @@ def build_mine(level):
     return mine
 
 
+def build_far_shore():
+    shore = area(
+        "far_shore",
+        "对岸 · 野渡",
+        80,
+        56,
+        (6, 44),
+        [[2, 42, 26, 4], [26, 17, 4, 28], [20, 12, 18, 6], [38, 14, 14, 3]],
+        [[(54, 6), (72, 5), (77, 14), (67, 22), (54, 18)]],
+        [],
+        [prop("lantern_stand", 29, 14, (-32, -64)), prop("boat", 3, 47, (-64, -48))],
+        [
+            point(
+                "shrine",
+                "旧灯龛",
+                "story",
+                29,
+                16,
+                event="ferryman",
+                idle="一座很旧的石灯龛，龛里空着，只有风吹过的声音。",
+            )
+        ],
+    )
+    for x in range(4, 26, 6):
+        decor(shore, "lamp", x, 41)
+    decor(shore, "signpost", 3, 41)
+    decor(shore, "flowerbed", 24, 14, 3, 1)
+    decor(shore, "flowerbed", 31, 14, 3, 1)
+    decor(shore, "rocks", 44, 30, 2, 1)
+    decor(shore, "rocks", 60, 36, 3, 1)
+    scatter_trees(
+        shore, 80, 3131, [(3, 3, 20, 38), (40, 22, 77, 52), (4, 48, 38, 53), (54, 24, 77, 34)]
+    )
+    scatter_nodes(shore, 12, 8808, "lake", "reed", [(40, 4, 78, 26), (44, 24, 77, 52)])
+    scatter_nodes(shore, 8, 8809, "beach", "pebble", [(3, 36, 30, 53)])
+    return shore
+
+
 # ---------------------------------------------------------------------------- assembly
 
 
@@ -816,6 +870,7 @@ def build_all():
         "market": build_market(),
         "ranch": build_ranch(),
         "seaside": build_seaside(),
+        "far_shore": build_far_shore(),
         "mine_1": build_mine(1),
         "mine_2": build_mine(2),
         "mine_3": build_mine(3),
@@ -864,6 +919,29 @@ def build_all():
             arrival=pos(*LAKE_EXIT[1]),
         )
     )
+    maps["lake"]["stations"].append(
+        point(
+            "ferry",
+            "摆渡 · 对岸野渡",
+            "ferry",
+            FERRY[0][0],
+            FERRY[0][1],
+            destination="far_shore",
+            arrival=pos(5, 44),
+        )
+    )
+    maps["far_shore"]["stations"].append(
+        point(
+            "to_lake",
+            "摆渡 · 萤火湖畔",
+            "exit",
+            4,
+            44,
+            destination="lake",
+            arrival=pos(*FERRY[1]),
+        )
+    )
+    maps["lake"]["props"].append(prop("boat", 50, 36, (-64, -48)))
     return maps
 
 
@@ -926,6 +1004,7 @@ def main():
         "market",
         "ranch",
         "seaside",
+        "far_shore",
         "mine_1",
         "mine_2",
         "mine_3",

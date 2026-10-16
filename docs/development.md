@@ -3,7 +3,7 @@
 ## 项目标识与工具
 
 - 游戏名称：芽田农场 / Sprout Valley。
-- 源码目录：`sprout-valley`；当前版本：0.6.0。
+- 源码目录：`sprout-valley`；当前版本：1.0.0。
 - macOS 应用标识：`io.github.skywang16.sproutvalley`。
 - 引擎：Godot 4.7.2 标准版；脚本：GDScript。
 - 素材和内容工具：Python 3.11+（Pillow、Ruff），依赖版本集中在 `requirements-dev.txt`；GDScript 格式用 gdtoolkit。
@@ -26,6 +26,7 @@ make editor
 make maps        # tools/world/build_maps.py → data/maps/*.json、data/places.json
 make content     # 依赖 maps：故事、日历、物品、商店等 JSON，以及 02 / 09 / 13 号文档
 make art         # tools/build_art.py → assets/art、assets/ui（约 2 分钟）
+make audio       # tools/audio/build_audio.py → assets/audio 里的剧情与战斗音效
 make import      # 更新 Godot 导入缓存
 ```
 
@@ -37,6 +38,8 @@ make import      # 更新 Godot 导入缓存
 | `tools/content/build_cast_doc.py` | `docs/design/02-cast.md` |
 | `tools/content/build_routines_doc.py` | `docs/design/13-routines.md` |
 | `tools/world/build_map_doc.py` | `docs/design/09-world-map.md` |
+| `tools/content/build_story_doc.py` | `docs/design/14-main-story.md` |
+| `tools/audio/build_audio.py` | 剧情与战斗音效 |
 | `tools/build_art.py` | 全部像素美术 |
 
 生成器发现引用错误会停止并列出问题。运行所需的 PNG、字体、音频及其 Godot `.import` 设置必须提交；`.gd.uid` 也属于稳定资源标识。`.godot/` 是可重建缓存，不提交。
@@ -53,13 +56,16 @@ make test-ui
 | --- | --- |
 | `tests/test_runner.gd` | 内容载入、工具与体力、树木、清荒、作物生长与重复收获、换季枯萎、买卖、存档位读写与校验、农场可达性 |
 | `tests/chapter_tests.gd` | 30 位村民资料、第一章完整流程、交谈送礼、心事件、节日、采集、存档往返、18 张地图与全部地点的可达性 |
-| `tests/calendar_tests.gd` | 日历换算、节日与生日、确定性天气、雨雪浇灌、换季枯萎、存档 schema 6、季节与大气着色 |
+| `tests/calendar_tests.gd` | 日历换算、节日与生日、确定性天气、雨雪浇灌、换季枯萎、存档 schema 7、季节与大气着色 |
 | `tests/rules_tests.gd` | 内容规模与素材存在、商店营业时间与库存、熔炼与升级、诊所与鱼竿、烹饪、钓鱼、动物、清晨小事、告示板、采集表 |
+| `tests/story_tests.gd` | 主线 36 步从头到尾、日期与好感门槛、六盏灯与它们的效果、三种结局的算法、回应场景、心意灯 → 求婚 → 婚礼 → 婚后事件 |
+| `tests/combat_tests.gd` | 剑的伤害与体力、怪物出没的确定性、头目的出现与消失、掉落与奖励、升级与存档 |
 | `tests/world_tests.gd` | 村民日程规则、时间线连续性、走路速度、节日人群、确定性、全年规则覆盖 |
 | `tests/settings_tests.gd` | 设置校验与持久化、改键冲突与保留键、音频总线与输入映射 |
 | `tests/motion_tests.gd` | 界面缓动的单调性、收敛、减弱动效时即时到位 |
-| `tests/ui_smoke.gd` | 标题、设置页、创建角色与存档位、键鼠输入、各个面板与商店、钓鱼小游戏、剧情与村民、跨地图旅行、睡觉与日卡、读取与删除存档 |
+| `tests/ui_smoke.gd` | 标题、设置页、创建角色与存档位、键鼠输入、各个面板与商店、钓鱼小游戏、剧情动画与村民、跨地图旅行、睡觉与日卡、读取与删除存档 |
 | `tests/animation_smoke.gd` | 动作接触帧、菜单暂停、粒子、倒树与树桩碰撞、重载后恢复 |
+| `tests/story_smoke.gd` | 全部 240 个场景在剧情动画里完整播放；主要场景截图；章节卡与逐字显示；矿洞里挥剑、受伤、被抬出洞口；求婚与婚礼的完整流程 |
 | `tests/map_tour.gd` | 视觉巡检：相机走遍 18 张地图并截图（人工查看 `build/test-results/`），只要求每张地图都能建成并渲染 |
 | `tests/weather_smoke.gd` | 六种天气与四季在真实画面上的渲染、季节着色器像素断言、室内无天气 |
 
@@ -76,7 +82,7 @@ make test-ui
 
 存档位于 Godot 的 `user://`：`farm.json`（位置 1）、`farm_2.json`、`farm_3.json`。macOS 路径为 `~/Library/Application Support/SproutValley/`。设置在同一目录的 `settings.json`。测试存档在该目录内的 `ui-test-*` 子目录，需要时可单独删除。
 
-存档格式是 schema 6，只接受当前版本，格式不合格的存档在“读取存档”里显示原因，不会被修复。保存采用临时文件写完后替换主文件。
+存档格式是 schema 7，只接受当前版本，格式不合格的存档在“读取存档”里显示原因，不会被修复。保存采用临时文件写完后替换主文件。
 
 ## macOS 打包
 

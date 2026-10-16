@@ -1,0 +1,120 @@
+{
+  "enemies": {
+    "slime": {
+      "name": "史莱姆",
+      "hp": 24,
+      "damage": 6,
+      "speed": 34,
+      "aggro": 130,
+      "xp": 3,
+      "size": 1,
+      "boss": false,
+      "drops": [
+        [
+          "slime_goo",
+          70,
+          1,
+          2
+        ]
+      ]
+    },
+    "bat": {
+      "name": "洞蝠",
+      "hp": 16,
+      "damage": 5,
+      "speed": 70,
+      "aggro": 190,
+      "xp": 4,
+      "size": 1,
+      "boss": false,
+      "drops": [
+        [
+          "bat_wing",
+          50,
+          1,
+          1
+        ]
+      ]
+    },
+    "golem": {
+      "name": "石偶",
+      "hp": 52,
+      "damage": 10,
+      "speed": 28,
+      "aggro": 120,
+      "xp": 8,
+      "size": 1,
+      "boss": false,
+      "drops": [
+        [
+          "stone_heart",
+          35,
+          1,
+          1
+        ],
+        [
+          "coal",
+          60,
+          1,
+          3
+        ]
+      ]
+    },
+    "statue": {
+      "name": "守渠石像",
+      "hp": 260,
+      "damage": 14,
+      "speed": 34,
+      "aggro": 220,
+      "xp": 60,
+      "size": 2,
+      "boss": true,
+      "drops": [
+        [
+          "statue_core",
+          100,
+          1,
+          1
+        ],
+        [
+          "gold_ore",
+          100,
+          3,
+          5
+        ]
+      ]
+    }
+  },
+  "spawns": {
+    "mine_1": {
+      "slime": 7
+    },
+    "mine_2": {
+      "slime": 4,
+      "bat": 5
+    },
+    "mine_3": {
+      "golem": 5,
+      "bat": 3,
+      "statue": 1
+    }
+  },
+  "weapon": {
+    "damage": [
+      8,
+      13,
+      18,
+      23,
+      28
+    ],
+    "cost": [
+      2,
+      2,
+      2,
+      1,
+      1
+    ],
+    "hp": 40,
+    "knockback": 36
+  }
+}

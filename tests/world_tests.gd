@@ -28,12 +28,13 @@ func run() -> void:
 		test_walking()
 		test_festival_crowd()
 		test_determinism()
+		test_married_life()
 		test_days_of_the_year()
 	print("WORLD_TESTS: %d checks, %d failures" % [checks, failures.size()])
 	quit(0 if failures.is_empty() else 1)
 
 
-func plan(day: int, weather: String = "sunny", stage: int = 0) -> NpcPlanner:
+func plan(day: int, weather: String = "sunny", stage: int = 0, spouse: String = "") -> NpcPlanner:
 	var planner = NpcPlanner.new(catalog, {})
 	(
 		planner
@@ -45,6 +46,7 @@ func plan(day: int, weather: String = "sunny", stage: int = 0) -> NpcPlanner:
 				"stage": stage,
 				"birthdays": catalog.calendar.birthdays_on(day, catalog.story.npcs),
 				"festival": catalog.calendar.is_festival(day),
+				"spouse": spouse,
 			}
 		)
 	)
@@ -160,7 +162,7 @@ func test_walking() -> void:
 		for day in [2, 3, 8]:
 			if not plan(day, "sunny", 3).visitors(map_id).is_empty():
 				found = true
-		check(found or map_id == "lake" or map_id == "cottage", "someone visits %s" % map_id)
+		check(found or map_id in ["lake", "cottage", "far_shore"], "someone visits %s" % map_id)
 
 
 func test_festival_crowd() -> void:
@@ -198,6 +200,44 @@ func test_determinism() -> void:
 			a.where(npc_id, 800.0) == b.where(npc_id, 800.0),
 			"where() is a pure function: " + npc_id
 		)
+
+
+func test_married_life() -> void:
+	var lovers = []
+	for id in catalog.story.npcs:
+		if catalog.story.npcs[id].romance:
+			lovers.append(id)
+	check(lovers.size() == 12, "twelve people can be married")
+	for id in lovers:
+		for day in [2, 8, 14]:
+			if catalog.calendar.birthdays_on(day, catalog.story.npcs).has(id):
+				continue
+			var weather = "rain" if day == 14 else "sunny"
+			var planner = plan(day, weather, 6, id)
+			var timeline: Array = planner.timelines[id]
+			var rule = planner.resolve(id)
+			var festival = catalog.calendar.is_festival(day)
+			if not festival:
+				check(
+					rule.when.get("spouse", false),
+					"a spouse follows the married rule: %s day %d" % [id, day]
+				)
+				var homes = timeline.filter(func(t): return t.map == "cottage")
+				check(not homes.is_empty(), "a spouse lives in the farmhouse: " + id)
+				var late = planner.where(id, 22.0 * 60.0 + 30.0)
+				check(late.map == "cottage", "and sleeps there: " + id)
+			for s in timeline:
+				if s.map == "":
+					continue
+				for cell in s.cells:
+					check(
+						not catalog.blocked(cell, s.map),
+						"married routes are walkable: %s %s" % [id, s.map]
+					)
+	var single = plan(2, "sunny", 6, "").resolve("hazel")
+	check(not single.when.get("spouse", false), "single villagers keep their own days")
+	var wedded = plan(2, "sunny", 6, "hazel")
+	check(wedded.resolve("silas").when.get("spouse", false) == false, "only the spouse moves in")
 
 
 func test_days_of_the_year() -> void:

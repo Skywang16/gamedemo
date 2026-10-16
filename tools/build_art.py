@@ -14,7 +14,8 @@ from art.interface import build_interface
 from art.produce_build import build_produce
 from art.buildings import build_buildings
 from art.interiors2 import build_shop_interiors
-from content.story_data import LOOKS
+from art.enemies import build_enemies
+from content.story_data import GUEST_LOOKS, LOOKS
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "assets/art"
@@ -54,7 +55,8 @@ def main():
         save(name + "_item", fn("harvest"))
     build_misc(OUTPUT)
     build_characters(OUTPUT)
-    build_villagers(OUTPUT, LOOKS)
+    build_villagers(OUTPUT, {**LOOKS, **GUEST_LOOKS})
+    build_enemies(OUTPUT)
     build_actions(OUTPUT)
     build_interiors(OUTPUT)
     build_interface(OUTPUT)

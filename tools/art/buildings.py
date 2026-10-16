@@ -84,6 +84,42 @@ def barn():
     return im
 
 
+def greenhouse():
+    """A glass house on a low stone footing: iron ribs, a pitched glass roof and rows of green."""
+    im = Image.new("RGBA", (256, 192))
+    d = ImageDraw.Draw(im)
+    d.ellipse((6, 168, 250, 190), fill="#263b2860")
+    d.rectangle((20, 140, 236, 176), fill="#6a6a70")
+    d.rectangle((24, 144, 232, 172), fill="#9a9aa0")
+    for x in range(26, 232, 24):
+        d.line((x, 145, x, 171), fill="#7a7a82", width=2)
+    d.rectangle((26, 70, 230, 146), fill="#4a6a62")
+    d.rectangle((30, 74, 226, 142), fill="#bfe4ea")
+    d.rectangle((30, 74, 226, 98), fill="#dff4f6")
+    for x in range(30, 230, 34):
+        d.line((x, 74, x, 142), fill="#3f5a54", width=3)
+    d.line((30, 108, 226, 108), fill="#3f5a54", width=3)
+    # Plants seen through the glass.
+    for x in range(40, 220, 22):
+        h = 14 + (x * 7) % 18
+        d.ellipse((x - 9, 142 - h - 8, x + 9, 142 - h + 8), fill="#4f9a3f")
+        d.ellipse((x - 5, 142 - h - 4, x + 3, 142 - h + 2), fill="#86c850")
+        d.line((x, 142 - h, x, 142), fill="#3f7a35", width=2)
+    d.ellipse((50, 118, 60, 128), fill="#d8402f")
+    d.ellipse((136, 122, 146, 132), fill="#e8c040")
+    d.ellipse((188, 116, 198, 126), fill="#d8402f")
+    d.polygon([(14, 74), (128, 16), (242, 74), (232, 80), (24, 80)], fill="#3f5a54")
+    d.polygon([(26, 74), (128, 24), (230, 74), (222, 78), (34, 78)], fill="#cfeef2")
+    d.polygon([(26, 74), (128, 24), (128, 36), (40, 76)], fill="#ffffff80")
+    for x in range(48, 214, 26):
+        d.line((x, 76, 128 + (x - 128) // 3, 28), fill="#3f5a54", width=2)
+    d.rectangle((110, 100, 146, 146), fill="#2f4a44")
+    d.rectangle((113, 104, 143, 146), fill="#bfe4ea")
+    d.line((128, 104, 128, 146), fill="#2f4a44", width=2)
+    d.rectangle((120, 128, 124, 132), fill="#e8c040")
+    return im
+
+
 def coop():
     im = Image.new("RGBA", (160, 128))
     d = ImageDraw.Draw(im)
@@ -224,6 +260,7 @@ def build_buildings(output):
     for roof in ("green", "blue", "brown", "gold"):
         house(roof).save(output / ("home_" + roof + ".png"))
     barn().save(output / "barn.png")
+    greenhouse().save(output / "greenhouse.png")
     coop().save(output / "coop.png")
     lot_sign().save(output / "lot_sign.png")
     mine_gate().save(output / "mine_gate.png")

@@ -1,0 +1,70 @@
+{
+  "hazel": {
+    "water": true,
+    "text": "黑兹尔天不亮就把田里的苗都浇过了。"
+  },
+  "silas": {
+    "items": {
+      "wood": 4
+    },
+    "text": "赛拉斯在院里劈好了一垛柴。"
+  },
+  "margot": {
+    "items": {
+      "berry_oatmeal": 1
+    },
+    "text": "玛戈在灶上给你留了热腾腾的早饭。"
+  },
+  "wren": {
+    "items": {
+      "feather": 1
+    },
+    "text": "雷恩在窗台上放了一根拾来的羽毛，旁边是今天的水位记录。"
+  },
+  "juniper": {
+    "items": {
+      "medicine": 1
+    },
+    "text": "朱妮配好了一小瓶药，说是以防万一。"
+  },
+  "leo": {
+    "gold": 80,
+    "text": "利奥把昨天摆摊的零头压在了茶杯下面。"
+  },
+  "felix": {
+    "gold": 90,
+    "text": "费利克斯又修好了邻居托他的几只表，收入放在桌上。"
+  },
+  "colette": {
+    "items": {
+      "primrose": 2
+    },
+    "text": "科莱特从后院摘了几枝报春花插进水杯。"
+  },
+  "jonas": {
+    "items": {
+      "chestnut": 3
+    },
+    "text": "约纳斯清早巡林回来，口袋里揣着几颗栗子。"
+  },
+  "nora": {
+    "items": {
+      "honey_tea": 1
+    },
+    "text": "诺拉烧好了一壶蜂蜜茶，还温着。"
+  },
+  "theo": {
+    "items": {
+      "lamp_note": 1
+    },
+    "gold": 50,
+    "text": "西奥替你整理了图志，还夹进来一页旧灯信。"
+  },
+  "declan": {
+    "items": {
+      "coal": 3,
+      "copper_ore": 2
+    },
+    "text": "德克兰一早下过矿，带回了煤和一点铜矿。"
+  }
+}

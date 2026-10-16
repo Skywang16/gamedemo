@@ -1703,3 +1703,57 @@ SCHEDULES["veronica"] = [
         "22:00 %s | 休息" % TE,
     ),
 ]
+
+
+# ------------------------------------------------------------------------------ married life
+# Once married, a villager lives in the farmhouse. Birthday and festival rules still come
+# first; this rule replaces their usual weekday. (work place, what they do) for the morning and
+# the afternoon, and what the first breakfast looks like.
+SPOUSE_DAYS = {
+    "hazel": ("home_farm/stall", "摆摊分种子", "home_farm/field_a", "在田里浇水", "给你煮了热茶"),
+    "silas": (
+        "town/workshop_door",
+        "回木工坊赶活",
+        "home_farm/east_road",
+        "给农场修篱笆",
+        "劈好了柴",
+    ),
+    "margot": ("inn/counter", "去酒馆备料", "inn/table_a", "打烊前收拾桌子", "在灶台边做早饭"),
+    "wren": ("lake/shore_w", "记录水位", "lake/pier", "观察水鸟", "窗台上放了新的笔记"),
+    "juniper": ("forest/herbs", "采药", "home_farm/well", "在院里晾药草", "烧好了热水"),
+    "leo": ("market/plaza_w", "摆摊卖远方的小物件", "market/bench_e", "在长椅上数零钱", "泡了杯茶"),
+    "felix": ("town/hall_steps", "给钟楼上弦", "home_farm/yard", "在院里修表", "把表一只一只擦亮"),
+    "colette": (
+        "town/fountain_n",
+        "在喷泉边背台词",
+        "market/plaza_e",
+        "排练新戏",
+        "对着镜子练台词",
+    ),
+    "jonas": ("forest/crossing", "巡林", "forest/glade", "检查林中小路", "烤好了面包"),
+    "nora": ("tea_house/behind", "回茶室煮茶", "tea_house/behind_r", "午市接待客人", "烧好了茶"),
+    "theo": ("town/school_yard", "给孩子们上课", "town/school_door", "批改作业", "在桌前读书"),
+    "declan": ("mine_1/entrance", "下矿勘探", "forest/camp", "在林地营地休息", "擦拭矿灯"),
+}
+
+
+def spouse_rule(ident):
+    work_a, text_a, work_b, text_b, morning = SPOUSE_DAYS[ident]
+    return rule(
+        {"spouse": True, "stage_min": 6},
+        "06:00 cottage/bed_side | 起床",
+        "07:00 cottage/kitchen_side | " + morning,
+        "08:30 home_farm/yard | 在院子里等你出门",
+        "09:30 %s | %s" % (work_a, text_a),
+        "12:30 cottage/table | 回家吃午饭",
+        "14:00 %s | %s" % (work_b, text_b),
+        "18:30 home_farm/yard | 在院子里等你",
+        "19:30 cottage/table | 晚饭",
+        "22:00 cottage/bed_side | 休息",
+    )
+
+
+for _ident in SPOUSE_DAYS:
+    _rules = SCHEDULES[_ident]
+    _special = [i for i, r in enumerate(_rules) if {"birthday", "festival"} & set(r["when"])]
+    _rules.insert(max(_special) + 1, spouse_rule(_ident))

@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools"))
 
-from content import calendar_data, story_data  # noqa: E402
+from content import calendar_data, romance, story_data  # noqa: E402
 
 SEASON = {s["id"]: s["name"] for s in calendar_data.SEASONS}
 GENDER = {"F": "女", "M": "男"}
@@ -56,7 +56,9 @@ def build():
         "可恋爱的 12 位有 5 段（20/40/60/80/100），其余村民有 3 段（30/60/90）。",
         "- **可恋爱**：12 位，6 女 6 男，玩家不限性别。孩子与少年（米洛、波比、艾兹拉、克拉拉）只有友情线。",
         "- 每个人都有英文原名（`en` 字段）、生日、最爱、喜欢与讨厌的物品，全部是游戏里真实存在的物品。",
-        "- 祖母西尔维娅只在信里出现，不在村民名单中。",
+        "- 祖母西尔维娅不在村民名单中：她在信里出现，并在第三章的灯夜回到镇上，之后在剧情里陪伴你。",
+        "- 恋爱：第一章完成后，好感 80 并听完前 4 段心事件，可以送一盏心意灯成为恋人；好感 100、听完第 5 段后，用同心环求婚，三天后举行婚礼，之后对方住进农舍，"
+        "每天清晨为你做一件事，婚后一周和四周各有一段新的心里话。同一时间只有一位伴侣。",
         "",
         "## 2. 总表",
         "",
@@ -121,6 +123,23 @@ def build():
                 "  - %d 好感（%s）：“%s” 回礼：%s"
                 % (e["at"], e["id"], first_line(e["pages"]), "、".join(parts))
             )
+        if ident in romance.ROMANCE:
+            r = romance.ROMANCE[ident]
+            guest_id, guest_line = r["guest"]
+            lines += [
+                "- **恋爱与婚后**：",
+                "  - 收下心意灯：“%s”" % r["dating"],
+                "  - 答应求婚：“%s”" % r["engage"],
+                "  - 婚礼誓词：“%s”" % r["vow"],
+                "  - 婚礼上，%s说：“%s”" % (npcs[guest_id]["name"], guest_line),
+                "  - 婚后日常：%s" % "；".join("“%s”" % t for t in r["talk"]),
+                "  - 婚后每天清晨：%s"
+                % __import__("content.economy", fromlist=["SPOUSES"]).SPOUSES[ident]["text"],
+            ]
+            for key, after in (("m1", "一周"), ("m2", "四周")):
+                pages, reward = r[key]
+                text = [p for p in pages if p[0] != "narrator"][0][1]
+                lines.append("  - 婚后%s（%s_%s）：“%s”" % (after, ident, key, text.split("\n")[0]))
         lines.append("")
     (ROOT / "docs" / "design" / "02-cast.md").write_text("\n".join(lines))
     print("cast written:", len(npcs))

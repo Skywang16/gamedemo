@@ -74,6 +74,8 @@ func test_cast() -> void:
 		var last = npc.schedule.rules[npc.schedule.rules.size() - 1]
 		check(last.when.is_empty(), "the last rule is unconditional: " + id)
 		check(npc.events.size() == (5 if npc.romance else 3), "heart events: " + id)
+		check(npc.married_events.size() == (2 if npc.romance else 0), "married events: " + id)
+		check(npc.married_talk.size() == (3 if npc.romance else 0), "married talk: " + id)
 		if npc.romance:
 			romances += 1
 		var seen = 0
@@ -146,7 +148,7 @@ func test_chapter() -> void:
 	)
 	check(story.complete(s, "festival", "together").ok, "finish the chapter")
 	check(
-		s.narrative.stage == 6 and s.narrative.wish == "together" and s.gold == 110,
+		s.narrative.stage == 6 and s.narrative.flags.wish == "together" and s.gold == 110,
 		"choice and reward persisted"
 	)
 	before = s.snapshot(catalog)
@@ -158,6 +160,7 @@ func test_chapter() -> void:
 		SaveStore.new(catalog).validate(s.snapshot(catalog)).is_empty(),
 		"the completed chapter saves validly"
 	)
+	s.day = 6
 	check(
 		story.talk(s, "hazel") == catalog.story.npcs.hazel.after,
 		"villagers talk about the lamps afterwards"
@@ -374,7 +377,7 @@ func reach(id: String, start: Vector2i) -> Dictionary:
 
 
 func test_maps() -> void:
-	check(catalog.regions.size() == 18, "eighteen maps")
+	check(catalog.regions.size() == 19, "nineteen maps")
 	for id in catalog.regions:
 		var area = catalog.region(id)
 		var start = Vector2i(int(area.spawn[0] / 32), int(area.spawn[1] / 32))

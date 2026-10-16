@@ -24,6 +24,8 @@ func under_construction(s: FarmState, id: String) -> bool:
 
 func build(s: FarmState, id: String) -> Dictionary:
 	var spec = catalog.buildings[id]
+	if spec.kind != "animal":
+		return result(false, "这座建筑不能在这里订做。")
 	if s.buildings.has(id):
 		return result(false, "已经有%s了。" % spec.name)
 	if s.gold < int(spec.price):

@@ -7,10 +7,12 @@ const CLEARING = {
 	"rock": {"tool": "pickaxe", "cost": 3, "item": "stone"}
 }
 var catalog: ContentCatalog
+var stories: StoryRules
 
 
 func _init(content: ContentCatalog) -> void:
 	catalog = content
+	stories = StoryRules.new(content)
 
 
 ## Stamina a tool costs: one less per upgrade level, never below one.
@@ -91,7 +93,7 @@ func _plant(s: FarmState, plot: Variant, crop_id: String) -> Dictionary:
 		return result(false)
 	var crop = catalog.crops[crop_id]
 	var season = catalog.calendar.date(s.day)
-	if not crop.seasons.has(season.season):
+	if not crop.seasons.has(season.season) and not stories.greenhouse(s):
 		return result(false, "%s不适合在%s天种" % [crop.name, season.season_name])
 	if s.inventory[crop.seed_item] < 1:
 		return result(false, "没有种子")
@@ -160,10 +162,10 @@ func next_day(s: FarmState) -> Dictionary:
 	s.progress.slept = true
 	var season = catalog.calendar.season_of(s.day)
 	var withered = 0
-	if season != old_season:
+	if season != old_season and not stories.greenhouse(s):
 		withered = _wither_out_of_season(s, season)
 	var weather = catalog.weather.weather_on(s.world_seed, s.day)
-	if catalog.weather.waters_crops(weather):
+	if catalog.weather.waters_crops(weather) or stories.canal_flowing(s):
 		for p in s.plots.values():
 			p.watered = true
 	var ready = 0

@@ -675,6 +675,17 @@
         -128,
         -216
       ]
+    },
+    {
+      "texture": "boat",
+      "ground": [
+        1616,
+        1168
+      ],
+      "offset": [
+        -64,
+        -48
+      ]
     }
   ],
   "stations": [
@@ -699,6 +710,20 @@
       "arrival": [
         2352,
         976
+      ]
+    },
+    {
+      "id": "ferry",
+      "name": "摆渡 · 对岸野渡",
+      "kind": "ferry",
+      "cell": [
+        49,
+        35
+      ],
+      "destination": "far_shore",
+      "arrival": [
+        176,
+        1424
       ]
     }
   ],

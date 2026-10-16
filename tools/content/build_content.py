@@ -32,6 +32,7 @@ SPOT_OF_MAP = {
     "forest": "stream",
     "lake": "lake",
     "seaside": "sea",
+    "far_shore": "lake",
     "mine_1": "cave",
     "mine_2": "cave",
     "mine_3": "cave",
@@ -145,6 +146,11 @@ def build():
     )
     write(DATA / "animals.json", economy.ANIMALS)
     write(DATA / "buildings.json", economy.BUILDINGS)
+    write(
+        DATA / "enemies.json",
+        {"enemies": economy.ENEMIES, "spawns": economy.SPAWNS, "weapon": economy.WEAPON},
+    )
+    write(DATA / "spouses.json", economy.SPOUSES)
     write(DATA / "gather_tables.json", economy.GATHER_TABLES)
     write(DATA / "events.json", economy.EVENTS)
     print(

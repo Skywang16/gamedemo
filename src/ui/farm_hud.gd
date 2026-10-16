@@ -1,13 +1,29 @@
 class_name FarmHUD
 extends GameScreen
 
-const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe", "rod"]
-const TOOL_NAMES = ["锄头", "种子", "水壶", "收获", "镰刀", "斧头", "镐", "钓竿"]
+const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe", "rod", "sword"]
+const TOOL_NAMES = ["锄头", "种子", "水壶", "收获", "镰刀", "斧头", "镐", "钓竿", "长剑"]
 const TOOL_ICONS = [
-	"hoe", "seed_bag", "watering_can", "turnip_item", "scythe", "axe", "pickaxe", "fishing_rod"
+	"hoe",
+	"seed_bag",
+	"watering_can",
+	"turnip_item",
+	"scythe",
+	"axe",
+	"pickaxe",
+	"fishing_rod",
+	"sword"
 ]
+const BAR_TOP = 571
+const BAR_HEIGHT = 148
 const POCKET_ITEMS = ["turnip", "carrot", "bait"]
 var state: FarmState
+var stories: StoryRules
+var hp_group: Control
+var hp_fill: ColorRect
+var hp_label: Label
+var hp_shown: float = -1.0
+var lamp_pips: Array = []
 var dialogs: GameDialogs
 var chrome: Control
 var day_label: Label
@@ -45,6 +61,7 @@ var modal_kind: String:
 func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	catalog = content
 	state = initial_state
+	stories = StoryRules.new(content)
 	setup_theme()
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -79,12 +96,12 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		)
 		button.tooltip_text = entry[2]
 		ui_icon(entry[0], Rect2(11, 10, 26, 26), button)
-	# Twelve physical slots: seven tools, selected seed, four quick inventory views.
-	_frame(Rect2(244, 704, 792, 80), "wood", chrome).mouse_filter = Control.MOUSE_FILTER_STOP
+	# Thirteen physical slots: nine tools, the selected seed, three quick inventory views.
+	_frame(Rect2(212, 704, 856, 80), "wood", chrome).mouse_filter = Control.MOUSE_FILTER_STOP
 	for i in range(TOOLS.size()):
 		var id: String = TOOLS[i]
 		var button = _slot(
-			Rect2(256 + i * 64, 713, 60, 60),
+			Rect2(224 + i * 64, 713, 60, 60),
 			func(): action_requested.emit("select_tool", {"tool": id}),
 			chrome
 		)
@@ -93,7 +110,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 		_label(str(i + 1), Rect2(8, 3, 20, 18), 12, INK, false, button)
 		tool_buttons[id] = button
 	seed_button = _slot(
-		Rect2(768, 713, 60, 60), func(): action_requested.emit("cycle_seed", {}), chrome
+		Rect2(800, 713, 60, 60), func(): action_requested.emit("cycle_seed", {}), chrome
 	)
 	seed_icon = icon("turnip_packet", Rect2(10, 11, 40, 40), seed_button)
 	_label("Q", Rect2(8, 3, 20, 18), 12, INK, false, seed_button)
@@ -102,7 +119,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	for i in range(POCKET_ITEMS.size()):
 		var id: String = POCKET_ITEMS[i]
 		var button = _slot(
-			Rect2(832 + i * 64, 713, 60, 60),
+			Rect2(864 + i * 64, 713, 60, 60),
 			func():
 				dialogs.selected_item = id
 				dialogs.show_bag(),
@@ -121,6 +138,25 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	chrome.add_child(stamina_fill)
 	stamina_label = _label("E", Rect2(1227, 718, 26, 21), 14, LIGHT, false, chrome)
 	stamina_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hp_group = Control.new()
+	hp_group.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	hp_group.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	hp_group.hide()
+	chrome.add_child(hp_group)
+	_frame(Rect2(1176, 558, 39, 186), "wood", hp_group).mouse_filter = Control.MOUSE_FILTER_STOP
+	_panel(Rect2(1188, BAR_TOP - 13, 14, BAR_HEIGHT), Color("55402a"), hp_group)
+	hp_fill = ColorRect.new()
+	hp_fill.mouse_filter = Control.MOUSE_FILTER_STOP
+	hp_group.add_child(hp_fill)
+	hp_label = _label("HP", Rect2(1182, 718, 26, 21), 14, LIGHT, false, hp_group)
+	hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	for i in range(6):
+		var pip = ColorRect.new()
+		pip.position = Vector2(38 + i * 20, 126)
+		pip.size = Vector2(14, 14)
+		pip.color = Color("5a4a3a")
+		chrome.add_child(pip)
+		lamp_pips.append(pip)
 	station_frame = _frame(Rect2(0, 0, 224, 40), "paper", chrome)
 	station_label = _label("", Rect2(12, 3, 200, 34), 17, INK, false, station_frame)
 	station_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -154,7 +190,18 @@ func refresh(selected_tool: String, selected_crop: String) -> void:
 	)
 	time_label.text = "%s %s" % [date.weekday_name, GameCalendar.clock(state.minute)]
 	var current_quest = catalog.story.quests[int(state.narrative.stage)]
-	quest_label.text = "› " + (current_quest.title if state.narrative.stage < 6 else "自由经营")
+	if current_quest.event == "":
+		quest_label.text = "› 自由经营"
+	elif state.day < int(current_quest.available_day):
+		quest_label.text = (
+			"› %s（%s起）"
+			% [current_quest.title, catalog.calendar.label(int(current_quest.available_day))]
+		)
+	else:
+		quest_label.text = "› " + current_quest.title
+	for i in lamp_pips.size():
+		lamp_pips[i].color = Color("f6d890") if stories.lamp_lit(state, i + 1) else Color("5a4a3a")
+		lamp_pips[i].tooltip_text = "第 %d 盏灯" % (i + 1)
 	clock_frame.tooltip_text = _calendar_tooltip(weather)
 	if gold_shown < 0.0:
 		gold_shown = float(state.gold)
@@ -183,6 +230,20 @@ func refresh(selected_tool: String, selected_crop: String) -> void:
 		pocket_counts[id].text = str(state.inventory[id]) if state.inventory[id] else ""
 		pocket_buttons[id].modulate = Color.WHITE if state.inventory[id] else Color(1, 1, 1, .45)
 		pocket_buttons[id].disabled = state.inventory[id] == 0
+
+
+## The hero's hit points, shown only on a mine floor.
+func set_hp(hp: int, hp_max: int) -> void:
+	var in_mine = state.current_map.begins_with("mine_")
+	hp_group.visible = in_mine
+	if not in_mine:
+		return
+	hp_shown = float(hp) if hp_shown < 0.0 else hp_shown
+	var ratio = clampf(float(hp) / float(hp_max), 0.0, 1.0)
+	hp_fill.position = Vector2(1188, BAR_TOP - 13 + (1 - ratio) * BAR_HEIGHT)
+	hp_fill.size = Vector2(14, ratio * BAR_HEIGHT)
+	hp_fill.color = Color("d85a4a") if ratio > 0.3 else Color("f08a3a")
+	hp_fill.tooltip_text = "生命 %d / %d" % [hp, hp_max]
 
 
 func set_target(station: String, player_screen: Vector2) -> void:

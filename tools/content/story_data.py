@@ -1,4 +1,4 @@
-"""The whole story: chapter one quests and scenes, and every villager.
+"""The whole story: every quest and scene from the prologue to the finale, and every villager.
 
 Authoritative source for data/story.json (see build_story.py) and for the villager sprites
 (tools/art/characters.py reads LOOKS). Where villagers are during the day is described in schedules.py.
@@ -7,127 +7,36 @@ Friendship runs 0-100. Romanceable villagers have five events (20, 40, 60, 80, 1
 rest have three (30, 60, 90). Everyone is a person with a family, a trade and a secret.
 """
 
-QUESTS = [
-    {
-        "title": "新邻居",
-        "where": "农场 · 找黑兹尔",
-        "hint": "种子商黑兹尔正在农舍东边等你。",
-        "needs": {},
-        "npc": "hazel",
-        "event": "welcome",
-    },
-    {
-        "title": "一顿饭的距离",
-        "where": "芦苇渡镇 · 玛戈",
-        "hint": "玛戈想用新鲜萝卜煮一锅浓汤。带两份萝卜去她的小酒馆。",
-        "needs": {"turnip": 2},
-        "npc": "margot",
-        "event": "first_meal",
-    },
-    {
-        "title": "桥的另一边",
-        "where": "松木林 → 镇东旧桥",
-        "hint": "赛拉斯需要四份木材、三份石料修补镇东的旧木桥。",
-        "needs": {"wood": 4, "stone": 3},
-        "npc": "",
-        "event": "bridge",
-    },
-    {
-        "title": "湖边的记录员",
-        "where": "萤火湖畔 · 雷恩",
-        "hint": "穿过木桥，找湖边的鸟类记录员雷恩。",
-        "needs": {},
-        "npc": "wren",
-        "event": "notebook",
-    },
-    {
-        "title": "请大家再聚一次",
-        "where": "芦苇渡镇 · 玛戈",
-        "hint": "为灯夜带去三份野莓、两份萝卜。",
-        "needs": {"berry": 3, "turnip": 2},
-        "npc": "margot",
-        "event": "feast",
-    },
-    {
-        "title": "灯夜重燃",
-        "where": "萤火湖畔 · 灯台",
-        "hint": "去湖边的灯台，和大家一起放灯。",
-        "needs": {},
-        "npc": "",
-        "event": "festival",
-    },
-    {
-        "title": "灯亮之后",
-        "where": "第一章已完成",
-        "hint": "日子还长。灯夜之后，大家各自有了新的期待。",
-        "needs": {},
-        "npc": "",
-        "event": "",
-    },
-]
+from content import ch1, ch2, ch3, ch4, replies, romance
+from content.scene_kit import quest
 
-SCENES = {
-    "prologue": [
-        [
-            "letter",
-            "给 {name}：\n\n你读到这封信时，我已经坐上南下的火车了。别担心，我只是去找一位很久没见的老朋友。",
-        ],
-        [
-            "letter",
-            "农场交给你，叫它“{farm}”也好，给它起个新名字也好。\n\n别急着把每一块地都种满。给自己留一条散步的小路。",
-        ],
-        [
-            "letter",
-            "镇东的桥去年被洪水冲垮了，灯夜也停办了。\n如果你愿意，就替我去看看那些老朋友。\n\n愿你找到让自己想留下的东西。\n—— 祖母 西尔维娅",
-        ],
-    ],
-    "welcome": [
-        ["hazel", "你就是 {name} 吧？我是黑兹尔，西尔维娅奶奶常跟我提起你。"],
-        ["hazel", "她留下的种子在你口袋里。那片荒地，你想种成什么样都好。"],
-        ["hazel", "镇上的玛戈听说你要来，连汤锅都换大了。有了收成，记得带点去让她尝尝。"],
-    ],
-    "first_meal": [
-        ["margot", "萝卜真新鲜，叶子上还带着露水呢。今天的浓汤有着落了。"],
-        ["margot", "以前灯夜，我要煮一大锅汤。桥坏了以后，大家都说“等修好再办”，然后就一直等。"],
-        [
-            "silas",
-            "……桥的图纸我有。松木林里能拾到木材和石料。四份木材、三份石料，够先把桥面接起来。",
-        ],
-        ["margot", "你愿意帮忙的话，到镇东旧桥找他。饭钱先给你，下次来，不用带礼物也可以坐坐。"],
-    ],
-    "bridge": [
-        ["silas", "材料齐了。你先站远一点，我来。"],
-        ["narrator", "锤声落进午后的风里。旧木板被一块块卸下，结实的新桥面从脚下延伸到对岸。"],
-        ["silas", "我总以为，没人再想去那边了。谢谢你让我知道，不是这样。"],
-        [
-            "silas",
-            "湖边有个记录水鸟的姑娘，叫雷恩。她有一本西尔维娅奶奶留下的笔记，也许你会想看看。",
-        ],
-    ],
-    "notebook": [
-        ["wren", "桥……真的修好了？对不起，我有点惊讶。我是雷恩，在这里做湿地鸟类记录。"],
-        ["wren", "西尔维娅奶奶留下这本笔记时，说以后会有人来取。这里有一页不是水位，也不是鸟。"],
-        [
-            "letter",
-            "“纸灯不是寄给离开的人。它是提醒还在岸边的人：\n\n我在这里。明年，也想和你一起。”",
-        ],
-        ["wren", "如果灯夜再办一次，我想试着离开记录本，站到大家中间。玛戈应该知道要准备什么。"],
-    ],
-    "feast": [
-        ["margot", "野莓做甜酱，萝卜煮热汤，刚刚好。别担心人数，我会去挨家敲门。"],
-        ["hazel", "种子摊今天提前收！这次我要带一盏自己做的灯。"],
-        ["silas", "桥已经检查过了。去湖边吧，灯台也修好了。"],
-        ["margot", "到灯台等我们。现在什么时候去都可以，热闹不用挑“正确的日子”。"],
-    ],
-    "festival": [
-        ["narrator", "灯火一盏盏落在湖面。风很轻，船形的小灯缓缓绕过芦苇。"],
-        ["hazel", "我本来只想替奶奶把田看好。没想到，今年还能一起出来玩。"],
-        ["silas", "桥修好了。以后想来，随时都能来。"],
-        ["margot", "汤要凉啦！许愿可以慢慢想，吃饭可不能等。"],
-        ["wren", "我今天不记鸟了。我想记住你们说话的声音。"],
-        ["letter", "“愿你找到让自己想留下的东西。”\n\n你终于明白，祖母留给你的不仅是一块土地。"],
-        ["narrator", "在灯上写下一句话。你希望接下来的日子是什么样的？"],
-    ],
+_END = quest(
+    "new_year",
+    "新的一年",
+    "芽田农场",
+    "六盏灯亮着，故事还在继续。接下来的日子由你决定。",
+    chapter=5,
+)
+_END["event"] = ""
+QUESTS = ch1.QUESTS + ch2.QUESTS + ch3.QUESTS + ch4.QUESTS + [_END]
+PROLOGUE_CHOICES = ch1.PROLOGUE_CHOICES
+
+SCENES = {}
+for _module in (ch1, ch2, ch3, ch4, replies):
+    SCENES.update(_module.SCENES)
+
+# Sylvia is not a villager but she appears on stage and in letters.
+GUESTS = {
+    "sylvia": {
+        "name": "西尔维娅",
+        "en": "Sylvia Whitfield",
+        "age": 63,
+        "sprite": "npc_sylvia",
+        "portrait": "portrait_sylvia",
+    }
+}
+GUEST_LOOKS = {
+    "sylvia": dict(skin=0, hair="white", outfit="#6a8a7a", acc=["bun", "cane", "scarf:#e8d8a8"]),
 }
 
 
@@ -2013,3 +1922,7 @@ person(
 )
 
 STORY_CHARACTERS = list(NPCS.keys())
+
+ROMANCE_ORDER = list(romance.ROMANCE.keys())
+SPOUSE_TALK = {i: r["talk"] for i, r in romance.ROMANCE.items()}
+ROMANCE_SCENES = romance.build_scenes({i: NPCS[i]["name"] for i in romance.ROMANCE})

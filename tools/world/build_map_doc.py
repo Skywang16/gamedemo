@@ -33,7 +33,7 @@ PATHS = {
     "packed": "压实土路",
 }
 BIOMES = {"meadow": "草地", "beach": "沙滩", "cave": "洞窟"}
-OUTDOOR = ["home_farm", "town", "market", "ranch", "seaside", "forest", "lake"]
+OUTDOOR = ["home_farm", "town", "market", "ranch", "seaside", "forest", "lake", "far_shore"]
 MINES = ["mine_1", "mine_2", "mine_3"]
 INDOOR = [
     "cottage",
@@ -83,7 +83,7 @@ def main():
     seen = set()
     for name in OUTDOOR + MINES:
         for st in maps[name]["stations"]:
-            if st["kind"] not in ("exit", "bridge"):
+            if st["kind"] not in ("exit", "bridge", "ferry"):
                 continue
             dest = st.get("destination", "lake")
             if dest in INDOOR or (dest, name) in seen:
@@ -146,7 +146,7 @@ def main():
     lines += [
         "",
         "站点类型：`bed` 床（休息）、`letter` 祖母的信、`storage` 储物箱、`kitchen` 灶台、`shop` 柜台或摊位、"
-        "`shipping` 收货箱、`board` 告示板、`bridge` 东桥、`lantern` 灯台。村民、采集点、鸡舍 / 谷仓门口"
+        "`shipping` 收货箱、`board` 告示板、`bridge` 东桥、`lantern` 灯台、`ferry` 摆渡船（灯四亮后开放）、`story` 剧情地点（旧灯龛）。村民、采集点、鸡舍 / 谷仓门口"
         "是运行时加入的站点。",
         "",
         "## 5. 装饰与碰撞",

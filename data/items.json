@@ -2483,6 +2483,78 @@
     "description": "干净的纱布。",
     "energy": 0
   },
+  "glass": {
+    "name": "玻璃",
+    "kind": "material",
+    "buy_price": 0,
+    "sell_price": 0,
+    "icon": "misc_glass",
+    "description": "沙子在炉里熔成的玻璃，透亮而沉手。",
+    "energy": 0
+  },
+  "rope": {
+    "name": "麻绳",
+    "kind": "material",
+    "buy_price": 40,
+    "sell_price": 0,
+    "icon": "misc_rope",
+    "description": "结实的三股麻绳，船和棚架都用得上。",
+    "energy": 0
+  },
+  "slime_goo": {
+    "name": "史莱姆凝胶",
+    "kind": "drop",
+    "buy_price": 0,
+    "sell_price": 14,
+    "icon": "misc_slime_goo",
+    "description": "矿洞里的软泥怪留下的凝胶，凉凉的。",
+    "energy": 0
+  },
+  "bat_wing": {
+    "name": "洞蝠翼",
+    "kind": "drop",
+    "buy_price": 0,
+    "sell_price": 22,
+    "icon": "misc_bat_wing",
+    "description": "洞蝠的薄翼，对着灯能看见血管的纹路。",
+    "energy": 0
+  },
+  "stone_heart": {
+    "name": "石心",
+    "kind": "drop",
+    "buy_price": 0,
+    "sell_price": 60,
+    "icon": "misc_stone_heart",
+    "description": "石偶胸口里的一小块暖石，还带着余温。",
+    "energy": 0
+  },
+  "statue_core": {
+    "name": "石像之核",
+    "kind": "drop",
+    "buy_price": 0,
+    "sell_price": 400,
+    "icon": "misc_statue_core",
+    "description": "守渠石像身体里的核心，像一盏凝固的灯。",
+    "energy": 0
+  },
+  "heart_lantern": {
+    "name": "心意灯",
+    "kind": "material",
+    "buy_price": 300,
+    "sell_price": 0,
+    "icon": "misc_heart_lantern",
+    "description": "把没说出口的话写在灯上，送给想说的人。",
+    "energy": 0
+  },
+  "union_ring": {
+    "name": "同心环",
+    "kind": "material",
+    "buy_price": 3000,
+    "sell_price": 0,
+    "icon": "misc_union_ring",
+    "description": "马格纳斯打的指环，内侧刻着两个人的名字。",
+    "energy": 0
+  },
   "berry_oatmeal": {
     "name": "莓果燕麦粥",
     "kind": "dish",

@@ -1,6 +1,7 @@
 {
   "coop": {
     "name": "鸡舍",
+    "kind": "animal",
     "price": 600,
     "materials": {
       "wood": 20,
@@ -12,6 +13,7 @@
   },
   "barn": {
     "name": "谷仓",
+    "kind": "animal",
     "price": 1200,
     "materials": {
       "wood": 40,
@@ -20,5 +22,10 @@
     "days": 3,
     "capacity": 6,
     "hint": "最多养 6 头牲畜。"
+  },
+  "greenhouse": {
+    "name": "温室",
+    "kind": "story",
+    "hint": "暖灯点亮时落成。有了它，作物不再受季节限制。"
   }
 }

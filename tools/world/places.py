@@ -18,6 +18,7 @@ PLACES = {
     "home_farm/shipping": (46, 19),
     "home_farm/east_road": (70, 17),
     "home_farm/south_road": (40, 56),
+    "home_farm/yard": (41, 17),
     # ---------------------------------------------------------------- town
     "town/fountain_n": (40, 32),
     "town/fountain_s": (40, 36),
@@ -111,6 +112,10 @@ PLACES = {
     "mine_1/cart": (30, 40),
     "mine_1/deep": (31, 36),
     # ---------------------------------------------------------------- interiors
+    "cottage/bed_side": (9, 8),
+    "cottage/table": (14, 11),
+    "cottage/kitchen_side": (20, 12),
+    "cottage/window": (10, 13),
     "general_store/behind": (14, 4),
     "general_store/behind_r": (17, 4),
     "general_store/front": (12, 8),

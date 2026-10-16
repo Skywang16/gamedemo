@@ -4,11 +4,47 @@ extends RefCounted
 ## Loads and strictly validates every data file. Anything malformed is an error string; the
 ## game refuses to start rather than guessing.
 
-const ITEM_KINDS = ["seed", "produce", "material", "fish", "forage", "mineral", "dish"]
-const SELLABLE = ["produce", "fish", "forage", "mineral", "dish"]
+const ITEM_KINDS = ["seed", "produce", "material", "fish", "forage", "mineral", "dish", "drop"]
+const SELLABLE = ["produce", "fish", "forage", "mineral", "dish", "drop"]
 const STATION_KINDS = [
-	"exit", "bed", "shop", "shipping", "bridge", "board", "lantern", "letter", "storage", "kitchen"
+	"exit",
+	"bed",
+	"shop",
+	"shipping",
+	"bridge",
+	"board",
+	"lantern",
+	"letter",
+	"storage",
+	"kitchen",
+	"ferry",
+	"story"
 ]
+const BACKDROPS = [
+	"farm",
+	"town",
+	"market",
+	"ranch",
+	"seaside",
+	"forest",
+	"lake",
+	"greenhouse",
+	"river",
+	"shore",
+	"canal",
+	"stage",
+	"hall",
+	"clock",
+	"quarry",
+	"vault",
+	"inn",
+	"shop",
+	"cottage",
+	"train",
+	"feast"
+]
+const MOODS = ["day", "dusk", "night", "dawn", "rain", "snow"]
+const ENEMY_FIELDS = ["name", "hp", "damage", "speed", "aggro", "xp", "size", "boss", "drops"]
 const NPC_FIELDS = [
 	"name",
 	"en",
@@ -29,6 +65,8 @@ const NPC_FIELDS = [
 	"after",
 	"romance",
 	"events",
+	"married_talk",
+	"married_events",
 	"schedule"
 ]
 const SCHEDULE_CONDITIONS = [
@@ -42,7 +80,8 @@ const SCHEDULE_CONDITIONS = [
 	"year_min",
 	"year_max",
 	"stage_min",
-	"stage_max"
+	"stage_max",
+	"spouse"
 ]
 
 var items: Dictionary = {}
@@ -58,6 +97,10 @@ var tool_tiers: Array = []
 var smelting: Dictionary = {}
 var animals: Dictionary = {}
 var buildings: Dictionary = {}
+var enemies: Dictionary = {}
+var spawns: Dictionary = {}
+var weapon: Dictionary = {}
+var spouses: Dictionary = {}
 var places: Dictionary = {}
 var map: Dictionary = {}
 var regions: Dictionary = {}
@@ -83,6 +126,8 @@ func load_content() -> String:
 		"shop_data": "res://data/shops.json",
 		"animals": "res://data/animals.json",
 		"buildings": "res://data/buildings.json",
+		"enemy_data": "res://data/enemies.json",
+		"spouses": "res://data/spouses.json",
 		"places": "res://data/places.json",
 		"events_data": "res://data/events.json",
 		"story": "res://data/story.json",
@@ -108,6 +153,12 @@ func load_content() -> String:
 	smelting = raw.shop_data.smelting
 	animals = raw.animals
 	buildings = raw.buildings
+	spouses = raw.spouses
+	if not raw.enemy_data.has_all(["enemies", "spawns", "weapon"]):
+		return "怪物配置不完整"
+	enemies = raw.enemy_data.enemies
+	spawns = raw.enemy_data.spawns
+	weapon = raw.enemy_data.weapon
 	places = raw.places
 	story = raw.story
 	var steps = [
@@ -122,7 +173,8 @@ func load_content() -> String:
 		_validate_animals,
 		_validate_places,
 		_validate_story,
-		func(): return _load_events(raw.events_data)
+		func(): return _load_events(raw.events_data),
+		_validate_enemies
 	]
 	for step in steps:
 		var error: String = step.call()
@@ -366,13 +418,64 @@ func _validate_animals() -> String:
 			return "动物配置无效：" + id
 	for id in buildings:
 		var b = buildings[id]
-		if not b is Dictionary or not b.has_all(["name", "price", "materials", "days", "capacity"]):
+		if not b is Dictionary or not b.has_all(["name", "kind", "hint"]):
 			return "建筑配置无效：" + id
-		for material in b.materials:
-			if not items.has(material):
-				return "建筑材料不存在：" + id
+		if b.kind not in ["animal", "story"]:
+			return "建筑类型无效：" + id
+		if b.kind == "animal":
+			if not b.has_all(["price", "materials", "days", "capacity"]):
+				return "建筑配置无效：" + id
+			for material in b.materials:
+				if not items.has(material):
+					return "建筑材料不存在：" + id
 		if not map.building_sites.has(id):
 			return "农场没有建筑地块：" + id
+	return ""
+
+
+func _validate_enemies() -> String:
+	for id in enemies:
+		var e = enemies[id]
+		if not e is Dictionary or not e.has_all(ENEMY_FIELDS):
+			return "怪物配置无效：" + id
+		for key in ["hp", "damage", "speed", "aggro", "xp", "size"]:
+			if not natural(e[key]) or e[key] < 1:
+				return "怪物数值无效：" + id
+		for drop in e.drops:
+			if (
+				not drop is Array
+				or drop.size() != 4
+				or not items.has(drop[0])
+				or not natural(drop[1])
+				or drop[1] > 100
+				or not natural(drop[2])
+				or not natural(drop[3])
+				or drop[2] > drop[3]
+			):
+				return "怪物掉落无效：" + id
+	for map_id in spawns:
+		if not regions.has(map_id):
+			return "怪物出没的地图不存在：" + map_id
+		for kind in spawns[map_id]:
+			if not enemies.has(kind) or not natural(spawns[map_id][kind]):
+				return "怪物出没配置无效：" + map_id
+	if (
+		not weapon.has_all(["damage", "cost", "hp", "knockback"])
+		or weapon.damage.size() != tool_tiers.size() + 1
+		or weapon.cost.size() != tool_tiers.size() + 1
+		or not natural(weapon.hp)
+	):
+		return "武器配置无效"
+	for id in spouses:
+		var sp = spouses[id]
+		if not story.npcs.has(id) or not story.npcs[id].romance or not sp is Dictionary:
+			return "配偶配置无效：" + id
+		for item in sp.get("items", {}):
+			if not items.has(item):
+				return "配偶带回的物品不存在：" + id
+	for id in story.npcs:
+		if story.npcs[id].romance and not spouses.has(id):
+			return "缺少配偶的日常：" + id
 	return ""
 
 
@@ -397,47 +500,210 @@ func _validate_places() -> String:
 	return ""
 
 
+const QUEST_FIELDS = [
+	"id",
+	"title",
+	"where",
+	"hint",
+	"needs",
+	"npc",
+	"event",
+	"chapter",
+	"available_day",
+	"friendship",
+	"reward",
+	"choice",
+	"flag",
+	"lamp",
+	"station",
+	"build"
+]
+const STORY_STATIONS = ["bridge", "lantern", "shrine"]
+const SLOTS = ["far_left", "left", "center_left", "center", "center_right", "right", "far_right"]
+const EFFECTS = [
+	"fireflies",
+	"lanterns",
+	"petals",
+	"rain",
+	"snow",
+	"leaves",
+	"dust",
+	"confetti",
+	"sparks",
+	"steam",
+	"bells",
+	"water"
+]
+const SOUNDS = ["bell", "chime", "lantern", "water", "cheer", "wedding", "hit", "rumble", "tick"]
+const ACTIONS = ["hop", "nod", "shake", "bow", "step"]
+const CAMERAS = ["zoom_in", "zoom_out", "pan_left", "pan_right", "still"]
+const FLASHES = ["white", "gold", "black"]
+
+
 func _validate_story() -> String:
 	if (
-		not story.has_all(["npcs", "quests", "scenes"])
+		not story.has_all(["npcs", "quests", "scenes", "flags", "guests", "prologue_choices"])
 		or not story.npcs is Dictionary
 		or not story.quests is Array
 		or not story.scenes is Dictionary
-		or story.quests.size() != 7
+		or not story.flags is Dictionary
+		or not story.guests is Dictionary
+		or not story.prologue_choices is Array
+		or story.quests.size() < 7
 	):
 		return "剧情配置不完整"
-	for quest in story.quests:
+	var lamps: Array = []
+	for index in story.quests.size():
+		var quest = story.quests[index]
+		var error = _validate_quest(quest, index == story.quests.size() - 1)
+		if not error.is_empty():
+			return error
+		if int(quest.lamp) > 0:
+			lamps.append(int(quest.lamp))
+	if lamps != [1, 2, 3, 4, 5, 6]:
+		return "六盏灯必须按顺序各亮一次"
+	for guest in story.guests:
+		var g = story.guests[guest]
 		if (
-			not quest is Dictionary
-			or not quest.has_all(["title", "where", "hint", "needs", "npc", "event"])
-			or not quest.needs is Dictionary
+			not g is Dictionary
+			or not g.has_all(["name", "en", "age", "sprite", "portrait"])
+			or not ResourceLoader.exists("res://assets/art/%s.png" % g.portrait)
+			or not ResourceLoader.exists("res://assets/art/%s.png" % g.sprite)
 		):
-			return "任务配置不完整"
-		for item in quest.needs:
-			if not items.has(item) or not natural(quest.needs[item]):
-				return "任务物品引用无效"
-		if quest.npc != "" and not story.npcs.has(quest.npc):
-			return "任务人物不存在：" + quest.title
-		if quest.event != "" and not story.scenes.has(quest.event):
-			return "任务场景不存在：" + quest.title
+			return "来宾配置无效：" + guest
 	for event in story.scenes:
-		if not story.scenes.get(event) is Array or story.scenes[event].is_empty():
-			return "缺少剧情场景：" + event
-		for page in story.scenes[event]:
-			if (
-				not page is Array
-				or page.size() != 2
-				or not page[0] is String
-				or not page[1] is String
-			):
-				return "对白格式无效：" + event
-			if page[0] not in ["letter", "narrator"] and not story.npcs.has(page[0]):
-				return "对白人物不存在：" + event
+		var error = _validate_scene(event, story.scenes[event])
+		if not error.is_empty():
+			return error
 	for id in story.npcs:
 		var error = _validate_npc(id, story.npcs[id])
 		if not error.is_empty():
 			return error
 	return ""
+
+
+func _validate_quest(quest: Variant, terminal: bool) -> String:
+	if not quest is Dictionary or not quest.has_all(QUEST_FIELDS):
+		return "任务配置不完整"
+	var name = str(quest.id)
+	if not quest.needs is Dictionary or not quest.friendship is Dictionary:
+		return "任务需求无效：" + name
+	for item in quest.needs:
+		if not items.has(item) or not natural(quest.needs[item]):
+			return "任务物品引用无效：" + name
+	for who in quest.friendship:
+		if not story.npcs.has(who) or not natural(quest.friendship[who]):
+			return "任务好感要求无效：" + name
+	if quest.npc != "" and not story.npcs.has(quest.npc):
+		return "任务人物不存在：" + name
+	if terminal != (quest.event == ""):
+		return "只有最后一个任务没有事件：" + name
+	if quest.event != "" and not story.scenes.has(quest.event):
+		return "任务场景不存在：" + name
+	if quest.event != "" and quest.npc == "" and quest.station not in STORY_STATIONS:
+		return "任务没有人物也没有地点：" + name
+	if not natural(quest.available_day) or not natural(quest.lamp) or quest.lamp > 6:
+		return "任务数值无效：" + name
+	if not quest.reward is Dictionary or not quest.reward.has_all(["gold", "items"]):
+		return "任务奖励无效：" + name
+	for item in quest.reward.items:
+		if not items.has(item):
+			return "任务奖励物品不存在：" + name
+	if not quest.choice is Array or (not quest.choice.is_empty() and quest.flag == ""):
+		return "任务选项无效：" + name
+	for c in quest.choice:
+		if not c is Dictionary or not c.has_all(["id", "label"]):
+			return "任务选项无效：" + name
+		if not story.flags.has(quest.flag) or c.id not in story.flags[quest.flag]:
+			return "任务选项未登记：" + name
+	if quest.build != "" and not buildings.has(quest.build):
+		return "任务建筑不存在：" + name
+	return ""
+
+
+func _validate_scene(event: String, scene: Variant) -> String:
+	if (
+		not scene is Dictionary
+		or not scene.has_all(["pages", "bg", "mood", "card", "fx"])
+		or not scene.pages is Array
+		or scene.pages.is_empty()
+		or scene.bg not in BACKDROPS
+		or scene.mood not in MOODS
+		or not scene.card is Array
+		or not scene.fx is Array
+	):
+		return "缺少剧情场景：" + event
+	for page in scene.pages:
+		if (
+			not page is Array
+			or page.size() != 3
+			or not page[0] is String
+			or not page[1] is String
+			or not page[2] is Dictionary
+		):
+			return "对白格式无效：" + event
+		if (
+			page[0] not in ["letter", "narrator"]
+			and not story.npcs.has(page[0])
+			and not story.guests.has(page[0])
+		):
+			return "对白人物不存在：" + event
+		var error = _validate_notes(event, page[2])
+		if not error.is_empty():
+			return error
+	return ""
+
+
+func _validate_notes(event: String, notes: Dictionary) -> String:
+	for key in notes:
+		var value = notes[key]
+		var ok = true
+		match key:
+			"bg":
+				ok = value in BACKDROPS
+			"mood":
+				ok = value in MOODS
+			"fx":
+				ok = value is Array and value.all(func(e): return e in EFFECTS)
+			"sfx":
+				ok = value in SOUNDS
+			"flash":
+				ok = value in FLASHES
+			"cam":
+				ok = value in CAMERAS
+			"shake":
+				ok = value is float or value is int
+			"title":
+				ok = value is String
+			"actors":
+				ok = value is Array and value.all(func(a): return _actor_ok(a))
+			"act":
+				ok = value is Dictionary and value.values().all(func(a): return a in ACTIONS)
+			"when":
+				ok = (
+					value is Dictionary
+					and value.keys().all(func(f): return _condition_ok(f, value[f]))
+				)
+			_:
+				ok = false
+		if not ok:
+			return "导演提示无效：%s %s" % [event, key]
+	return ""
+
+
+func _actor_ok(entry: Variant) -> bool:
+	if not entry is String:
+		return false
+	var parts = entry.split("@")
+	if parts.size() != 2 or parts[1] not in SLOTS:
+		return false
+	return parts[0] == "player" or story.npcs.has(parts[0]) or story.guests.has(parts[0])
+
+
+func _condition_ok(flag: String, wanted: Variant) -> bool:
+	if flag == "partner":
+		return story.npcs.has(wanted) and story.npcs[wanted].romance
+	return story.flags.has(flag) and wanted in story.flags[flag]
 
 
 func _validate_npc(id: String, npc: Variant) -> String:
@@ -471,6 +737,21 @@ func _validate_npc(id: String, npc: Variant) -> String:
 		):
 			return "人物事件无效：" + id
 		previous = int(event.at)
+		for item in event.reward.items:
+			if not items.has(item):
+				return "事件奖励不存在：" + event.id
+	if not npc.married_talk is Array or not npc.married_events is Array:
+		return "婚后内容无效：" + id
+	if npc.romance and (npc.married_talk.size() != 3 or npc.married_events.size() != 2):
+		return "婚后内容不完整：" + id
+	for event in npc.married_events:
+		if (
+			not event is Dictionary
+			or not event.has_all(["id", "after", "reward"])
+			or not story.scenes.has(event.id)
+			or not natural(event.after)
+		):
+			return "婚后事件无效：" + id
 		for item in event.reward.items:
 			if not items.has(item):
 				return "事件奖励不存在：" + event.id
@@ -542,6 +823,12 @@ func _validate_regions() -> String:
 			return error
 	for id in regions:
 		for station in regions[id].stations:
+			if station.kind == "ferry":
+				if not regions.has(station.destination) or not numeric_array(station.arrival, 2):
+					return "渡口无效：" + id
+			if station.kind == "story":
+				if not station.get("event") is String or not station.get("idle") is String:
+					return "剧情地点无效：" + id
 			if station.kind == "exit":
 				if not regions.has(station.destination) or not numeric_array(station.arrival, 2):
 					return "出口无效：" + id
@@ -669,6 +956,21 @@ func _validate_region(id: String, area: Dictionary) -> String:
 
 
 # ---------------------------------------------------------------------------- queries
+
+
+## Index of the quest whose completion lights lamp `number` (1-6).
+func lamp_quest_index(number: int) -> int:
+	for i in story.quests.size():
+		if int(story.quests[i].lamp) == number:
+			return i
+	return -1
+
+
+func quest_index(event: String) -> int:
+	for i in story.quests.size():
+		if story.quests[i].event == event:
+			return i
+	return -1
 
 
 func region(id: String) -> Dictionary:

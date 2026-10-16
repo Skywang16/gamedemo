@@ -22,7 +22,10 @@
       "goods": {
         "hay": 8,
         "bait": 4,
-        "bandage": 15
+        "bandage": 15,
+        "rope": 40,
+        "cloth": 80,
+        "heart_lantern": 300
       },
       "buys": [
         "produce",
@@ -38,12 +41,14 @@
         6
       ],
       "goods": {
-        "coal": 40
+        "coal": 40,
+        "union_ring": 3000
       },
       "smelt": true,
       "upgrade": true,
       "buys": [
-        "mineral"
+        "mineral",
+        "drop"
       ]
     },
     "clinic": {
@@ -166,6 +171,7 @@
     "copper_ore": "copper_bar",
     "iron_ore": "iron_bar",
     "silver_ore": "silver_bar",
-    "gold_ore": "gold_bar"
+    "gold_ore": "gold_bar",
+    "sand": "glass"
   }
 }

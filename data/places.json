@@ -44,6 +44,11 @@
   56,
   false
  ],
+ "home_farm/yard": [
+  41,
+  17,
+  false
+ ],
  "town/fountain_n": [
   40,
   32,
@@ -467,6 +472,26 @@
  "mine_1/deep": [
   31,
   36,
+  false
+ ],
+ "cottage/bed_side": [
+  9,
+  8,
+  false
+ ],
+ "cottage/table": [
+  14,
+  11,
+  false
+ ],
+ "cottage/kitchen_side": [
+  20,
+  12,
+  false
+ ],
+ "cottage/window": [
+  10,
+  13,
   false
  ],
  "general_store/behind": [

@@ -3,8 +3,16 @@ extends GameScreen
 
 signal opened
 signal closed
+signal cutscene_sound(name: String)
 
 const WIDE = Rect2(130, 50, 1020, 700)
+const CHAPTER_NAMES = [
+	"第一章 · 灯夜重燃",
+	"第二章 · 留下的人",
+	"第三章 · 水从哪里来",
+	"第四章 · 写给明年的信",
+	"终章 · 新的河灯",
+]
 
 var state: FarmState
 var stories: StoryRules
@@ -17,6 +25,7 @@ var modal_panel: Panel
 var modal_extra: Control
 var modal_kind: String = ""
 var shade: ColorRect
+var cutscene: CutsceneView
 
 
 func configure(content: ContentCatalog, initial_state: FarmState) -> void:
@@ -40,6 +49,9 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 
 
 func close_modal() -> void:
+	if is_instance_valid(cutscene):
+		cutscene.queue_free()
+		cutscene = null
 	hide()
 	modal_kind = ""
 	closed.emit()
@@ -202,39 +214,76 @@ func show_settings(current: GameSettings) -> void:
 
 
 func show_journal() -> void:
-	open_modal("journal", "故事手记", "", Rect2(180, 90, 920, 620))
-	_panel(Rect2(370, 80, 2, 440), Color("cba365"), modal_panel)
+	open_modal("journal", "故事手记", "", Rect2(150, 70, 980, 660))
+	var current = stories.quest(state)
+	var chapter = int(current.chapter)
+	_label(CHAPTER_NAMES[chapter - 1], Rect2(300, 24, 620, 40), 22, GOLD, false, modal_panel)
+	_panel(Rect2(392, 84, 2, 470), Color("cba365"), modal_panel)
+	var row = 0
 	for i in range(catalog.story.quests.size()):
 		var q = catalog.story.quests[i]
+		if int(q.chapter) != chapter:
+			continue
 		var mark = (
 			"✓" if i < state.narrative.stage else ("›" if i == state.narrative.stage else "·")
 		)
 		_label(
 			"%s  %s" % [mark, q.title],
-			Rect2(36, 98 + i * 48, 320, 35),
+			Rect2(36, 90 + row * 42, 350, 34),
 			18,
 			INK if i <= state.narrative.stage else MUTED,
 			false,
 			modal_panel
 		)
-	var current = stories.quest(state)
-	_label(current.title, Rect2(410, 98, 465, 44), 28, INK, false, modal_panel)
-	_label(current.where, Rect2(410, 150, 460, 36), 17, GOLD, false, modal_panel)
-	_label(current.hint, Rect2(410, 203, 460, 124), 21, INK, true, modal_panel)
-	var row = 0
-	for id in current.needs:
-		icon(catalog.items[id].icon, Rect2(410, 350 + row * 57, 42, 42), modal_panel)
+		row += 1
+	_label(current.title, Rect2(430, 90, 500, 44), 28, INK, false, modal_panel)
+	_label(current.where, Rect2(430, 140, 500, 32), 17, GOLD, false, modal_panel)
+	_label(current.hint, Rect2(430, 180, 500, 110), 20, INK, true, modal_panel)
+	var y = 300
+	if state.day < int(current.available_day):
 		_label(
-			"%s   %d / %d" % [catalog.items[id].name, state.inventory[id], current.needs[id]],
-			Rect2(470, 350 + row * 57, 380, 42),
-			21,
+			"%s起可以进行" % catalog.calendar.label(int(current.available_day)),
+			Rect2(430, y, 500, 30),
+			17,
+			MUTED,
+			false,
+			modal_panel
+		)
+		y += 36
+	for id in current.friendship:
+		_label(
+			(
+				"%s 好感 %d / %d"
+				% [catalog.story.npcs[id].name, state.relationships[id], current.friendship[id]]
+			),
+			Rect2(430, y, 500, 32),
+			19,
 			INK,
 			false,
 			modal_panel
 		)
-		row += 1
+		y += 38
+	for id in current.needs:
+		icon(catalog.items[id].icon, Rect2(430, y, 38, 38), modal_panel)
+		_label(
+			"%s   %d / %d" % [catalog.items[id].name, state.inventory[id], current.needs[id]],
+			Rect2(480, y, 440, 38),
+			20,
+			INK,
+			false,
+			modal_panel
+		)
+		y += 44
+	_label("灯", Rect2(430, 520, 40, 30), 18, MUTED, false, modal_panel)
+	for i in range(6):
+		var lit = stories.lamp_lit(state, i + 1)
+		_panel(
+			Rect2(466 + i * 34, 524, 22, 22),
+			Color("f6d890") if lit else Color("5a4a3a"),
+			modal_panel
+		)
 	_button(
-		"合上手记", Rect2(590, 540, 280, 48), func(): action_requested.emit("close", {}), modal_panel
+		"合上手记", Rect2(640, 580, 280, 48), func(): action_requested.emit("close", {}), modal_panel
 	)
 
 
@@ -262,12 +311,15 @@ func show_map(places: Array) -> void:
 
 func show_npc(id: String, line: String, event: String, activity: String) -> void:
 	var npc = catalog.story.npcs[id]
-	open_modal("npc", "", "", Rect2(110, 420, 1060, 350))
+	open_modal("npc", "", "", Rect2(110, 360, 1060, 410))
 	_frame(Rect2(24, 30, 142, 172), "inset", modal_panel)
 	icon(npc.portrait, Rect2(35, 40, 120, 146), modal_panel)
 	_label(npc.name, Rect2(192, 20, 300, 42), 27, INK, false, modal_panel)
+	var bond = {"dating": " · 恋人", "engaged": " · 未婚夫妻", "married": " · 伴侣"}.get(
+		stories.stage_of(state, id), ""
+	)
 	_label(
-		"%s · %d 岁 · %s" % [npc.role, npc.age, activity],
+		"%s · %d 岁 · %s%s" % [npc.role, npc.age, activity, bond],
 		Rect2(192, 58, 640, 26),
 		15,
 		MUTED,
@@ -283,21 +335,38 @@ func show_npc(id: String, line: String, event: String, activity: String) -> void
 	_label(line, Rect2(192, 90, 824, 100), 22, INK, true, modal_panel)
 	var choices = []
 	if not event.is_empty():
-		choices.append(["聊聊「%s」" % stories.quest(state).title, "story", {"event": event}])
+		choices.append(
+			["聊聊「%s」" % stories.quest(state).title, "story", {"event": event, "enabled": true}]
+		)
 	if not state.daily.gifted.has(id):
 		choices.append(["送一份礼物", "gift_menu", {"npc": id}])
 	var pending = stories.available_event(state, id)
 	if not pending.is_empty():
 		choices.append(["听听%s的故事" % npc.name, "heart_event", {"npc": id, "event": pending.id}])
+	var stage = stories.stage_of(state, id)
+	var blocker = ""
+	if stories.romanceable(id) and int(state.narrative.stage) >= StoryRules.FIRST_ROMANCE_STAGE:
+		if stage == "":
+			blocker = stories.confess_blocker(state, id)
+			if stories.partner(state) == "":
+				choices.append(["递上心意灯", "confess", {"npc": id, "blocker": blocker}])
+		elif stage == "dating":
+			blocker = stories.propose_blocker(state, id)
+			choices.append(["拿出同心环，求婚", "propose", {"npc": id, "blocker": blocker}])
 	choices.append(["下次见", "close", {}])
 	for i in range(choices.size()):
 		var choice = choices[i]
-		_button(
+		var button = _button(
 			choice[0],
 			Rect2(192 + i % 2 * 420, 214 + int(i / 2) * 55, 404, 45),
 			func(): action_requested.emit(choice[1], choice[2]),
 			modal_panel
 		)
+		if choice[1] in ["confess", "propose"] and not str(choice[2].blocker).is_empty():
+			button.disabled = true
+			button.tooltip_text = choice[2].blocker
+	if not blocker.is_empty() and stage in ["", "dating"]:
+		_label(blocker, Rect2(192, 360, 824, 30), 15, MUTED, false, modal_panel)
 
 
 func show_gifts(id: String, page: int = 0) -> void:
@@ -333,61 +402,30 @@ func show_gifts(id: String, page: int = 0) -> void:
 	modal_button("暂时不送", 610, "close")
 
 
-func show_dialogue(pages: Array, index: int, event: String) -> void:
-	var page = pages[index]
-	var who: String = page[0]
-	var text: String = page[1].replace("{name}", state.profile.name).replace(
-		"{farm}", state.profile.farm
-	)
-	open_modal("dialogue", "", "", Rect2(110, 552, 1060, 224))
-	_frame(Rect2(24, 27, 128, 168), "inset", modal_panel)
-	var speaker = "祖母的信" if who == "letter" else "灯夜"
-	if catalog.story.npcs.has(who):
-		var npc = catalog.story.npcs[who]
-		speaker = npc.name
-		icon(npc.portrait, Rect2(32, 37, 112, 145), modal_panel)
-	else:
-		ui_icon("letter" if who == "letter" else "book", Rect2(49, 70, 78, 78), modal_panel)
-	_frame(Rect2(16, -28, 172, 46), "wood", modal_panel)
-	var nameplate = _label(speaker, Rect2(28, -23, 148, 36), 21, LIGHT, false, modal_panel)
-	nameplate.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_label(text, Rect2(180, 25, 840, 133), 22, INK, true, modal_panel)
-	_label(
-		"%d / %d" % [index + 1, pages.size()],
-		Rect2(180, 174, 200, 26),
-		15,
-		MUTED,
-		false,
-		modal_panel
-	)
-	if index < pages.size() - 1:
-		_button(
-			"继续",
-			Rect2(840, 166, 180, 40),
-			func(): action_requested.emit("dialogue_next", {}),
-			modal_panel
-		)
-	elif event in ["prologue", "festival"]:
-		var choices = (
-			[["我想好好照料这片土地", "grow"], ["我想在这里重新开始", "restart"]]
-			if event == "prologue"
-			else [["愿我找到想留下的地方", "stay"], ["愿我有勇气出发，也有路回来", "explore"], ["愿我们以后常常见面", "together"]]
-		)
-		for i in range(choices.size()):
-			var choice = choices[i]
-			_button(
-				choice[0],
-				Rect2(630, 514 - (choices.size() - i) * 57, 530, 48),
-				func(): action_requested.emit("dialogue_finish", {"choice": choice[1]}),
-				modal_extra
-			)
-	else:
-		_button(
-			"记住这一刻",
-			Rect2(810, 166, 210, 40),
-			func(): action_requested.emit("dialogue_finish", {}),
-			modal_panel
-		)
+## Plays (or continues) a story scene as a cutscene. `pages` are the page list the player sees,
+## `scene` the scene id whose backdrop notes apply, `event` what the closing buttons answer to.
+func show_dialogue(pages: Array, index: int, scene: String, choices: Array, event: String) -> void:
+	if (
+		is_instance_valid(cutscene)
+		and cutscene.scene_id == scene
+		and modal_kind == "dialogue"
+		and visible
+	):
+		cutscene.show_page(index)
+		return
+	open_modal("dialogue", "", "", Rect2(0, 0, 1280, 800))
+	modal_panel.hide()
+	shade.color = Color(0, 0, 0, 0)
+	cutscene = CutsceneView.new()
+	modal_extra.add_child(cutscene)
+	cutscene.action_requested.connect(func(action, payload): action_requested.emit(action, payload))
+	cutscene.sound.connect(func(name): cutscene_sound.emit(name))
+	cutscene.play(catalog, state, pages, index, scene, choices, event)
+
+
+## True when the key press only finished typing a line or skipped a chapter card.
+func cutscene_skip() -> bool:
+	return is_instance_valid(cutscene) and modal_kind == "dialogue" and cutscene.skip()
 
 
 func show_ending() -> void:
@@ -396,7 +434,7 @@ func show_ending() -> void:
 		"explore": "你愿意出发，也相信这里永远有一条回家的路。",
 		"together": "你希望下一次相聚，不必等到一年后的灯夜。"
 	}
-	open_modal("ending", "灯亮之后", wishes[state.narrative.wish])
+	open_modal("ending", "灯亮之后", wishes[str(state.narrative.flags.get("wish", "stay"))])
 	ui_icon("letter", Rect2(278, 190, 104, 104), modal_panel)
 	_label("湖面重新亮起纸灯。\n桥、朋友和一顿热饭，\n都成了你生活的一部分。", Rect2(90, 318, 480, 118), 23, INK, true, modal_panel).horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	modal_button("继续我的农场生活", 510, "close")

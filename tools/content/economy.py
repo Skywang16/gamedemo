@@ -20,7 +20,14 @@ SHOPS = {
         "close": 17,
         "closed_weekdays": [6],
         "seeds": "season",
-        "goods": {"hay": 8, "bait": 4, "bandage": 15},
+        "goods": {
+            "hay": 8,
+            "bait": 4,
+            "bandage": 15,
+            "rope": 40,
+            "cloth": 80,
+            "heart_lantern": 300,
+        },
         "buys": ["produce", "forage", "dish"],
     },
     "smith": {
@@ -28,10 +35,10 @@ SHOPS = {
         "open": 9,
         "close": 17,
         "closed_weekdays": [6],
-        "goods": {"coal": 40},
+        "goods": {"coal": 40, "union_ring": 3000},
         "smelt": True,
         "upgrade": True,
-        "buys": ["mineral"],
+        "buys": ["mineral", "drop"],
     },
     "clinic": {
         "name": "芦苇渡诊所",
@@ -99,6 +106,7 @@ SMELTING = {
     "iron_ore": "iron_bar",
     "silver_ore": "silver_bar",
     "gold_ore": "gold_bar",
+    "sand": "glass",
 }
 
 ANIMALS = {
@@ -197,6 +205,7 @@ ANIMALS = {
 BUILDINGS = {
     "coop": {
         "name": "鸡舍",
+        "kind": "animal",
         "price": 600,
         "materials": {"wood": 20, "stone": 10},
         "days": 2,
@@ -205,11 +214,100 @@ BUILDINGS = {
     },
     "barn": {
         "name": "谷仓",
+        "kind": "animal",
         "price": 1200,
         "materials": {"wood": 40, "stone": 20},
         "days": 3,
         "capacity": 6,
         "hint": "最多养 6 头牲畜。",
+    },
+    "greenhouse": {
+        "name": "温室",
+        "kind": "story",
+        "hint": "暖灯点亮时落成。有了它，作物不再受季节限制。",
+    },
+}
+
+# Mine monsters. `speed` is pixels per second, `aggro` the sight range in pixels, `drops` are
+# [item, percent, min, max]. A boss is spawned once per day until its story quest is done.
+ENEMIES = {
+    "slime": {
+        "name": "史莱姆",
+        "hp": 24,
+        "damage": 6,
+        "speed": 34,
+        "aggro": 130,
+        "xp": 3,
+        "size": 1,
+        "boss": False,
+        "drops": [["slime_goo", 70, 1, 2]],
+    },
+    "bat": {
+        "name": "洞蝠",
+        "hp": 16,
+        "damage": 5,
+        "speed": 70,
+        "aggro": 190,
+        "xp": 4,
+        "size": 1,
+        "boss": False,
+        "drops": [["bat_wing", 50, 1, 1]],
+    },
+    "golem": {
+        "name": "石偶",
+        "hp": 52,
+        "damage": 10,
+        "speed": 28,
+        "aggro": 120,
+        "xp": 8,
+        "size": 1,
+        "boss": False,
+        "drops": [["stone_heart", 35, 1, 1], ["coal", 60, 1, 3]],
+    },
+    "statue": {
+        "name": "守渠石像",
+        "hp": 260,
+        "damage": 14,
+        "speed": 34,
+        "aggro": 220,
+        "xp": 60,
+        "size": 2,
+        "boss": True,
+        "drops": [["statue_core", 100, 1, 1], ["gold_ore", 100, 3, 5]],
+    },
+}
+# How many of each monster a mine floor holds each day.
+SPAWNS = {
+    "mine_1": {"slime": 7},
+    "mine_2": {"slime": 4, "bat": 5},
+    "mine_3": {"golem": 5, "bat": 3, "statue": 1},
+}
+# The sword: damage and stamina cost per swing by upgrade level, and the hero's hit points.
+WEAPON = {"damage": [8, 13, 18, 23, 28], "cost": [2, 2, 2, 1, 1], "hp": 40, "knockback": 36}
+
+# What a spouse does for the household each morning.
+SPOUSES = {
+    "hazel": {"water": True, "text": "黑兹尔天不亮就把田里的苗都浇过了。"},
+    "silas": {"items": {"wood": 4}, "text": "赛拉斯在院里劈好了一垛柴。"},
+    "margot": {"items": {"berry_oatmeal": 1}, "text": "玛戈在灶上给你留了热腾腾的早饭。"},
+    "wren": {
+        "items": {"feather": 1},
+        "text": "雷恩在窗台上放了一根拾来的羽毛，旁边是今天的水位记录。",
+    },
+    "juniper": {"items": {"medicine": 1}, "text": "朱妮配好了一小瓶药，说是以防万一。"},
+    "leo": {"gold": 80, "text": "利奥把昨天摆摊的零头压在了茶杯下面。"},
+    "felix": {"gold": 90, "text": "费利克斯又修好了邻居托他的几只表，收入放在桌上。"},
+    "colette": {"items": {"primrose": 2}, "text": "科莱特从后院摘了几枝报春花插进水杯。"},
+    "jonas": {"items": {"chestnut": 3}, "text": "约纳斯清早巡林回来，口袋里揣着几颗栗子。"},
+    "nora": {"items": {"honey_tea": 1}, "text": "诺拉烧好了一壶蜂蜜茶，还温着。"},
+    "theo": {
+        "items": {"lamp_note": 1},
+        "gold": 50,
+        "text": "西奥替你整理了图志，还夹进来一页旧灯信。",
+    },
+    "declan": {
+        "items": {"coal": 3, "copper_ore": 2},
+        "text": "德克兰一早下过矿，带回了煤和一点铜矿。",
     },
 }
 

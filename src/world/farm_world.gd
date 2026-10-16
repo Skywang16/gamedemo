@@ -1,7 +1,12 @@
 class_name FarmWorld
 extends Node2D
 
+signal player_hit(damage: int, push: Vector2)
+signal enemy_defeated(kind: String, at: Vector2)
+
 var catalog: ContentCatalog
+var stories: StoryRules
+var enemies: Array = []
 var state: FarmState
 var player: Farmer
 var actors: Node2D
@@ -38,6 +43,7 @@ var debris_nodes: Dictionary = {}
 
 func configure(content: ContentCatalog, initial_state: FarmState, day_planner: NpcPlanner) -> void:
 	catalog = content
+	stories = StoryRules.new(content)
 	state = initial_state
 	planner = day_planner
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -269,6 +275,9 @@ func strike_tree(id: String, hits: int) -> void:
 func _process(delta: float) -> void:
 	ambient_time += delta
 	_update_villagers()
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			enemy.step(delta, player.position, self)
 	for id in debris_nodes:
 		var anchor: Node2D = debris_nodes[id]
 		if anchor.position.distance_squared_to(player.position) < 500000:
@@ -321,7 +330,7 @@ func available_stations() -> Array:
 			)
 	if state.current_map == "home_farm":
 		for id in region.building_sites:
-			if _built(id):
+			if _built(id) and catalog.buildings[id].kind == "animal":
 				var door = region.building_sites[id].door
 				stations.append(
 					{"id": id, "name": catalog.buildings[id].name, "kind": "animals", "cell": door}
@@ -356,7 +365,7 @@ func _place_building_sites() -> void:
 		var door = Vector2(site.door[0] * 32 + 16, site.door[1] * 32 + 16)
 		if _built(id):
 			add_prop(site.texture, door, Vector2(site.offset[0], site.offset[1]))
-		else:
+		elif catalog.buildings[id].kind == "animal":
 			var rect = site.rect
 			var ground = Vector2((rect[0] + rect[2] / 2.0) * 32, (rect[1] + rect[3]) * 32 - 4)
 			add_prop("lot_sign", ground, Vector2(-32, -56))
@@ -388,13 +397,15 @@ func _draw_landmarks() -> void:
 			draw_texture(gather_texture(node), Vector2(node.cell[0] * 32, node.cell[1] * 32))
 	for station in region.stations:
 		var at = Vector2(station.cell[0] * 32 + 16, station.cell[1] * 32 + 16)
-		if station.kind in ["exit", "bridge"]:
+		if station.kind in ["exit", "bridge", "ferry"]:
 			draw_circle(at, 12, Color("ead49660"))
 			draw_line(at + Vector2(-5, -3), at + Vector2(0, 3), Color("fff0bc"), 2)
 			draw_line(at + Vector2(0, 3), at + Vector2(5, -3), Color("fff0bc"), 2)
 			var label = station.name
 			if station.kind == "bridge":
-				label = "前往湖畔 →" if state.narrative.stage >= 3 else "修复旧桥"
+				label = "前往湖畔 →" if stories.bridge_open(state) else "修复旧桥"
+			if station.kind == "ferry":
+				label = "乘船去对岸 →" if stories.ferry_open(state) else "搁浅的渡船"
 			if player.position.distance_to(at) > 72:
 				map_label(label, at + Vector2(0, 29), 14)
 	for id in npc_nodes:
@@ -402,25 +413,100 @@ func _draw_landmarks() -> void:
 			map_label(catalog.story.npcs[id].name, npc_nodes[id].position + Vector2(0, -48), 15)
 	if state.current_map == "home_farm":
 		for id in region.building_sites:
-			if state.buildings.has(id) and not _built(id):
+			if (
+				state.buildings.has(id)
+				and not _built(id)
+				and catalog.buildings[id].kind == "animal"
+			):
 				var rect = region.building_sites[id].rect
 				var at = Vector2((rect[0] + rect[2] / 2.0) * 32, rect[1] * 32 - 12)
 				var days = int(state.buildings[id].ready_day) - state.day
 				map_label("%s施工中 · %d 天后完工" % [catalog.buildings[id].name, days], at, 15)
-	if state.current_map == "town" and state.narrative.stage >= 3:
+	if state.current_map == "town" and stories.bridge_open(state):
 		var bridge = region.bridge_rect
 		for y in range(int(bridge[1]) * 32, int(bridge[1] + bridge[3]) * 32, 12):
 			draw_rect(Rect2(int(bridge[0]) * 32, y, int(bridge[2]) * 32, 10), Color("b98d57"))
-	if state.current_map == "lake" and state.narrative.stage == 6:
-		for i in range(18):
-			var area = region.lantern_area
-			var at = (
-				Vector2(area[0] + (i * 137) % int(area[2]), area[1] + (i * 79) % int(area[3]))
-				+ Vector2(sin(ambient_time * .4 + i) * 6, sin(ambient_time + i) * 2)
-			)
-			draw_circle(at, 12, Color("f6d89825"))
-			draw_rect(Rect2(at - Vector2(4, 3), Vector2(8, 6)), Color("f1d28b"))
-			draw_line(at + Vector2(0, 6), at + Vector2(0, 14), Color("c6b681"), 2)
+	if state.current_map == "lake":
+		_draw_lake_lights()
+	if state.current_map == "far_shore" and int(state.narrative.stage) >= 1:
+		_draw_shrine_glow()
+
+
+## Six lamps on the lantern stand, lit one by one as the story restores them, and paper lanterns
+## drifting on the water once the first lantern night has happened.
+func _draw_lake_lights() -> void:
+	var stand = Vector2(37 * 32 + 16, 29 * 32 + 16)
+	for i in range(6):
+		var at = stand + Vector2(-36 + i * 14.4, -74)
+		var lit = stories.lamp_lit(state, _lamp_number(i))
+		draw_rect(
+			Rect2(at - Vector2(4, 5), Vector2(8, 10)), Color("f6d890") if lit else Color("5a4a3a")
+		)
+		draw_rect(Rect2(at - Vector2(5, 7), Vector2(10, 3)), Color("3e2a1a"))
+		if lit:
+			var pulse = 0.6 + 0.2 * sin(ambient_time * 2.4 + i)
+			draw_circle(at, 13.0, Color(0.96, 0.85, 0.55, 0.16 * pulse))
+			draw_circle(at, 7.0, Color(1.0, 0.92, 0.65, 0.22 * pulse))
+	if int(state.narrative.stage) < 6:
+		return
+	var count = 8 + stories.lamps(state) * 4
+	for i in range(count):
+		var area = region.lantern_area
+		var at = (
+			Vector2(area[0] + (i * 137) % int(area[2]), area[1] + (i * 79) % int(area[3]))
+			+ Vector2(sin(ambient_time * .4 + i) * 6, sin(ambient_time + i) * 2)
+		)
+		draw_circle(at, 12, Color("f6d89825"))
+		draw_rect(Rect2(at - Vector2(4, 3), Vector2(8, 6)), Color("f1d28b"))
+		draw_line(at + Vector2(0, 6), at + Vector2(0, 14), Color("c6b681"), 2)
+
+
+func _lamp_number(slot: int) -> int:
+	return slot + 1
+
+
+func _draw_shrine_glow() -> void:
+	var at = Vector2(29 * 32 + 16, 14 * 32 - 24)
+	var lit = stories.lamp_lit(state, 4)
+	if lit:
+		var pulse = 0.5 + 0.3 * sin(ambient_time * 2.0)
+		draw_circle(at, 16.0, Color(0.96, 0.85, 0.55, 0.18 * pulse))
+		draw_rect(Rect2(at - Vector2(3, 4), Vector2(6, 8)), Color("f6d890"))
+
+
+# ---------------------------------------------------------------------------- monsters
+
+
+## Puts the day's monsters on the floor: [{kind, cell}] from CombatRules.spawn_plan.
+func add_enemies(plan: Array) -> void:
+	for entry in plan:
+		var spec = catalog.enemies[entry.kind]
+		var enemy = MineEnemy.new()
+		actors.add_child(enemy)
+		enemy.configure(
+			entry.kind, spec, tex("enemy_" + entry.kind), Vector2(entry.cell) * 32 + Vector2(16, 16)
+		)
+		enemy.touched.connect(func(damage, direction): player_hit.emit(damage, direction))
+		enemy.defeated.connect(
+			func(kind, at):
+				enemies.erase(enemy)
+				enemy_defeated.emit(kind, at)
+		)
+		enemies.append(enemy)
+
+
+## A sword stroke: hurts every monster within `reach` of `center`. Returns how many were hit.
+func strike_enemies(center: Vector2, reach: float, amount: int, knock: float) -> int:
+	var hits = 0
+	for enemy in enemies.duplicate():
+		if not is_instance_valid(enemy):
+			continue
+		var margin = reach + 8.0 * int(enemy.spec.size)
+		if enemy.position.distance_to(center) <= margin:
+			hits += 1
+			effects.burst("pickaxe", enemy.position + Vector2(0, -12), 10)
+			enemy.hurt(amount, player.position, knock)
+	return hits
 
 
 func map_label(text: String, center: Vector2, size_px: int) -> void:

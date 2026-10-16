@@ -223,7 +223,7 @@ func test_smithing() -> void:
 	check(shops.tool_upgrade_cost(s, "hoe").is_empty(), "no tier beyond gold")
 	check(not shops.upgrade_tool(s, "hoe").ok, "a maxed tool cannot be upgraded")
 	for tool in FarmState.TOOLS:
-		check(["hoe", "axe", "pickaxe", "scythe", "water"].has(tool), "tool list: " + tool)
+		check(["hoe", "axe", "pickaxe", "scythe", "water", "sword"].has(tool), "tool list: " + tool)
 	var watering = at(2, 10 * 60)
 	watering.development.tools.water = 2
 	var center = Vector2i(-1, -1)

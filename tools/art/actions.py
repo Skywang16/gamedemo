@@ -6,7 +6,7 @@ from PIL import Image, ImageDraw, ImageOps
 from .characters import actor, SKINS, SHIRTS
 from .crops import watering_can
 
-ACTIONS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe"]
+ACTIONS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe", "sword"]
 
 
 def limb(draw, shoulder, hand, skin, shirt):
@@ -34,6 +34,13 @@ def implement(draw, grip, angle, kind):
     def at(distance, side=0):
         return tuple(round(grip[i] + direction[i] * distance + across[i] * side) for i in range(2))
 
+    if kind == "sword":
+        draw.line([at(-6), at(7)], fill="#6a4a2a", width=3)
+        draw.line([at(6, -6), at(6, 6)], fill="#a8802a", width=3)
+        draw.polygon([at(8, -2), at(34, -1), at(38, 2), at(34, 5), at(8, 5)], fill="#c8d4dc")
+        draw.line([at(9, 1), at(35, 1)], fill="#ffffff", width=1)
+        draw.line([at(9, 4), at(34, 4)], fill="#8a98a4", width=1)
+        return
     draw.line([at(-5), at(25)], fill="#483a2b", width=5)
     draw.line([at(-4), at(24)], fill="#c09559", width=3)
     draw.line([at(-3, 1), at(22, 1)], fill="#ebc788", width=1)

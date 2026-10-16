@@ -24,7 +24,7 @@ func _init(content: ContentCatalog, damage: Dictionary) -> void:
 
 
 ## Plans every villager for the day described by `ctx`:
-## {day, date, weather, stage, birthdays (Array of ids), festival (bool)}.
+## {day, date, weather, stage, birthdays (Array of ids), festival (bool), spouse (id or "")}.
 func plan_day(ctx: Dictionary) -> void:
 	context = ctx
 	timelines.clear()
@@ -74,6 +74,9 @@ func rule_matches(when: Dictionary, npc_id: String) -> bool:
 					return false
 			"stage_max":
 				if int(context.stage) > int(wanted):
+					return false
+			"spouse":
+				if (npc_id == context.spouse) != bool(wanted):
 					return false
 	return true
 

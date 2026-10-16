@@ -235,20 +235,23 @@ func _build_smelt(y: float) -> void:
 
 
 func _build_upgrade(y: float) -> void:
-	_label("每升一级，这件工具的体力消耗就少 1。", Rect2(36, y, 800, 30), 17, MUTED)
-	var names = {"hoe": "锄头", "axe": "斧头", "pickaxe": "镐", "scythe": "镰刀", "water": "水壶"}
+	_label("每升一级，这件工具的体力消耗就少 1；长剑每升一级伤害更高。", Rect2(36, y, 800, 30), 17, MUTED)
+	var names = {
+		"hoe": "锄头", "axe": "斧头", "pickaxe": "镐", "scythe": "镰刀", "water": "水壶", "sword": "长剑"
+	}
 	var icons = {
 		"hoe": "hoe",
 		"axe": "axe",
 		"pickaxe": "pickaxe",
 		"scythe": "scythe",
-		"water": "watering_can"
+		"water": "watering_can",
+		"sword": "sword"
 	}
 	var i = 0
 	for tool in FarmState.TOOLS:
-		var row_y = y + 40.0 + float(i) * ROW_HEIGHT
-		_frame(Rect2(30, row_y, panel_size.x - 60, ROW_HEIGHT - 8), "inset")
-		icon(icons[tool], Rect2(46, row_y + 10, 56, 56), self)
+		var row_y = y + 36.0 + float(i) * 72.0
+		_frame(Rect2(30, row_y, panel_size.x - 60, 64), "inset")
+		icon(icons[tool], Rect2(46, row_y + 4, 56, 56), self)
 		var level = int(state.development.tools[tool])
 		var tier = rules.tool_upgrade_cost(state, tool)
 		_label(
@@ -256,7 +259,7 @@ func _build_upgrade(y: float) -> void:
 				"%s · %s"
 				% [names[tool], "初始" if level == 0 else catalog.tool_tiers[level - 1].name + "级"]
 			),
-			Rect2(118, row_y + 6, 420, 32),
+			Rect2(118, row_y + 2, 420, 32),
 			21
 		)
 		var need = (
@@ -267,10 +270,10 @@ func _build_upgrade(y: float) -> void:
 				% [catalog.items[tier.bar].name, tier.gold, state.inventory[tier.bar]]
 			)
 		)
-		_label(need, Rect2(118, row_y + 38, 560, 30), 15, MUTED)
+		_label(need, Rect2(118, row_y + 34, 560, 28), 15, MUTED)
 		var button = _button(
 			"升级",
-			Rect2(panel_size.x - 200, row_y + 18, 130, 44),
+			Rect2(panel_size.x - 200, row_y + 10, 130, 44),
 			func(): _act("upgrade_tool", {"tool": tool})
 		)
 		button.disabled = (
@@ -334,7 +337,7 @@ func _build_animals(y: float) -> void:
 
 
 func _build_build(y: float) -> void:
-	var ids = catalog.buildings.keys()
+	var ids = catalog.buildings.keys().filter(func(b): return catalog.buildings[b].kind == "animal")
 	for i in ids.size():
 		var id: String = ids[i]
 		var spec = catalog.buildings[id]

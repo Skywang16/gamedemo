@@ -1,7 +1,7 @@
 class_name ToolMotion
 extends RefCounted
 
-const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe"]
+const TOOLS = ["hoe", "seed", "water", "harvest", "scythe", "axe", "pickaxe", "sword"]
 const DURATIONS = {
 	"hoe": 0.54,
 	"seed": 0.44,
@@ -9,7 +9,8 @@ const DURATIONS = {
 	"harvest": 0.44,
 	"scythe": 0.42,
 	"axe": 0.6,
-	"pickaxe": 0.6
+	"pickaxe": 0.6,
+	"sword": 0.42
 }
 const CONTACT = 0.5
 const MAX_DURATION = 0.8

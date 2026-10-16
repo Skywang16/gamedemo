@@ -23,6 +23,7 @@ const REQUIRED = [
 	"festival_done",
 	"stats",
 	"board",
+	"romance",
 ]
 var catalog: ContentCatalog
 var gather_ids: Dictionary = {}
@@ -35,7 +36,7 @@ func _init(content: ContentCatalog) -> void:
 		for node in catalog.regions[map_id].get("gather", []):
 			gather_ids[node.id] = true
 	for npc_id in catalog.story.npcs:
-		for event in catalog.story.npcs[npc_id].events:
+		for event in catalog.story.npcs[npc_id].events + catalog.story.npcs[npc_id].married_events:
 			event_ids[event.id] = true
 
 
@@ -208,9 +209,9 @@ func validate_farm_life(data: Dictionary) -> String:
 	for entry in data.festival_done:
 		if not entry is String or entry.split(":").size() != 2:
 			return "节日记录无效"
-	if not data.stats is Dictionary or data.stats.size() != 4:
+	if not data.stats is Dictionary or data.stats.size() != 5:
 		return "统计无效"
-	for key in ["earned", "harvested", "caught", "cooked"]:
+	for key in ["earned", "harvested", "caught", "cooked", "defeated"]:
 		if not data.stats.has(key) or not whole(data.stats[key], 0, 1000000000):
 			return "统计无效"
 	var board = data.board
@@ -251,25 +252,39 @@ func validate_character(data: Dictionary) -> String:
 	):
 		return "人物外观无效"
 	var n = data.narrative
-	if not n.has_all(["stage", "intro_seen", "intent", "wish", "active_scene", "page"]):
+	if not n.has_all(["stage", "intro_seen", "intent", "flags", "active_scene", "page"]):
 		return "剧情状态不完整"
 	if (
-		not whole(n.stage, 0, 6)
+		not whole(n.stage, 0, catalog.story.quests.size() - 1)
 		or not n.intro_seen is bool
 		or n.intent not in ["", "grow", "restart"]
-		or n.wish not in ["", "stay", "explore", "together"]
+		or not n.flags is Dictionary
 	):
 		return "剧情状态无效"
+	for flag in n.flags:
+		if (
+			not catalog.story.flags.has(flag)
+			or not n.flags[flag] is String
+			or n.flags[flag] not in catalog.story.flags[flag]
+		):
+			return "剧情标记无效"
+	for index in int(n.stage):
+		var quest = catalog.story.quests[index]
+		if quest.flag != "" and not n.flags.has(quest.flag):
+			return "缺少剧情选择：" + str(quest.flag)
 	if (
 		not n.active_scene is String
 		or (n.active_scene != "" and not catalog.story.scenes.has(n.active_scene))
-		or not whole(n.page, 0, 20)
+		or not whole(n.page, 0, 40)
 	):
 		return "对话记录无效"
-	if n.stage == 6 and n.wish == "":
-		return "缺少结局选择"
-	if data.map_id == "lake" and n.stage < 3:
+	if data.map_id == "lake" and int(n.stage) <= catalog.lamp_quest_index(1):
 		return "湖畔尚未解锁"
+	if data.map_id == "far_shore" and int(n.stage) <= catalog.lamp_quest_index(4):
+		return "对岸尚未开放"
+	var error = validate_romance(data)
+	if not error.is_empty():
+		return error
 	for id in catalog.story.npcs:
 		if not data.relationships.has(id) or not whole(data.relationships[id], 0, 100):
 			return "人物关系无效"
@@ -288,6 +303,26 @@ func validate_character(data: Dictionary) -> String:
 			if field == "gathered" and not gather_ids.has(id):
 				return "未知采集点"
 	return validate_development(data)
+
+
+## At most one partner; romance needs the first chapter done and a heart event in the log.
+func validate_romance(data: Dictionary) -> String:
+	if not data.romance is Dictionary or data.romance.size() > 1:
+		return "恋爱记录无效"
+	for id in data.romance:
+		var entry = data.romance[id]
+		if (
+			not catalog.story.npcs.has(id)
+			or not catalog.story.npcs[id].romance
+			or not entry is Dictionary
+			or not entry.has_all(["stage", "day"])
+			or entry.stage not in ["dating", "engaged", "married"]
+			or not whole(entry.day, 1, 999999)
+			or int(entry.day) > int(data.day)
+			or int(data.narrative.stage) < 6
+		):
+			return "恋爱记录无效"
+	return ""
 
 
 func validate_development(data: Dictionary) -> String:

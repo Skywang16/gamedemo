@@ -39,6 +39,7 @@ const DEFAULT_KEYS = {
 	"tool_6": [KEY_6],
 	"tool_7": [KEY_7],
 	"tool_8": [KEY_8],
+	"tool_9": [KEY_9],
 	"sprint": [KEY_SHIFT],
 	"journal": [KEY_J],
 	"map": [KEY_M],
@@ -57,7 +58,7 @@ const REBINDABLE = [
 	"map",
 	"bag",
 ]
-const RESERVED_KEYS = [KEY_ESCAPE, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8]
+const RESERVED_KEYS = [KEY_ESCAPE, KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_7, KEY_8, KEY_9]
 const ACTION_NAMES = {
 	"move_up": "向上走",
 	"move_down": "向下走",

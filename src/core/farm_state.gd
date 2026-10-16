@@ -1,14 +1,14 @@
 class_name FarmState
 extends RefCounted
 
-const SCHEMA_VERSION = 6
+const SCHEMA_VERSION = 7
 const MAX_STAMINA = 100
 ## The day runs from 06:00 to 02:00 the next morning (26:00).
 const MORNING = 6 * 60
 const NIGHT = 26 * 60
 const TICK_MINUTES = 10
 const GOALS = ["tilled", "planted", "watered", "slept", "harvested", "sold"]
-const TOOLS = ["hoe", "axe", "pickaxe", "scythe", "water"]
+const TOOLS = ["hoe", "axe", "pickaxe", "scythe", "water", "sword"]
 
 var day: int = 1
 var world_seed: int = 0
@@ -24,8 +24,10 @@ var profile: Dictionary = {
 	"name": "小芽", "farm": "芽田农场", "skin": 0, "hair": 0, "outfit": 0, "hat": 1
 }
 var narrative: Dictionary = {
-	"stage": 0, "intro_seen": false, "intent": "", "wish": "", "active_scene": "", "page": 0
+	"stage": 0, "intro_seen": false, "intent": "", "flags": {}, "active_scene": "", "page": 0
 }
+## Courtship by villager id: {stage: "dating" | "engaged" | "married", day: day it began}.
+var romance: Dictionary = {}
 var relationships: Dictionary = {}
 var daily: Dictionary = {"talked": [], "gifted": [], "gathered": []}
 var development: Dictionary = {}
@@ -66,7 +68,7 @@ static func fresh_development() -> Dictionary:
 
 
 static func fresh_stats() -> Dictionary:
-	return {"earned": 0, "harvested": 0, "caught": 0, "cooked": 0}
+	return {"earned": 0, "harvested": 0, "caught": 0, "cooked": 0, "defeated": 0}
 
 
 static func new_game(catalog: ContentCatalog, seed_value: int = 0) -> FarmState:
@@ -94,6 +96,7 @@ func snapshot(_catalog: ContentCatalog) -> Dictionary:
 		"map_id": current_map,
 		"profile": profile.duplicate(true),
 		"narrative": narrative.duplicate(true),
+		"romance": romance.duplicate(true),
 		"relationships": relationships.duplicate(true),
 		"daily": daily.duplicate(true),
 		"development": development.duplicate(true),
@@ -134,7 +137,8 @@ static func from_validated(data: Dictionary) -> FarmState:
 		"storage",
 		"buildings",
 		"board",
-		"stats"
+		"stats",
+		"romance"
 	]:
 		s.set(field, data[field].duplicate(true))
 	for key in ["skin", "hair", "outfit", "hat"]:
@@ -154,6 +158,8 @@ static func from_validated(data: Dictionary) -> FarmState:
 		s.storage[id] = int(s.storage[id])
 	for id in s.buildings:
 		s.buildings[id].ready_day = int(s.buildings[id].ready_day)
+	for id in s.romance:
+		s.romance[id].day = int(s.romance[id].day)
 	s.board.week = int(s.board.week)
 	s.board.done = s.board.done.map(func(i): return int(i))
 	s.animals = data.animals.duplicate(true)

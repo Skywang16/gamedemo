@@ -211,7 +211,7 @@ func test_save() -> void:
 	var s = FarmState.new_game(catalog, 987654)
 	s.day = 40
 	var snapshot = s.snapshot(catalog)
-	check(snapshot.schema_version == 6, "schema is 6")
+	check(snapshot.schema_version == 7, "schema is 7")
 	check(validator.validate(snapshot).is_empty(), "calendar state validates")
 	var restored = FarmState.from_validated(snapshot)
 	check(restored.world_seed == 987654 and restored.day == 40, "seed and day round-trip")
@@ -229,7 +229,7 @@ func test_save() -> void:
 	missing.erase("world_seed")
 	check(not validator.validate(missing).is_empty(), "missing seed rejected")
 	var old = s.snapshot(catalog)
-	old.schema_version = 5
+	old.schema_version = 6
 	check(not validator.validate(old).is_empty(), "other schema versions are not accepted")
 	var a = FarmState.new_game(catalog, 5)
 	var b = FarmState.new_game(catalog, 5)

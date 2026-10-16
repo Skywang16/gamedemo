@@ -398,6 +398,27 @@ func test_saves() -> void:
 	data.stamina = -1
 	check(not store.validate(data).is_empty(), "negative stamina rejected")
 	data = s.snapshot(catalog)
+	data.romance = {"hazel": {"stage": "dating", "day": 1}, "silas": {"stage": "dating", "day": 1}}
+	check(not store.validate(data).is_empty(), "one partner at a time")
+	data = s.snapshot(catalog)
+	data.romance = {"hazel": {"stage": "dating", "day": 1}}
+	check(not store.validate(data).is_empty(), "no courtship before the first chapter is done")
+	data = s.snapshot(catalog)
+	data.narrative.flags = {"ending": "nowhere"}
+	check(not store.validate(data).is_empty(), "story flags must name real answers")
+	var ferry_step = catalog.lamp_quest_index(4)
+	data = s.snapshot(catalog)
+	data.narrative.stage = ferry_step
+	data.narrative.flags = flags_for(ferry_step)
+	data.map_id = "far_shore"
+	data.player_position = [
+		catalog.region("far_shore").spawn[0], catalog.region("far_shore").spawn[1]
+	]
+	check(not store.validate(data).is_empty(), "the far shore needs the ferry")
+	data.narrative.stage = ferry_step + 1
+	data.narrative.flags = flags_for(ferry_step + 1)
+	check(store.validate(data).is_empty(), "and opens once the boat is mended")
+	data = s.snapshot(catalog)
 	data.inventory.turnip = "one"
 	check(not store.validate(data).is_empty(), "inventory type checked")
 	data = s.snapshot(catalog)
@@ -432,6 +453,17 @@ func test_saves() -> void:
 	for name in dir.get_files():
 		dir.remove(name)
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(folder))
+
+
+## The flags a player who has finished the first `stage` steps would have, answering the first
+## option each time.
+func flags_for(stage: int) -> Dictionary:
+	var out = {}
+	for i in stage:
+		var q = catalog.story.quests[i]
+		if q.flag != "":
+			out[q.flag] = q.choice[0].id
+	return out
 
 
 func test_reachability() -> void:

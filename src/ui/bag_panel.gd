@@ -13,6 +13,7 @@ const CATEGORIES = [
 	["fish", "鱼"],
 	["forage", "采集"],
 	["mineral", "矿物"],
+	["drop", "战利品"],
 	["dish", "料理"],
 	["material", "材料"],
 ]
