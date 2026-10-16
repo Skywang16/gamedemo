@@ -11,6 +11,7 @@ from art.ai_terrain import TEXTURES as AI_TERRAIN, output_name
 from art.ai_nature import names as nature_names
 from art.room_assets import names as room_names, install as install_rooms
 from art.room_backgrounds import background as room_background
+from art.farm_tiles import install as install_farm
 from art.ai_decor import names as decor_names
 from art.characters import build_characters, build_villagers
 from art.actions import build_actions
@@ -68,6 +69,10 @@ def main():
     index = json.loads((ROOT / "data/maps/index.json").read_text())
     for name in index["maps"]:
         region = json.loads((ROOT / "data/maps" / f"{name}.json").read_text())
+        if name == "home_farm":
+            install_farm()
+            print("Compiled authored farm TileMap atlas and overview", flush=True)
+            continue
         if region["environment"] == "interior":
             save(region["background"], room_background(region))
             continue

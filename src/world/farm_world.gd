@@ -29,9 +29,12 @@ var reduce_motion: bool = false:
 			ambient.calm = value
 		for id in tree_nodes:
 			tree_nodes[id].calm = value
+		if tile_map != null:
+			tile_map.set_calm(value)
 		if weather_layer != null:
 			refresh_atmosphere()
 var background: Texture2D
+var tile_map: AuthoredTileMap
 var region: Dictionary
 var npc_nodes: Dictionary = {}
 var map_font: Font
@@ -56,6 +59,10 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 	season_material = ShaderMaterial.new()
 	season_material.shader = load("res://assets/shaders/season.gdshader")
 	material = season_material
+	if region.has("tile_layers"):
+		tile_map = AuthoredTileMap.new()
+		add_child(tile_map)
+		tile_map.configure(region, tex(region.tile_atlas))
 	ambient = WorldAmbient.new()
 	add_child(ambient)
 	ambient.configure(region)
@@ -77,7 +84,8 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 		tree.use_parent_material = true
 		actors.add_child(tree)
 		tree.configure(
-			tex("tree_moving_%d" % ((cell.x + cell.y) % 4)), int(state.tree_damage.get(id, 0))
+			tex(region.get("tree_texture", "tree_moving_%d" % ((cell.x + cell.y) % 4))),
+			int(state.tree_damage.get(id, 0))
 		)
 		tree.landed.connect(
 			func(at):
@@ -223,7 +231,7 @@ func add_prop(id: String, ground: Vector2, offset: Vector2) -> Node2D:
 	sprite.centered = false
 	sprite.position = offset
 	anchor.add_child(sprite)
-	if id.begins_with("tree") or id.begins_with("weeds"):
+	if id.begins_with("tree") or id.begins_with("weeds") or id.begins_with("farm_scene_"):
 		anchor.use_parent_material = true
 		sprite.use_parent_material = true
 	actors.add_child(anchor)
@@ -317,7 +325,8 @@ func _process(delta: float) -> void:
 func _draw() -> void:
 	if background == null:
 		return
-	draw_texture(background, Vector2.ZERO)
+	if tile_map == null:
+		draw_texture(background, Vector2.ZERO)
 	_draw_landmarks()
 	for key in state.plots.keys() if state.current_map == "home_farm" else []:
 		var cell = FarmState.key_cell(key)

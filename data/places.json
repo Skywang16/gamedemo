@@ -1,54 +1,4 @@
 {
- "home_farm/hazel_house": [
-  30,
-  17,
-  false
- ],
- "home_farm/stall": [
-  52,
-  19,
-  false
- ],
- "home_farm/stall_side": [
-  55,
-  19,
-  false
- ],
- "home_farm/field_a": [
-  34,
-  22,
-  false
- ],
- "home_farm/field_b": [
-  44,
-  24,
-  false
- ],
- "home_farm/well": [
-  35,
-  17,
-  false
- ],
- "home_farm/shipping": [
-  46,
-  19,
-  false
- ],
- "home_farm/east_road": [
-  70,
-  17,
-  false
- ],
- "home_farm/south_road": [
-  40,
-  56,
-  false
- ],
- "home_farm/yard": [
-  41,
-  17,
-  false
- ],
  "town/fountain_n": [
   40,
   32,
@@ -142,6 +92,26 @@
  "town/garden_e": [
   67,
   48,
+  false
+ ],
+ "market/hazel_house": [
+  24,
+  53,
+  false
+ ],
+ "market/hazel_yard": [
+  24,
+  56,
+  false
+ ],
+ "market/seed_stall": [
+  9,
+  36,
+  false
+ ],
+ "market/seed_stall_side": [
+  12,
+  36,
   false
  ],
  "market/plaza_w": [
@@ -1047,6 +1017,41 @@
  "clinic_home/living": [
   5,
   16,
+  false
+ ],
+ "home_farm/field_a": [
+  23,
+  19,
+  false
+ ],
+ "home_farm/field_b": [
+  31,
+  20,
+  false
+ ],
+ "home_farm/well": [
+  22,
+  13,
+  false
+ ],
+ "home_farm/shipping": [
+  33,
+  15,
+  false
+ ],
+ "home_farm/east_road": [
+  47,
+  11,
+  false
+ ],
+ "home_farm/south_road": [
+  30,
+  37,
+  false
+ ],
+ "home_farm/yard": [
+  28,
+  12,
   false
  ]
 }

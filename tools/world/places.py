@@ -7,17 +7,6 @@ at the bottom; the map and schedule compilers validate collision clearance and r
 H = "hidden"
 
 PLACES = {
-    # ---------------------------------------------------------------- farm
-    "home_farm/hazel_house": (30, 17, H),
-    "home_farm/stall": (52, 19),
-    "home_farm/stall_side": (55, 19),
-    "home_farm/field_a": (34, 22),
-    "home_farm/field_b": (44, 24),
-    "home_farm/well": (35, 17),
-    "home_farm/shipping": (46, 19),
-    "home_farm/east_road": (70, 17),
-    "home_farm/south_road": (40, 56),
-    "home_farm/yard": (41, 17),
     # ---------------------------------------------------------------- town
     "town/fountain_n": (40, 32),
     "town/fountain_s": (40, 36),
@@ -39,6 +28,10 @@ PLACES = {
     "town/garden_w": (13, 48),
     "town/garden_e": (67, 48),
     # ---------------------------------------------------------------- market street
+    "market/hazel_house": (24, 53, H),
+    "market/hazel_yard": (24, 56),
+    "market/seed_stall": (9, 36),
+    "market/seed_stall_side": (12, 36),
     "market/plaza_w": (44, 31),
     "market/plaza_e": (52, 31),
     "market/plaza_n": (47, 27),
@@ -158,3 +151,7 @@ from world.interior_layouts import build_interiors  # noqa: E402
 _, _indoor_places = build_interiors()
 PLACES = {key: value[:2] for key, value in PLACES.items()}
 PLACES.update(_indoor_places)
+
+from world.tiled_farm import place_points  # noqa: E402
+
+PLACES.update(place_points())

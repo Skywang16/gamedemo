@@ -37,11 +37,11 @@ def birthday(home, morning, morning_text, noon, noon_text, evening, evening_text
 SCHEDULES = {}
 
 # ------------------------------------------------------------------------------ hazel
-HZ = FARM + "/hazel_house"
+HZ = "market/hazel_house"
 SCHEDULES["hazel"] = [
     birthday(
         HZ,
-        FARM + "/stall",
+        "market/seed_stall",
         "在摊位前收邻居们的小礼物",
         "town/fountain_n",
         "和朋友们聊天",
@@ -52,9 +52,9 @@ SCHEDULES["hazel"] = [
     rule(
         {"weather": WET},
         "06:30 %s | 起床" % HZ,
-        "08:00 %s/stall | 在雨棚下分装种子" % FARM,
-        "12:30 %s/stall_side | 午饭" % FARM,
-        "13:30 %s/stall | 继续分装种子" % FARM,
+        "08:00 market/seed_stall | 在雨棚下分装种子",
+        "12:30 market/seed_stall_side | 午饭",
+        "13:30 market/seed_stall | 继续分装种子",
         "18:00 inn/table_a | 在小酒馆躲雨吃饭",
         "21:00 %s | 休息" % HZ,
     ),
@@ -82,7 +82,7 @@ SCHEDULES["hazel"] = [
     rule(
         {"seasons": ["winter"]},
         "07:00 %s | 起床" % HZ,
-        "09:00 %s/stall | 只摆冬季的种子" % FARM,
+        "09:00 market/seed_stall | 只摆冬季的种子",
         "14:00 %s | 回屋取暖" % HZ,
         "18:00 inn/table_a | 晚餐",
         "21:30 %s | 休息" % HZ,
@@ -90,10 +90,10 @@ SCHEDULES["hazel"] = [
     rule(
         {},
         "06:00 %s | 起床" % HZ,
-        "07:30 %s/field_a | 浇水" % FARM,
-        "09:00 %s/stall | 摆摊卖种子" % FARM,
-        "12:30 %s/stall_side | 午饭" % FARM,
-        "13:30 %s/stall | 摆摊卖种子" % FARM,
+        "07:30 market/hazel_yard | 照料院里的花盆",
+        "09:00 market/seed_stall | 摆摊卖种子",
+        "12:30 market/seed_stall_side | 午饭",
+        "13:30 market/seed_stall | 摆摊卖种子",
         "17:30 %s/field_b | 傍晚再浇一遍水" % FARM,
         "19:00 inn/table_a | 晚餐",
         "22:00 %s | 回家休息" % HZ,
@@ -1710,7 +1710,7 @@ SCHEDULES["veronica"] = [
 # first; this rule replaces their usual weekday. (work place, what they do) for the morning and
 # the afternoon, and what the first breakfast looks like.
 SPOUSE_DAYS = {
-    "hazel": ("home_farm/stall", "摆摊分种子", "home_farm/field_a", "在田里浇水", "给你煮了热茶"),
+    "hazel": ("market/seed_stall", "摆摊分种子", "home_farm/field_a", "在田里浇水", "给你煮了热茶"),
     "silas": (
         "town/workshop_door",
         "回木工坊赶活",

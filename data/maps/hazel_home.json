@@ -642,17 +642,17 @@
       "description": "种袋按播种月份分了格。最旧的一袋写着：留给西尔维娅，别忘了。"
     },
     {
-      "id": "to_home_farm",
+      "id": "to_market",
       "name": "离开黑兹尔的种子小屋",
       "kind": "exit",
       "cell": [
         7,
         18
       ],
-      "destination": "home_farm",
+      "destination": "market",
       "arrival": [
-        976,
-        592
+        784,
+        1744
       ]
     }
   ],

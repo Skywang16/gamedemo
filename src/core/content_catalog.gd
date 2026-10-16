@@ -879,6 +879,24 @@ func _validate_region(id: String, area: Dictionary) -> String:
 		return "出生点无效：" + id
 	if not ResourceLoader.exists("res://assets/art/%s.png" % area.background):
 		return "缺少地图背景：" + id
+	if area.has("tile_layers"):
+		if not ResourceLoader.exists("res://assets/art/%s.png" % area.get("tile_atlas", "")):
+			return "缺少地图图块集：" + id
+		if not area.tile_layers is Array:
+			return "地图图层无效：" + id
+		for layer in area.tile_layers:
+			if not layer is Dictionary or not layer.has_all(["name", "cells"]):
+				return "地图图层字段无效：" + id
+			if not layer.cells is Array or layer.cells.size() != int(area.width * area.height):
+				return "地图图层尺寸无效：" + id
+			for gid in layer.cells:
+				if not natural(gid) or gid > 528 or gid in [10, 11, 12]:
+					return "地图图块编号无效：" + id
+	if (
+		area.has("tree_texture")
+		and not ResourceLoader.exists("res://assets/art/%s.png" % area.tree_texture)
+	):
+		return "缺少地图树木素材：" + id
 	for field in ["obstacles", "trees", "props", "stations", "debris", "gather", "water_rects"]:
 		if not area.get(field, []) is Array:
 			return "地图列表无效：" + id + "/" + field

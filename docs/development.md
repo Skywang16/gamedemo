@@ -127,3 +127,22 @@ make test
 平面图改 `tools/world/interior_layouts.py`；住户、房门和个人物件改 `tools/world/residences.py`；家具提示词与占地改 `tools/art/interior_asset_catalog.py`。不要只改 PNG 尺寸而不更新共享占地契约。
 
 `tests/interior_tests.gd` 作为 `make test` 的一部分，以无窗口、独立存档运行实际场景：进出全部 25 张室内、查看个人物件、重复交互无状态副作用、NPC 回家、镜头与天气分类、室内存读档和休息后的出生点。不调用系统输入，也不播放声音。
+
+## 农场：人工编辑的分层 TileMap
+
+地图唯一编辑源是 `tools/world/maps/home_farm.tmx`，可直接在 Tiled 打开。图块集引用 `farm_tiles.tsx`，物件图集引用 `farm_objects.tsx`；全部使用 32 像素网格。修改后保存为 CSV 编码的 TMX，再执行 `make content`、`make art`、`make import`。构建只读取这张地图，绝不重新排布它。无需在 Godot 中安装 Tiled 插件。
+
+- `Ground`：草地与林地地面；`Paths`：手工布置的道路和院落。
+- `Water`：4 帧循环水面；`Shore`：独立的静态池岸。岸边不跟着水面晃动。
+- `Props`：房屋、水井、出货箱、灌木、花丛、围栏和边界林木，以落地点参与人物纵向排序。
+- `Trees`、`Debris`：可砍树木和可清理杂物；不会烘焙进地面。
+- `Forest collision`、`Collision`、`No planting`、`Building sites`：碰撞、耕地限制和扩建位置。
+- `Gameplay`、`Places`、`Stations`：出口、出生点、教程田地、NPC 落脚点与交互点。移动建筑时同步调整这些标注。
+
+`tools/world/tiled_farm.py` 编译地形与物件数据；`src/world/authored_tile_map.gd` 创建真实 `TileMapLayer` 和带动画的 `TileSetAtlasSource`。游戏地图不渲染整体背景 PNG；`home_farm_background.png` 仅为地图总览使用的离线缩略底图。
+
+`assets/library/maps/farm/scene.png` 是 AI 美术概念参考，不能作为可玩地图打底。`tools/art/farm_tiles.py` 从批准的参考中取草地和土路色彩样本、提取独立物件，制作可复用的道路/池岸过渡图块；水面单独制作 4 帧动画。图块是 16 像素原生美术、2 倍整数导出，不将整张概念图切片伪装成 TileMap。布局来自 TMX，与美术图的坐标无关。
+
+生成新的概念参考用 `tools/art/ai_farm_scene.py generate`，独立树木用 `tree`，都会调用 Image2Free；已有源图时拒绝覆盖。常规构建无网络调用。提示词与源图保存在素材库，密钥不进入仓库。
+
+验收可运行 `tests/scale_smoke.gd`，追加 `--farm-only` 和新的独立 `--save-dir=user://ui-test-scale-...`。测试只调用游戏场景，不控制系统鼠标。地图布局变更可能使旧存档的树木编号、田地或角色位置不再有效；不修改或覆盖个人存档。

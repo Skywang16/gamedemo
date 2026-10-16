@@ -12,6 +12,7 @@ var shake: float = 0
 var calm: bool = false
 var fall_time: float = -1
 var fall_direction: float = 1
+var art_scale: float = 1.0
 
 
 func configure(texture: Texture2D, damage: int) -> void:
@@ -19,8 +20,9 @@ func configure(texture: Texture2D, damage: int) -> void:
 	stump = load("res://assets/art/tree_stump.png")
 	trunk = Sprite2D.new()
 	trunk.texture = texture
+	art_scale = texture.get_width() / 96.0
 	trunk.centered = false
-	trunk.position = Vector2(-48, -120)
+	trunk.position = Vector2(-texture.get_width() / 2.0, 8 - texture.get_height())
 	var pivot = Node2D.new()
 	pivot.name = "TrunkPivot"
 	pivot.add_child(trunk)
@@ -74,10 +76,17 @@ func _draw() -> void:
 	if hits < 3:
 		draw_ellipse_shadow()
 	elif hits < 5:
-		draw_texture(stump, Vector2(-16 + sin(shake * 60) * shake * 5, -18))
+		draw_texture_rect(
+			stump,
+			Rect2(
+				Vector2(-16 + sin(shake * 60) * shake * 5, -18) * art_scale,
+				Vector2(32, 32) * art_scale
+			),
+			false
+		)
 
 
 func draw_ellipse_shadow() -> void:
 	draw_set_transform(Vector2(3, -1), 0, Vector2(1, 0.22))
-	draw_circle(Vector2.ZERO, 33, Color("243c274d"))
+	draw_circle(Vector2.ZERO, 33 * art_scale, Color("243c274d"))
 	draw_set_transform(Vector2.ZERO)

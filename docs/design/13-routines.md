@@ -5,66 +5,66 @@
 ## 黑兹尔（种子商 · 把日子种回土里）
 
 1. **生日当天**
-   - 06:00 home_farm/hazel_house｜起床
-   - 09:00 home_farm/stall｜在摊位前收邻居们的小礼物
+   - 06:00 market/hazel_house｜起床
+   - 09:00 market/seed_stall｜在摊位前收邻居们的小礼物
    - 12:30 town/fountain_n｜和朋友们聊天
    - 18:00 inn/table_a｜在小酒馆过生日
-   - 22:00 home_farm/hazel_house｜回家休息
+   - 22:00 market/hazel_house｜回家休息
 2. **节日当天**
-   - 06:00 home_farm/hazel_house｜起床
+   - 06:00 market/hazel_house｜起床
    - 09:00 festival｜参加节日
    - 14:30 home_farm/field_a｜回农场浇水
    - 18:30 inn/table_b｜和大家一起吃晚饭
-   - 22:00 home_farm/hazel_house｜回家休息
+   - 22:00 market/hazel_house｜回家休息
 3. **故事进度 ≥ 6**
    - 06:00 cottage/bed_side｜起床
    - 07:00 cottage/kitchen_side｜给你煮了热茶
    - 08:30 home_farm/yard｜在院子里等你出门
-   - 09:30 home_farm/stall｜摆摊分种子
+   - 09:30 market/seed_stall｜摆摊分种子
    - 12:30 cottage/table｜回家吃午饭
    - 14:00 home_farm/field_a｜在田里浇水
    - 18:30 home_farm/yard｜在院子里等你
    - 19:30 cottage/table｜晚饭
    - 22:00 cottage/bed_side｜休息
 4. **天气：雨、雷暴、雪**
-   - 06:30 home_farm/hazel_house｜起床
-   - 08:00 home_farm/stall｜在雨棚下分装种子
-   - 12:30 home_farm/stall_side｜午饭
-   - 13:30 home_farm/stall｜继续分装种子
+   - 06:30 market/hazel_house｜起床
+   - 08:00 market/seed_stall｜在雨棚下分装种子
+   - 12:30 market/seed_stall_side｜午饭
+   - 13:30 market/seed_stall｜继续分装种子
    - 18:00 inn/table_a｜在小酒馆躲雨吃饭
-   - 21:00 home_farm/hazel_house｜休息
+   - 21:00 market/hazel_house｜休息
 5. **周六**
-   - 06:30 home_farm/hazel_house｜起床
+   - 06:30 market/hazel_house｜起床
    - 08:00 home_farm/field_a｜浇水
    - 09:30 market/stall_a｜去集市买麻绳和纸袋
    - 12:00 market/plaza_w｜和朋友们午饭
    - 15:00 market/stall_b｜逛摊位
    - 17:00 town/fountain_s｜散步
    - 19:00 inn/table_a｜晚餐
-   - 22:00 home_farm/hazel_house｜回家
+   - 22:00 market/hazel_house｜回家
 6. **周日**
-   - 07:30 home_farm/hazel_house｜睡了个懒觉
+   - 07:30 market/hazel_house｜睡了个懒觉
    - 09:00 home_farm/well｜修水桶
    - 10:30 town/bench_w｜晒太阳发呆
    - 12:30 inn/table_b｜午饭
    - 15:00 town/bridge｜看河水
    - 18:30 inn/table_a｜晚餐
-   - 22:00 home_farm/hazel_house｜回家
+   - 22:00 market/hazel_house｜回家
 7. **冬**
-   - 07:00 home_farm/hazel_house｜起床
-   - 09:00 home_farm/stall｜只摆冬季的种子
-   - 14:00 home_farm/hazel_house｜回屋取暖
+   - 07:00 market/hazel_house｜起床
+   - 09:00 market/seed_stall｜只摆冬季的种子
+   - 14:00 market/hazel_house｜回屋取暖
    - 18:00 inn/table_a｜晚餐
-   - 21:30 home_farm/hazel_house｜休息
+   - 21:30 market/hazel_house｜休息
 8. **其余日子**
-   - 06:00 home_farm/hazel_house｜起床
-   - 07:30 home_farm/field_a｜浇水
-   - 09:00 home_farm/stall｜摆摊卖种子
-   - 12:30 home_farm/stall_side｜午饭
-   - 13:30 home_farm/stall｜摆摊卖种子
+   - 06:00 market/hazel_house｜起床
+   - 07:30 market/hazel_yard｜照料院里的花盆
+   - 09:00 market/seed_stall｜摆摊卖种子
+   - 12:30 market/seed_stall_side｜午饭
+   - 13:30 market/seed_stall｜摆摊卖种子
    - 17:30 home_farm/field_b｜傍晚再浇一遍水
    - 19:00 inn/table_a｜晚餐
-   - 22:00 home_farm/hazel_house｜回家休息
+   - 22:00 market/hazel_house｜回家休息
 
 ## 赛拉斯（木匠 · 没说出口的承诺）
 

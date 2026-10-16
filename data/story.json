@@ -129,7 +129,7 @@
               ],
               [
                 540,
-                "home_farm/stall",
+                "market/seed_stall",
                 "在摊位前收邻居们的小礼物"
               ],
               [
@@ -204,7 +204,7 @@
               ],
               [
                 570,
-                "home_farm/stall",
+                "market/seed_stall",
                 "摆摊分种子"
               ],
               [
@@ -250,17 +250,17 @@
               ],
               [
                 480,
-                "home_farm/stall",
+                "market/seed_stall",
                 "在雨棚下分装种子"
               ],
               [
                 750,
-                "home_farm/stall_side",
+                "market/seed_stall_side",
                 "午饭"
               ],
               [
                 810,
-                "home_farm/stall",
+                "market/seed_stall",
                 "继续分装种子"
               ],
               [
@@ -382,7 +382,7 @@
               ],
               [
                 540,
-                "home_farm/stall",
+                "market/seed_stall",
                 "只摆冬季的种子"
               ],
               [
@@ -412,22 +412,22 @@
               ],
               [
                 450,
-                "home_farm/field_a",
-                "浇水"
+                "market/hazel_yard",
+                "照料院里的花盆"
               ],
               [
                 540,
-                "home_farm/stall",
+                "market/seed_stall",
                 "摆摊卖种子"
               ],
               [
                 750,
-                "home_farm/stall_side",
+                "market/seed_stall_side",
                 "午饭"
               ],
               [
                 810,
-                "home_farm/stall",
+                "market/seed_stall",
                 "摆摊卖种子"
               ],
               [

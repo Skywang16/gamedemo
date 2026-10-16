@@ -110,8 +110,8 @@ func place_cell(cell: Vector2i) -> void:
 ## `count` farm cells with no tree or debris, so tools act on them straight away.
 func free_cells(count: int) -> Array:
 	var out: Array = []
-	for y in range(18, 66):
-		for x in range(4, 90):
+	for y in range(1, int(game.catalog.map.height) - 1):
+		for x in range(1, int(game.catalog.map.width) - 1):
 			var cell = Vector2i(x, y)
 			if (
 				game.catalog.plantable(cell, game.state.tree_damage)

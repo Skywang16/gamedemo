@@ -1,0 +1,43 @@
+Use case: stylized-concept.
+Asset type: an entire playable 2D farming RPG farm map, original production environment art.
+Draw ONE cohesive, beautifully art-directed private countryside farm. A lovingly designed game
+location, with the density, readable pixel clusters and spatial clarity of a classic 16-bit life sim.
+This is a flat orthographic top-down three-quarter GAME MAP, viewed straight north: ground has no
+perspective convergence, all vertical walls face south, NO isometric rotation, NO horizon, NO sky,
+NO miniature floating diorama and NO diagram. Fill the entire image with the map.
+
+Image 1 is a strict spatial guide, NOT a style reference. Preserve the composition and footprint of
+its features, but replace every schematic shape with accomplished pixel artwork. Remove ALL labels,
+outlines and diagram marks. The intended game uses 96 by 72 square cells. Output 4:3 landscape.
+Buildings and tall vegetation have vertical sprite height above their ground footprint.
+
+Composition: ONE modest cream plaster cottage with terracotta roof in the north-central clearing,
+its south-facing front door precisely at 42% of image width, 22% of image height. Cottage including
+roof fits between x=36..47%, y=10..22%. A worn stone doorstep merges naturally into an irregular
+warm-earth courtyard. A small stone well at 35%,21%, and a small wooden shipping chest at 48%,24%.
+No shop, stall, other people's houses, greenhouse, barn or coop: this is the player's private farm.
+A narrow winding earth lane leads from the courtyard to the EAST edge at y=25%, and a second lane
+continues south to the BOTTOM edge at x=51%. Keep those two exits open and visually unmistakable.
+The lanes have bends, worn grassy shoulders and occasional stones, not straight ruler rectangles.
+
+Keep the central agricultural clearing at x=28..58%, y=29..60% broad, unobstructed and quiet:
+short natural olive grass with occasional bare earth, NOT pre-tilled soil, NO crops, NO furrows,
+NO fences crossing this area. The player will cultivate it. A small flattened patch by the yard is
+enough to suggest the first planting spot. The eastern expansion clearing x=61..80%, y=30..52%
+is also EMPTY short grass, with no structures or large objects, reserved for player construction.
+An irregular pond lies within x=7..26%, y=35..59%, with reeds, subtly undercut muddy banks, reflective
+muted turquoise water and a readable shore. A smaller pond lies x=83..97%, y=60..88%.
+
+Tall leafy woodland, mossy rocks, shrub masses, small flower patches and old low stone walls frame
+the north, west and south edges in asymmetrical groups. Use large readable tree shapes and rich
+overlap at the perimeter; small quiet clearings between groups. No fence enclosing the whole image.
+Interior playable clearings must remain open: NO scattered mature trees, fallen logs, large rocks,
+tools, buckets, crops or other collectible objects there; these will be separate game objects.
+Concentrate detail at transitions: roots into grass, grass into packed earth, stones into banks,
+ivy against cottage base. The image must feel painted as a single place, never pasted stock sprites.
+
+Art direction: crisp deliberate PIXEL ART, compact clusters, clean silhouettes, no blur, no
+antialiasing, no photographic texture or noisy stippling. Warm cream and honey earth, muted leafy
+greens, blue-green pond shadows, restrained terracotta accents. Light from upper left. Ground low
+contrast; cottage and banks more defined. Cheerful spring daylight. Keep the SAME pixel density and
+object scale everywhere. No people, UI, labels, letters, grid lines, watermarks or map symbols.

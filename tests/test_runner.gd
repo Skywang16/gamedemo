@@ -478,6 +478,9 @@ func test_reachability() -> void:
 				visited[n] = true
 				queue.append(n)
 	for station in catalog.map.stations:
+		check(station.kind != "shop", "the private farm has no public shop")
+		if station.kind == "exit":
+			check(station.destination != "hazel_home", "villagers live outside the player's farm")
 		check(
 			visited.has(Vector2i(station.cell[0], station.cell[1])),
 			"station reachable: " + station.id

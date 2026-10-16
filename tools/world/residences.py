@@ -2,7 +2,7 @@
 
 # map id: display name, outside map, entrance cell, residents
 HOMES = {
-    "hazel_home": ("黑兹尔的种子小屋", "home_farm", (30, 17), ["hazel"]),
+    "hazel_home": ("黑兹尔的种子小屋", "market", (24, 53), ["hazel"]),
     "hawk_home": ("霍克家的家", "market", (10, 17), ["gregor", "dolly", "ezra", "poppy"]),
     "pemberton_home": ("彭伯顿家的家", "market", (24, 17), ["augustus", "clara"]),
     "felix_home": ("费利克斯的钟表屋", "market", (36, 17), ["felix"]),

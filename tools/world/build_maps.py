@@ -17,6 +17,7 @@ from PIL import Image, ImageDraw
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from places import PLACES, parse  # noqa: E402
+from world import tiled_farm  # noqa: E402
 from world.interior_layouts import build_interiors  # noqa: E402
 from world.residences import HOMES  # noqa: E402
 
@@ -39,11 +40,12 @@ SOLID = {
 
 
 # (map a, exit cell, arrival cell when coming from b, label, map b, exit cell, arrival cell, label)
+FARM_POINTS = tiled_farm.points()
 LINKS = [
     (
         "home_farm",
-        (48, 69),
-        (48, 68),
+        FARM_POINTS["to_town"],
+        FARM_POINTS["town_arrival"],
         "南行 · 芦苇渡镇",
         "town",
         (2, 30),
@@ -52,15 +54,24 @@ LINKS = [
     ),
     (
         "home_farm",
-        (94, 17),
-        (93, 17),
+        FARM_POINTS["to_ranch"],
+        FARM_POINTS["ranch_arrival"],
         "东行 · 草溪牧场",
         "ranch",
         (1, 8),
         (2, 8),
         "西北 · 芽田农场",
     ),
-    ("home_farm", (40, 15), (40, 16), "进入农舍", "cottage", (14, 15), (14, 14), "走出农舍"),
+    (
+        "home_farm",
+        FARM_POINTS["to_cottage"],
+        FARM_POINTS["cottage_arrival"],
+        "进入农舍",
+        "cottage",
+        (14, 15),
+        (14, 14),
+        "走出农舍",
+    ),
     ("town", (40, 2), (40, 3), "北行 · 松木林", "forest", (38, 61), (38, 60), "南行 · 芦苇渡镇"),
     ("town", (40, 53), (40, 52), "南行 · 集市街", "market", (47, 2), (47, 3), "北行 · 芦苇渡镇"),
     ("town", (24, 21), (24, 22), "进入玛戈的小酒馆", "inn", (14, 15), (14, 14), "回到镇上"),
@@ -117,7 +128,7 @@ for _a, _ac, _ai, _an, _b, _bc, _bi, _bn in LINKS:
 RESERVED["town"].extend([BRIDGE_CELL, LAKE_EXIT[1], (35, 30)])
 RESERVED["lake"] = [LAKE_EXIT[0], (4, 29), FERRY[0], FERRY[1]]
 RESERVED["far_shore"] = [(4, 44), (5, 44), (6, 44), (29, 16)]
-RESERVED["home_farm"].extend([(53, 18), (46, 18)])
+RESERVED["home_farm"].append((33, 14))
 for _name, _outside, _door, _residents in HOMES.values():
     RESERVED.setdefault(_outside, []).extend([_door, (_door[0], _door[1] + 1)])
 for _key, _entry in PLACES.items():
@@ -333,103 +344,28 @@ def link(maps, a, a_cell, a_in, a_name, b, b_cell, b_in, b_name):
 
 
 def build_farm():
+    authored = tiled_farm.read()
     farm = area(
         "home_farm",
         "芽田农场",
-        96,
-        72,
-        (40, 16),
-        [
-            [38, 15, 3, 1],
-            [38, 16, 17, 3],
-            [40, 19, 2, 44],
-            [40, 61, 10, 2],
-            [48, 61, 2, 9],
-            [55, 17, 40, 2],
-        ],
-        [
-            [(8, 31), (10, 27), (17, 25), (23, 28), (25, 35), (21, 41), (12, 42), (7, 37)],
-            [(80, 46), (86, 43), (92, 47), (93, 58), (87, 62), (81, 58)],
-        ],
-        [
-            [37, 12, 7, 3],
-            [51, 14, 4, 3],
-            [45, 16, 2, 1],
-            [60, 22, 5, 2],
-            [68, 22, 7, 3],
-            [62, 30, 7, 4],
-        ],
-        [
-            prop("house", 40, 15, (-128, -216)),
-            prop("shop", 53, 17, (-64, -96)),
-            prop("shipping", 46, 17, (-32, -48)),
-            prop("well", 34, 15, (-32, -64)),
-        ],
-        [
-            point("shop", "黑兹尔的种子摊", "shop", 53, 18, shop_id="seeds"),
-            point("shipping", "出售农产品", "shipping", 46, 18),
-        ],
+        authored["width"],
+        authored["height"],
+        FARM_POINTS["spawn"],
+        [],
+        [],
+        [],
+        [],
+        [],
     )
-    building(farm, "home_07", (30, 17))
-    farm["paths"].append([29, 17, 10, 2])
+    farm.update(authored)
     farm.update(
-        plantable=[4, 18, 88, 49],
+        tile_atlas="farm_tiles",
+        tree_texture="farm_scene_tree",
+        plantable=[3, 14, 58, 30],
         starting_gold=40,
         starting_inventory={"turnip_seed": 8, "carrot_seed": 4},
-        tutorial_plot=[34, 20],
-        building_sites={
-            "coop": {
-                "rect": [60, 22, 5, 2],
-                "door": [62, 24],
-                "texture": "coop",
-                "offset": [-80, -120],
-            },
-            "barn": {
-                "rect": [68, 22, 7, 3],
-                "door": [71, 25],
-                "texture": "barn",
-                "offset": [-128, -216],
-            },
-            "greenhouse": {
-                "rect": [62, 30, 7, 4],
-                "door": [65, 34],
-                "texture": "greenhouse",
-                "offset": [-128, -176],
-            },
-        },
+        tutorial_plot=list(FARM_POINTS["tutorial_plot"]),
     )
-    decor(farm, "flowerbed", 36, 17, 2, 1)
-    decor(farm, "planter", 38, 19)
-    decor(farm, "planter", 42, 19)
-    for y in range(24, 64, 8):
-        decor(farm, "lamp", 37, y)
-    decor(farm, "signpost", 41, 66)
-    decor(farm, "barrel", 56, 19)
-    decor(farm, "crates", 57, 19, 2, 1)
-    for x in range(62, 94, 8):
-        decor(farm, "lamp", x, 15)
-    fence(farm, 55, 20, 94, 20, gaps=[(56, 20)])
-    scatter_trees(
-        farm, 210, 71, [(3, 4, 28, 24), (62, 5, 92, 14), (4, 45, 31, 67), (57, 42, 78, 66)]
-    )
-    farm["trees"] += [[47, 12], [49, 22]]
-    rng = random.Random(177)
-    for y in range(18, 66):
-        for x in range(5, 91):
-            if blocked_cell(farm, x, y) or on_path(farm, x, y) or near_station(farm, x, y, 2):
-                continue
-            density = 0.72 if (26 <= x <= 38 and 19 <= y <= 35) else 0.25
-            if rng.random() < density:
-                kind = rng.choices(["weeds", "branch", "rock"], [0.73, 0.17, 0.10])[0]
-                farm["debris"].append(
-                    dict(id=f"d_{x}_{y}", kind=kind, cell=[x, y], variant=rng.randrange(3))
-                )
-    for x in range(34, 39):
-        farm["debris"] = [n for n in farm["debris"] if n["cell"] != [x, 20]]
-        farm["debris"].append(dict(id=f"d_{x}_20", kind="weeds", cell=[x, 20], variant=x % 3))
-    for x, y, kind in [(35, 22, "branch"), (37, 23, "rock")]:
-        farm["debris"] = [n for n in farm["debris"] if n["cell"] != [x, y]]
-        farm["debris"].append(dict(id=f"d_{x}_{y}", kind=kind, cell=[x, y], variant=0))
     return farm
 
 
@@ -657,6 +593,9 @@ def build_market():
     fence(market, 56, 44, 92, 44, gaps=[(72, 44)])
     for x in (12, 20, 28, 66, 74, 82):
         decor(market, "flowerbed", x, 46, 3, 1)
+    home_yard(market, "home_07", 24, 53)
+    market["paths"] += [[23, 53, 3, 7], [24, 58, 24, 2]]
+    market["stations"].append(point("shop", "黑兹尔的种子摊", "shop", 9, 39, shop_id="seeds"))
     scatter_trees(
         market, 60, 811, [(2, 3, 40, 14), (56, 3, 94, 14), (2, 46, 44, 61), (52, 46, 94, 61)]
     )

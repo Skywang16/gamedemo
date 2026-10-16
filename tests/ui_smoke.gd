@@ -261,7 +261,7 @@ func test_panels() -> void:
 	check(game.hud.modal_kind == "journal", "journal shortcut")
 	await capture("journal")
 	await press("合上手记")
-	place_cell(Vector2i(40, 20))
+	place_cell(Vector2i(27, 16))
 	await key(KEY_M)
 	check(game.hud.modal_kind == "map", "map shortcut")
 	await capture("map")
@@ -270,6 +270,8 @@ func test_panels() -> void:
 	check(game.hud.modal_kind == "collection", "collection opens")
 	await capture("collection")
 	await key(KEY_ESCAPE)
+	await interact("to_town")
+	await interact("to_market")
 	await interact("shop")
 	check(game.hud.modal_kind == "shop", "the seed stall opens")
 	await capture("shop")
@@ -284,6 +286,8 @@ func test_panels() -> void:
 	check(not game.hud.is_modal() and game.hud.toast_box.visible, "a closed shop says why")
 	game.state.minute = 10 * 60
 	game.state.inventory.turnip = 3
+	await interact("to_town")
+	await interact("to_home_farm")
 	await interact("shipping")
 	check(game.hud.modal_kind == "shipping", "shipping box opens")
 	var coins = game.state.gold

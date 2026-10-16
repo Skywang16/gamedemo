@@ -93,6 +93,7 @@ def generate(
     size: str = "1:1",
     references: list[str] | None = None,
     attempts: int = 6,
+    reference_note: str = REFERENCE_NOTE,
 ) -> Image.Image:
     """One transparent PNG. Upstream outages are retried; any other failure raises."""
     body = {
@@ -107,7 +108,7 @@ def generate(
     elif not keep_background:
         body["prompt"] += FLAT_BG
     body["image_urls"] = references if references is not None else [style_board()]
-    body["prompt"] += REFERENCE_NOTE
+    body["prompt"] += reference_note
     last = None
     for attempt in range(attempts):
         sub = call("POST", "/v1/images/generations", body)

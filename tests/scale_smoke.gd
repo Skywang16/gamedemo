@@ -3,7 +3,7 @@ extends "res://tests/ui_driver.gd"
 ## Uses scene calls only: never warps the OS pointer or synthesizes desktop input.
 ## Headless runs exercise routes and action contacts; a window additionally captures proportions.
 const SPOTS = {
-	"home_farm": Vector2i(40, 17),
+	"home_farm": Vector2i(27, 12),
 	"town": Vector2i(24, 30),
 	"market": Vector2i(16, 28),
 	"forest": Vector2i(38, 21),
@@ -32,7 +32,10 @@ func run() -> void:
 	state.minute = 12 * 60
 	game._start_game(state)
 	var spots = SPOTS.duplicate()
-	for id in ROOMS:
+	var farm_only = OS.get_cmdline_user_args().has("--farm-only")
+	if farm_only:
+		spots = {"home_farm": SPOTS.home_farm}
+	for id in [] if farm_only else ROOMS:
 		var room = game.catalog.region(id)
 		spots[id] = Vector2i(floori(room.spawn[0] / 32.0), floori(room.spawn[1] / 32.0))
 	for id in spots:
@@ -46,6 +49,8 @@ func run() -> void:
 		game.world.player.set_physics_process(false)
 		game.world.camera.force_update_scroll()
 		await picture("scale-" + id)
+	if farm_only:
+		await farm_pictures()
 	# Exercise the real tool-contact -> rule -> effect pipeline at a fixed foot anchor.
 	game.state.current_map = "home_farm"
 	game._plan_day()
@@ -107,6 +112,24 @@ func run() -> void:
 func picture(label: String) -> void:
 	if DisplayServer.get_name() != "headless":
 		await capture(label)
+
+
+func farm_pictures() -> void:
+	var world = game.world
+	for cell in [Vector2i(23, 18), Vector2i(19, 24), Vector2i(43, 23)]:
+		place_cell(cell)
+		world.camera.force_update_scroll()
+		await picture("farm-detail-%d-%d" % [cell.x, cell.y])
+	game.hud.hide()
+	world.camera.reparent(world)
+	world.camera.position = Vector2(world.region.width * 16, world.region.height * 16)
+	world.camera.offset = Vector2.ZERO
+	world.camera.zoom = (
+		Vector2.ONE * minf(1280.0 / (world.region.width * 32), 800.0 / (world.region.height * 32))
+	)
+	world.camera.force_update_scroll()
+	await picture("farm-overview")
+	game.hud.show()
 
 
 func check_routes(id: String) -> void:
