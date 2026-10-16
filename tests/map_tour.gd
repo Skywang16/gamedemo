@@ -26,6 +26,9 @@ func run() -> void:
 	for id in game.catalog.regions:
 		var area = game.catalog.region(id)
 		var spots = [Vector2(area.spawn[0], area.spawn[1])]
+		for room in area.get("rooms", []):
+			var r: Array = room.rect
+			spots.append(Vector2((r[0] + r[2] * 0.5) * 32, (r[1] + r[3] * 0.5) * 32))
 		if area.width > 40:
 			var w = area.width * 32.0
 			var h = area.height * 32.0

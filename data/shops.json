@@ -109,10 +109,10 @@
       "close": 22,
       "closed_weekdays": [],
       "goods": {
-        "honey_tea": 90,
-        "grape_juice": 88,
-        "scone_wheat": 70,
-        "apple_pie": 130
+        "honey_tea": 110,
+        "grape_juice": 110,
+        "scone_wheat": 110,
+        "apple_pie": 160
       },
       "buys": [
         "dish"

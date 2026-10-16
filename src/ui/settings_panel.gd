@@ -64,9 +64,11 @@ func _build() -> void:
 	body.size = Vector2(panel_size.x, panel_size.y - 190)
 	body.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(body)
-	note = _label("", Rect2(40, panel_size.y - 96, panel_size.x - 80, 28), 16, Color("a4432e"))
-	_button("恢复默认", Rect2(40, panel_size.y - 62, 220, 46), _reset_current_tab)
-	_button("返回", Rect2(panel_size.x - 260, panel_size.y - 62, 220, 46), _close)
+	note = _label(
+		"", Rect2(40, footer_y(panel_size) - 36, panel_size.x - 80, 28), 16, Color("a4432e")
+	)
+	_button("恢复默认", Rect2(40, footer_y(panel_size), 220, 46), _reset_current_tab)
+	_button("返回", Rect2(panel_size.x - 260, footer_y(panel_size), 220, 46), _close)
 	match tab:
 		"audio":
 			_build_audio()

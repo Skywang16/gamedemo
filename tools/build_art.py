@@ -9,7 +9,8 @@ from art.environment import utility, well
 from art.ai_assets import ASSETS as AI_ASSETS
 from art.ai_terrain import TEXTURES as AI_TERRAIN, output_name
 from art.ai_nature import names as nature_names
-from art.ai_interiors import ROOMS as AI_ROOMS
+from art.room_assets import names as room_names, install as install_rooms
+from art.room_backgrounds import background as room_background
 from art.ai_decor import names as decor_names
 from art.characters import build_characters, build_villagers
 from art.actions import build_actions
@@ -29,12 +30,13 @@ KEPT = (
     | {output_name(n) for n in AI_TERRAIN}
     | set(nature_names())
     | set(decor_names())
-    | {n + "_background" for n in AI_ROOMS}
+    | set(room_names())
 )
 
 
 def main():
     OUTPUT.mkdir(parents=True, exist_ok=True)
+    install_rooms()
     started = time.time()
 
     def save(name, im):
@@ -66,7 +68,8 @@ def main():
     index = json.loads((ROOT / "data/maps/index.json").read_text())
     for name in index["maps"]:
         region = json.loads((ROOT / "data/maps" / f"{name}.json").read_text())
-        if region["width"] <= 30:
+        if region["environment"] == "interior":
+            save(region["background"], room_background(region))
             continue
         save(region["background"], landscape(region))
         print("Rendered", name, region["width"] * 32, region["height"] * 32, flush=True)

@@ -18,7 +18,8 @@ const STATION_KINDS = [
 	"storage",
 	"kitchen",
 	"ferry",
-	"story"
+	"story",
+	"inspect"
 ]
 const BACKDROPS = [
 	"farm",
@@ -872,6 +873,8 @@ func _validate_region(id: String, area: Dictionary) -> String:
 		or area.tile_size != 32
 	):
 		return "地图尺寸无效：" + id
+	if area.get("environment", "") not in ["interior", "exterior", "cave"]:
+		return "地图环境无效：" + id
 	if not numeric_array(area.spawn, 2):
 		return "出生点无效：" + id
 	if not ResourceLoader.exists("res://assets/art/%s.png" % area.background):
@@ -923,6 +926,8 @@ func _validate_region(id: String, area: Dictionary) -> String:
 			or station.kind not in STATION_KINDS
 		):
 			return "交互点无效：" + id
+		if station.kind == "inspect" and not station.get("description") is String:
+			return "物件说明缺失：" + id
 		station_ids.append(station.id)
 	for node in area.get("gather", []):
 		if (

@@ -101,6 +101,7 @@ func action_phase() -> float:
 func _draw() -> void:
 	if texture == null:
 		return
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE * ActorVisual.SCALE)
 	var row = [Vector2i.DOWN, Vector2i.UP, Vector2i.LEFT, Vector2i.RIGHT].find(facing)
 	if action_remaining > 0:
 		draw_texture_rect_region(
@@ -113,3 +114,4 @@ func _draw() -> void:
 		draw_texture_rect_region(
 			texture, Rect2(-16, -44 + breath, 32, 48 - breath), Rect2(frame * 32, row * 48, 32, 48)
 		)
+	draw_set_transform(Vector2.ZERO)

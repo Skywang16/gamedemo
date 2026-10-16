@@ -119,11 +119,7 @@ func configure(content: ContentCatalog, initial_state: FarmState) -> void:
 	for i in range(POCKET_ITEMS.size()):
 		var id: String = POCKET_ITEMS[i]
 		var button = _slot(
-			Rect2(864 + i * 64, 713, 60, 60),
-			func():
-				dialogs.selected_item = id
-				dialogs.show_bag(),
-			chrome
+			Rect2(864 + i * 64, 713, 60, 60), func(): dialogs.show_bag(false, id), chrome
 		)
 		button.tooltip_text = catalog.items[id].name
 		icon(catalog.items[id].icon, Rect2(10, 10, 40, 40), button)

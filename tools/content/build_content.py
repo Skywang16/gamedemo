@@ -131,6 +131,14 @@ def build():
             name, "dish", 0, price, "dish_" + ident, "%s 恢复 %d 体力。" % (text, energy), energy
         )
         recipes.append({"id": ident, "needs": needs, "level": level})
+    recipes.extend(economy.PROCESSING_RECIPES)
+    for shop_id, shop in economy.SHOPS.items():
+        for ident, price in shop["goods"].items():
+            if (
+                items[ident]["kind"] in {"produce", "fish", "forage", "mineral", "dish", "drop"}
+                and price <= items[ident]["sell_price"]
+            ):
+                raise ValueError(f"{shop_id}/{ident}: stock price must exceed resale value")
     write(DATA / "items.json", items)
     write(DATA / "crops.json", crops)
     write(DATA / "fish.json", {"spots": SPOT_OF_MAP, "fish": fish_entries})

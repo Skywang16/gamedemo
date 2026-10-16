@@ -1,8 +1,7 @@
-"""Named places villagers walk between: "<map>/<name>" -> (x, y) or (x, y, "hidden").
+"""Named walkable places: "<map>/<name>" -> (x, y).
 
-A hidden place is a doorway: the villager walks there and goes inside, so they are not drawn
-until their next stop. The map builder verifies that every place is walkable and clears the
-trees and debris around it; the schedule builder verifies that each place can be reached.
+Residential schedules resolve to real bedrooms. Former doorway markers below are normalized
+at the bottom; the map and schedule compilers validate collision clearance and reachability.
 """
 
 H = "hidden"
@@ -151,3 +150,11 @@ PLACES = {
 def parse(entry):
     x, y = entry[0], entry[1]
     return x, y, len(entry) > 2 and entry[2] == H
+
+
+# Real rooms replace hidden doorway destinations. Public schedules use semantic points.
+from world.interior_layouts import build_interiors  # noqa: E402
+
+_, _indoor_places = build_interiors()
+PLACES = {key: value[:2] for key, value in PLACES.items()}
+PLACES.update(_indoor_places)

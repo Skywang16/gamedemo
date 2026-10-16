@@ -81,7 +81,7 @@ SHOPS = {
         "open": 10,
         "close": 22,
         "closed_weekdays": [],
-        "goods": {"honey_tea": 90, "grape_juice": 88, "scone_wheat": 70, "apple_pie": 130},
+        "goods": {"honey_tea": 110, "grape_juice": 110, "scone_wheat": 110, "apple_pie": 160},
         "buys": ["dish"],
     },
 }
@@ -578,4 +578,11 @@ EVENTS = [
         "effect": {"items": {"hazelnut": 3}},
         "text": "秋风摇落了榛子。",
     },
+]
+
+# Kitchen processing recipes for the existing animal products.
+PROCESSING_RECIPES = [
+    {"id": "cheese", "needs": {"milk": 2}, "level": 1},
+    {"id": "goat_cheese", "needs": {"goat_milk": 2}, "level": 2},
+    {"id": "mayonnaise", "needs": {"egg": 2}, "level": 1},
 ]

@@ -120,7 +120,8 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 		var sprite = Sprite2D.new()
 		sprite.texture = tex(catalog.story.npcs[id].sprite)
 		sprite.centered = false
-		sprite.position = Vector2(-16, -44)
+		sprite.scale = Vector2.ONE * ActorVisual.SCALE
+		sprite.position = ActorVisual.ORIGIN * ActorVisual.SCALE
 		sprite.region_enabled = true
 		sprite.region_rect = Rect2(0, 0, 32, 48)
 		node.add_child(sprite)
@@ -137,14 +138,15 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 	player.position = state.player_position
 	actors.add_child(player)
 	camera = Camera2D.new()
-	camera.zoom = Vector2(1.34, 1.34) if region.width <= 30 else Vector2(1.5, 1.5)
-	camera.offset = Vector2.ZERO if region.width <= 30 else Vector2(0, -48)
+	var interior: bool = region.environment == "interior"
+	camera.zoom = Vector2(1.5, 1.5)
+	camera.offset = Vector2.ZERO if interior else Vector2(0, -48)
 	camera.limit_left = 0
 	camera.limit_top = 0
 	camera.limit_right = int(region.width) * 32
 	camera.limit_bottom = int(region.height) * 32
 	camera.position_smoothing_enabled = false
-	if region.width <= 30:
+	if region.width * 32 <= 1280 / camera.zoom.x and region.height * 32 <= 800 / camera.zoom.y:
 		camera.position = Vector2(region.width * 16, region.height * 16)
 		add_child(camera)
 	else:
@@ -164,7 +166,7 @@ func configure(content: ContentCatalog, initial_state: FarmState, day_planner: N
 func refresh_atmosphere() -> void:
 	season = catalog.calendar.season_of(state.day)
 	weather = catalog.weather.weather_on(state.world_seed, state.day)
-	outdoors = int(region.width) > 30
+	outdoors = region.environment == "exterior"
 	weather_layer.visible = outdoors
 	if outdoors:
 		weather_layer.configure(season, weather, reduce_motion)
@@ -178,7 +180,7 @@ func refresh_atmosphere() -> void:
 
 func set_season_look(weights: Dictionary) -> void:
 	for key in ["summer", "autumn", "winter"]:
-		season_material.set_shader_parameter(key, float(weights.get(key, 0.0)))
+		season_material.set_shader_parameter(key, float(weights.get(key, 0.0)) if outdoors else 0.0)
 
 
 ## The colour the whole world is multiplied by: season, weather and evening dusk.
@@ -240,10 +242,30 @@ func nearby_station() -> Dictionary:
 	for station in available_stations():
 		var p = Vector2((station.cell[0] + 0.5) * 32, (station.cell[1] + 0.5) * 32)
 		var d = player.position.distance_to(p)
-		if d < distance:
+		if d < distance and station_accessible(p):
 			distance = d
 			nearest = station
 	return nearest
+
+
+## Interaction cannot cross a partition or the corner of solid furniture.
+func station_accessible(at: Vector2) -> bool:
+	if region.environment != "interior":
+		return true
+	var steps = maxi(1, ceili(player.position.distance_to(at) / 4.0))
+	var previous = player.cell()
+	for i in range(1, steps + 1):
+		var cell = Vector2i((player.position.lerp(at, float(i) / steps) / 32.0).floor())
+		if catalog.static_blocked(cell, state.current_map):
+			return false
+		if cell.x != previous.x and cell.y != previous.y:
+			if (
+				catalog.static_blocked(Vector2i(cell.x, previous.y), state.current_map)
+				or catalog.static_blocked(Vector2i(previous.x, cell.y), state.current_map)
+			):
+				return false
+		previous = cell
+	return true
 
 
 func update_target(mouse_aim: bool, pointer: Vector2 = Vector2.ZERO) -> void:
@@ -263,7 +285,10 @@ func effect(cell: Vector2i, kind: String) -> void:
 	var at = Vector2(cell) * 32 + Vector2(16, 18)
 	effects.burst(kind, at)
 	if kind == "water":
-		effects.pour(player.position + Vector2(player.facing) * 20 + Vector2(0, -17), at)
+		effects.pour(
+			player.position + (Vector2(player.facing) * 20 + Vector2(0, -17)) * ActorVisual.SCALE,
+			at
+		)
 
 
 func strike_tree(id: String, hits: int) -> void:
@@ -388,7 +413,7 @@ func _update_villagers() -> void:
 		var breath = (
 			0 if info.moving else (1 if sin(ambient_time * 2.2 + node.position.x) > 0.6 else 0)
 		)
-		sprite.position.y = -44 + breath
+		sprite.position.y = (ActorVisual.ORIGIN.y + breath) * ActorVisual.SCALE
 
 
 func _draw_landmarks() -> void:
@@ -410,7 +435,9 @@ func _draw_landmarks() -> void:
 				map_label(label, at + Vector2(0, 29), 14)
 	for id in npc_nodes:
 		if npc_nodes[id].visible:
-			map_label(catalog.story.npcs[id].name, npc_nodes[id].position + Vector2(0, -48), 15)
+			map_label(
+				catalog.story.npcs[id].name, npc_nodes[id].position + ActorVisual.NAME_OFFSET, 15
+			)
 	if state.current_map == "home_farm":
 		for id in region.building_sites:
 			if (

@@ -14,9 +14,11 @@ import random
 import sys
 from PIL import Image, ImageDraw
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from places import PLACES, parse  # noqa: E402
-from shop_layouts import SHOP_FURNITURE  # noqa: E402
+from world.interior_layouts import build_interiors  # noqa: E402
+from world.residences import HOMES  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 MAPS = ROOT / "data" / "maps"
@@ -70,8 +72,8 @@ LINKS = [
     ("market", (47, 62), (47, 61), "南行 · 海鸥湾", "seaside", (47, 2), (47, 3), "北行 · 集市街"),
     (
         "market",
-        (14, 26),
-        (14, 27),
+        (16, 26),  # shop_store.png door is at x=183, two cells east of its anchor.
+        (16, 27),
         "进入霍克杂货店",
         "general_store",
         (14, 15),
@@ -116,6 +118,8 @@ RESERVED["town"].extend([BRIDGE_CELL, LAKE_EXIT[1], (35, 30)])
 RESERVED["lake"] = [LAKE_EXIT[0], (4, 29), FERRY[0], FERRY[1]]
 RESERVED["far_shore"] = [(4, 44), (5, 44), (6, 44), (29, 16)]
 RESERVED["home_farm"].extend([(53, 18), (46, 18)])
+for _name, _outside, _door, _residents in HOMES.values():
+    RESERVED.setdefault(_outside, []).extend([_door, (_door[0], _door[1] + 1)])
 for _key, _entry in PLACES.items():
     _map_id, _name = _key.split("/")
     RESERVED.setdefault(_map_id, []).append(parse(_entry)[:2])
@@ -299,10 +303,15 @@ def building(m, texture, door, size=(7, 3)):
 
 
 def home_yard(m, texture, dx, dy):
-    """A house with a fenced yard, gate, flower beds and planters; the door is decorative."""
+    """A residence with a fenced yard and a clear path to its linked front door."""
     building(m, texture, (dx, dy))
     fence_rect(
-        m, dx - 5, dy + 1, dx + 5, dy + 5, gaps=[(dx - 1, dy + 5), (dx, dy + 5), (dx + 1, dy + 5)]
+        m,
+        dx - 5,
+        dy + 1,
+        dx + 5,
+        dy + 5,
+        gaps=[(dx + offset, row) for row in (dy + 1, dy + 5) for offset in (-1, 0, 1)],
     )
     decor(m, "flowerbed", dx - 4, dy + 2, 3, 1)
     decor(m, "flowerbed", dx + 2, dy + 2, 3, 1)
@@ -320,47 +329,6 @@ def link(maps, a, a_cell, a_in, a_name, b, b_cell, b_in, b_name):
     )
 
 
-def shop_room(id, name, shop_id, shop_name):
-    return {
-        "id": id,
-        "name": name,
-        "width": 30,
-        "height": 19,
-        "tile_size": 32,
-        "background": id + "_background",
-        "spawn": pos(14, 14),
-        "obstacles": [[1, 1, 28, 3], [1, 4, 3, 14], [25, 4, 4, 14], [4, 16, 21, 2], [9, 5, 12, 2]]
-        + [[x, y, w, h] for _kind, x, y, w, h in SHOP_FURNITURE[id]],
-        "trees": [],
-        "props": [],
-        "stations": [point("counter", shop_name, "shop", 14, 7, shop_id=shop_id)],
-        "gather": [],
-        "debris": [],
-        "paths": [],
-        "water": [],
-    }
-
-
-def room(id, name, obstacles, stations):
-    return {
-        "id": id,
-        "name": name,
-        "width": 30,
-        "height": 19,
-        "tile_size": 32,
-        "background": id + "_background",
-        "spawn": pos(14, 14),
-        "obstacles": [[1, 1, 28, 3], [1, 4, 3, 14], [25, 4, 4, 14], [4, 16, 21, 2]] + obstacles,
-        "trees": [],
-        "props": [],
-        "stations": stations,
-        "gather": [],
-        "debris": [],
-        "paths": [],
-        "water": [],
-    }
-
-
 # ---------------------------------------------------------------------------- outdoor maps
 
 
@@ -371,7 +339,14 @@ def build_farm():
         96,
         72,
         (40, 16),
-        [[38, 15, 17, 4], [39, 18, 3, 45], [39, 61, 11, 3], [47, 61, 3, 9], [55, 16, 40, 3]],
+        [
+            [38, 15, 3, 1],
+            [38, 16, 17, 3],
+            [40, 19, 2, 44],
+            [40, 61, 10, 2],
+            [48, 61, 2, 9],
+            [55, 17, 40, 2],
+        ],
         [
             [(8, 31), (10, 27), (17, 25), (23, 28), (25, 35), (21, 41), (12, 42), (7, 37)],
             [(80, 46), (86, 43), (92, 47), (93, 58), (87, 62), (81, 58)],
@@ -466,12 +441,12 @@ def build_town():
         56,
         (3, 30),
         [
-            [1, 28, 74, 5],
-            [38, 2, 5, 49],
-            [22, 20, 5, 11],
-            [52, 20, 5, 11],
-            [22, 40, 37, 4],
-            [38, 50, 5, 5],
+            [1, 29, 74, 3],
+            [39, 2, 3, 49],
+            [24, 21, 2, 9],
+            [54, 21, 2, 9],
+            [22, 41, 37, 3],
+            [39, 50, 3, 5],
         ],
         [[(75, 1), (78, 1), (78, 27), (75, 27)], [(75, 33), (78, 33), (78, 54), (75, 54)]],
         [[21, 18, 7, 3], [51, 18, 7, 3], [38, 33, 3, 2]],
@@ -490,12 +465,14 @@ def build_town():
     )
     town["bridge_rect"] = [75, 28, 4, 5]
     building(town, "home_12", (12, 23))
-    town["paths"].append([11, 23, 3, 5])
+    town["paths"].append([12, 23, 2, 7])
     building(town, "home_13", (30, 14))
-    town["paths"].append([29, 14, 3, 14])
+    town["paths"].append([30, 14, 2, 16])
     for x in range(6, 74, 8):
         decor(town, "lamp", x, 27)
-        decor(town, "lamp", x + 4, 33)
+        # Keep the festival crowd area south of the fountain free of street furniture.
+        if not 36 <= x + 4 <= 44:
+            decor(town, "lamp", x + 4, 33)
     for fx, fy in [(35, 36), (43, 36)]:
         decor(town, "flowerbed", fx, fy, 2, 1)
     decor(town, "signpost", 37, 29)
@@ -524,7 +501,7 @@ def build_forest():
         80,
         64,
         (38, 59),
-        [[37, 3, 4, 58], [18, 20, 44, 3], [18, 39, 46, 3], [56, 21, 3, 21]],
+        [[38, 3, 2, 58], [18, 21, 44, 2], [18, 40, 46, 2], [57, 21, 2, 21]],
         [[(4, 26), (9, 22), (15, 24), (18, 32), (15, 39), (8, 42), (3, 36)]],
         [[35, 6, 7, 3]],
         [
@@ -580,7 +557,7 @@ def build_lake():
         88,
         60,
         (4, 29),
-        [[2, 27, 38, 4], [35, 27, 4, 21], [15, 45, 51, 4]],
+        [[2, 28, 37, 2], [36, 28, 2, 20], [15, 46, 51, 2]],
         [
             [
                 (17, 4),
@@ -605,7 +582,7 @@ def build_lake():
     )
     lake["lantern_area"] = [24 * 32, 7 * 32, 52 * 32, 14 * 32]
     building(lake, "home_09", (10, 36))
-    lake["paths"].append([9, 31, 3, 5])
+    lake["paths"].append([10, 30, 2, 6])
     for x in range(8, 70, 9):
         decor(lake, "lamp", x, 44)
     decor(lake, "signpost", 5, 27)
@@ -626,13 +603,13 @@ def build_market():
         64,
         (47, 5),
         [
-            [1, 30, 94, 4],
-            [46, 1, 4, 62],
+            [1, 30, 94, 3],
+            [46, 1, 3, 62],
             [41, 26, 14, 12],
             [6, 20, 86, 2],
-            [20, 20, 3, 10],
-            [38, 20, 3, 10],
-            [90, 20, 3, 10],
+            [21, 20, 2, 10],
+            [39, 20, 2, 10],
+            [90, 20, 2, 10],
         ],
         [],
         [],
@@ -647,7 +624,7 @@ def build_market():
         ("shop_tea", 80),
     ]:
         building(market, texture, (dx, 26))
-        market["paths"].append([dx - 1, 26, 3, 4])
+        market["paths"].append([16 if texture == "shop_store" else dx, 26, 2, 4])
     for dx, texture in [
         (10, "home_01"),
         (24, "home_02"),
@@ -694,7 +671,7 @@ def build_ranch():
         56,
         (4, 25),
         [
-            [1, 24, 46, 4],
+            [1, 24, 46, 3],
             [1, 7, 24, 3],
             [22, 7, 3, 20],
             [36, 15, 3, 10],
@@ -743,7 +720,7 @@ def build_seaside():
         96,
         64,
         (47, 5),
-        [[1, 12, 92, 3], [46, 1, 4, 11], [44, 15, 8, 39], [8, 15, 3, 14], [84, 15, 3, 12]],
+        [[1, 12, 92, 3], [46, 1, 3, 11], [44, 15, 8, 39], [8, 15, 3, 14], [84, 15, 3, 12]],
         [sea_left, sea_right, sea_bottom],
         [[84, 26, 2, 2]],
         [
@@ -875,39 +852,45 @@ def build_all():
         "mine_2": build_mine(2),
         "mine_3": build_mine(3),
     }
-    maps["cottage"] = room(
-        "cottage",
-        "农舍",
-        [[4, 4, 4, 3], [20, 4, 4, 2], [12, 8, 6, 3], [4, 9, 2, 3], [23, 7, 2, 7]],
-        [
-            point("sleep", "床 / 休息", "bed", 6, 8),
-            point("letter", "祖母的信", "letter", 21, 6),
-            point("chest", "储物箱", "storage", 7, 10),
-            point("kitchen", "厨房 / 烹饪", "kitchen", 22, 10),
-        ],
-    )
-    maps["inn"] = room(
-        "inn",
-        "玛戈的小酒馆",
-        [[7, 7, 4, 3], [18, 7, 4, 3], [24, 5, 1, 5]],
-        [point("kitchen", "灶台 / 烹饪", "kitchen", 23, 8)],
-    )
-    maps["workshop"] = room(
-        "workshop",
-        "卡弗木工坊",
-        [[7, 6, 5, 4], [18, 6, 5, 4], [13, 4, 5, 1]],
-        [
-            point("builder", "建造台", "shop", 15, 6, shop_id="builder"),
-        ],
-    )
-    maps["general_store"] = shop_room("general_store", "霍克杂货店", "general", "格雷戈尔的柜台")
-    maps["blacksmith"] = shop_room("blacksmith", "布兰尼根铁匠铺", "smith", "马格纳斯的炉台")
-    maps["clinic"] = shop_room("clinic", "芦苇渡诊所", "clinic", "安布罗斯的诊台")
-    maps["tea_house"] = shop_room("tea_house", "铜壶茶室", "tea", "茶室柜台")
-    maps["tackle_shop"] = shop_room("tackle_shop", "托比渔具店", "tackle", "托比的渔具柜")
+    interiors, _places = build_interiors()
+    maps.update(interiors)
 
     for a, a_cell, a_in, a_name, b, b_cell, b_in, b_name in LINKS:
+        if b in interiors:
+            b_cell = maps[b]["entry"]
+            b_in = (b_cell[0], b_cell[1] - 1)
         link(maps, a, a_cell, a_in, a_name, b, b_cell, b_in, b_name)
+    for ident, (name, outside, door, _residents) in HOMES.items():
+        if outside in interiors:
+            door = maps[outside]["stairs_entry"]
+            maps[ident]["entry_style"] = "stairs"
+        inside = maps[ident]["entry"]
+        link(
+            maps,
+            outside,
+            door,
+            (door[0], door[1] + 1),
+            "进入" + name,
+            ident,
+            inside,
+            (inside[0], inside[1] - 1),
+            "离开" + name,
+        )
+    for ident, door in [("school", (12, 23)), ("town_hall", (30, 14))]:
+        inside = maps[ident]["entry"]
+        link(
+            maps,
+            "town",
+            door,
+            (door[0], door[1] + 1),
+            "进入" + maps[ident]["name"],
+            ident,
+            inside,
+            (inside[0], inside[1] - 1),
+            "回到镇上",
+        )
+    for region in maps.values():
+        region.setdefault("environment", "cave" if region.get("biome") == "cave" else "exterior")
     maps["lake"]["stations"].append(
         point(
             "to_town",
@@ -969,6 +952,10 @@ def verify(maps):
             problems.append("%s: unknown map" % key)
         elif blocked_cell(maps[map_id], x, y):
             problems.append("place %s (%d, %d) is on a blocked cell" % (key, x, y))
+    plaza = json.loads((ROOT / "data/calendar.json").read_text())["plaza"]
+    for x, y in plaza["cells"]:
+        if blocked_cell(maps[plaza["map"]], x, y):
+            problems.append(f"festival stand ({x}, {y}) is blocked")
     for m in maps.values():
         for s in m["stations"]:
             x, y = s["cell"]
@@ -1014,6 +1001,7 @@ def main():
         "tea_house",
         "tackle_shop",
     ]
+    order += [ident for ident in maps if ident not in order]
     for map_id in order:
         (MAPS / (map_id + ".json")).write_text(
             json.dumps(maps[map_id], ensure_ascii=False, indent=2) + "\n", encoding="utf8"

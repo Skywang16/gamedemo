@@ -98,10 +98,10 @@ func _build() -> void:
 				)
 		)
 		pet.disabled = a.petted
-	add_pager(self, Vector2(36, panel_size.y - 62), panel_size.x - 300, page, pages, _turn)
+	add_pager(self, Vector2(36, footer_y(panel_size)), panel_size.x - 300, page, pages, _turn)
 	_button(
 		"离开",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
 

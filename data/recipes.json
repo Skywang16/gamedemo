@@ -2877,5 +2877,26 @@
       "porcini": 1
     },
     "level": 3
+  },
+  {
+    "id": "cheese",
+    "needs": {
+      "milk": 2
+    },
+    "level": 1
+  },
+  {
+    "id": "goat_cheese",
+    "needs": {
+      "goat_milk": 2
+    },
+    "level": 2
+  },
+  {
+    "id": "mayonnaise",
+    "needs": {
+      "egg": 2
+    },
+    "level": 1
   }
 ]

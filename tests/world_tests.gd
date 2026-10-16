@@ -116,11 +116,13 @@ func test_timelines() -> void:
 						)
 	var planner = plan(2)
 	var early = planner.where("hazel", 6.0 * 60.0 + 10.0)
-	check(early.present and early.hidden, "hazel is indoors at dawn")
+	check(
+		early.present and not early.hidden and early.map == "hazel_home", "hazel is indoors at dawn"
+	)
 	var late = 0
 	for npc_id in catalog.story.npcs:
 		var info = planner.where(npc_id, 25.0 * 60.0)
-		if not info.present or info.hidden:
+		if not info.present or catalog.region(info.map).environment == "interior":
 			late += 1
 	check(late >= 24, "almost everyone is home or away by one in the morning (%d)" % late)
 
@@ -171,6 +173,15 @@ func test_festival_crowd() -> void:
 	var plaza = {}
 	for i in 40:
 		plaza[catalog.calendar.plaza_cell(i)] = true
+	for cell in plaza:
+		check(
+			not catalog.blocked(cell, catalog.calendar.plaza_map),
+			"festival stand is walkable: " + str(cell)
+		)
+		check(
+			planner.route("town", Vector2i(3, 30), catalog.calendar.plaza_map, cell) != null,
+			"festival stand is reachable: " + str(cell)
+		)
 	var gathered = 0
 	for npc_id in catalog.story.npcs:
 		var info = planner.where(npc_id, 11.0 * 60.0)

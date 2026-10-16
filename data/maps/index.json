@@ -18,6 +18,23 @@
     "blacksmith",
     "clinic",
     "tea_house",
-    "tackle_shop"
+    "tackle_shop",
+    "school",
+    "town_hall",
+    "hazel_home",
+    "hawk_home",
+    "pemberton_home",
+    "felix_home",
+    "quill_home",
+    "amara_home",
+    "theo_home",
+    "ranch_home",
+    "ranger_home",
+    "wren_home",
+    "ferry_home",
+    "carver_loft",
+    "inn_lodging",
+    "smith_home",
+    "clinic_home"
   ]
 }

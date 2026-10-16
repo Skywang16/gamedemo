@@ -29,6 +29,7 @@ from content.build_content import build  # noqa: E402
 from content.reach import Reach, load_maps  # noqa: E402
 from content.schedules import SCHEDULES  # noqa: E402
 from places import PLACES, parse  # noqa: E402
+from world.residences import NPC_HOME  # noqa: E402
 
 CONDITIONS = {
     "birthday",
@@ -57,6 +58,13 @@ def parse_stops(npc, index, rule, problems):
             continue
         minute = int(m.group(1)) * 60 + int(m.group(2))
         place = m.group(3)
+        # Home stops now lead through actual entrances to each resident's own room.
+        old_home = SCHEDULES[npc][-1]["stops"][-1].split(" | ")[0].split(" ")[1]
+        if place == old_home and not rule["when"].get("spouse"):
+            place = NPC_HOME[npc] + "/bed_" + npc
+        place = {"town/school_door": "school/teacher", "town/hall_door": "town_hall/records"}.get(
+            place, place
+        )
         if minute <= last:
             problems.append("%s rule %d: times must increase at %r" % (npc, index, line))
         if minute < 360 or minute >= 26 * 60:

@@ -10,7 +10,7 @@ signal sound(name: String)
 
 const TEXT_SPEED = 46.0
 const CARD_HOLD = 2.0
-const BOX = Rect2(90, 586, 1100, 196)
+const BOX = Rect2(90, 566, 1100, 198)
 
 var state: FarmState
 var stories: StoryRules
@@ -117,7 +117,7 @@ func _build() -> void:
 	plate_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	letter_icon = ui_icon("letter", Rect2(BOX.position.x + 28, BOX.position.y + 52, 64, 64), self)
 	body = _label(
-		"", Rect2(BOX.position.x + 40, BOX.position.y + 26, BOX.size.x - 80, 122), 23, INK, true
+		"", Rect2(BOX.position.x + 40, BOX.position.y + 26, BOX.size.x - 80, 108), 23, INK, true
 	)
 	counter = _label(
 		"", Rect2(BOX.position.x + 40, BOX.position.y + BOX.size.y - 36, 160, 26), 15, MUTED

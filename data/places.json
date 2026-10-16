@@ -2,7 +2,7 @@
  "home_farm/hazel_house": [
   30,
   17,
-  true
+  false
  ],
  "home_farm/stall": [
   52,
@@ -107,17 +107,17 @@
  "town/inn_door": [
   24,
   22,
-  true
+  false
  ],
  "town/workshop_door": [
   54,
   22,
-  true
+  false
  ],
  "town/school_door": [
   12,
   23,
-  true
+  false
  ],
  "town/school_yard": [
   12,
@@ -127,7 +127,7 @@
  "town/hall_door": [
   30,
   14,
-  true
+  false
  ],
  "town/hall_steps": [
   30,
@@ -177,52 +177,52 @@
  "market/store_door": [
   14,
   27,
-  true
+  false
  ],
  "market/smith_door": [
   28,
   27,
-  true
+  false
  ],
  "market/clinic_door": [
   66,
   27,
-  true
+  false
  ],
  "market/tea_door": [
   80,
   27,
-  true
+  false
  ],
  "market/home_10": [
   10,
   22,
-  true
+  false
  ],
  "market/home_24": [
   24,
   22,
-  true
+  false
  ],
  "market/home_36": [
   36,
   22,
-  true
+  false
  ],
  "market/home_60": [
   60,
   22,
-  true
+  false
  ],
  "market/home_72": [
   72,
   22,
-  true
+  false
  ],
  "market/home_84": [
   84,
   22,
-  true
+  false
  ],
  "market/back_w": [
   14,
@@ -302,7 +302,7 @@
  "ranch/home": [
   14,
   18,
-  true
+  false
  ],
  "ranch/paddock_a": [
   50,
@@ -367,7 +367,7 @@
  "seaside/maeve_house": [
   70,
   11,
-  true
+  false
  ],
  "seaside/beach_w": [
   20,
@@ -407,7 +407,7 @@
  "forest/lodge": [
   46,
   50,
-  true
+  false
  ],
  "forest/gate": [
   38,
@@ -452,7 +452,7 @@
  "lake/hut": [
   10,
   36,
-  true
+  false
  ],
  "lake/west_gate": [
   4,
@@ -475,168 +475,578 @@
   false
  ],
  "cottage/bed_side": [
-  9,
-  8,
+  3,
+  6,
   false
  ],
  "cottage/table": [
-  14,
-  11,
+  13,
+  15,
   false
  ],
  "cottage/kitchen_side": [
-  20,
-  12,
+  15,
+  5,
   false
  ],
  "cottage/window": [
-  10,
-  13,
+  7,
+  7,
   false
  ],
  "general_store/behind": [
-  14,
-  4,
+  5,
+  5,
   false
  ],
  "general_store/behind_r": [
-  17,
-  4,
+  7,
+  5,
   false
  ],
  "general_store/front": [
-  12,
-  8,
-  false
- ],
- "general_store/shelf": [
   6,
   8,
   false
  ],
- "general_store/table": [
+ "general_store/shelf": [
+  3,
   8,
-  12,
+  false
+ ],
+ "general_store/table": [
+  6,
+  14,
   false
  ],
  "blacksmith/behind": [
-  14,
-  4,
+  5,
+  5,
   false
  ],
  "blacksmith/forge": [
-  10,
-  4,
+  17,
+  6,
   false
  ],
  "blacksmith/front": [
-  12,
+  6,
   8,
   false
  ],
  "blacksmith/table": [
+  6,
   16,
-  12,
   false
  ],
  "clinic/behind": [
-  14,
-  4,
+  5,
+  5,
   false
  ],
  "clinic/behind_r": [
-  18,
-  4,
+  7,
+  5,
   false
  ],
  "clinic/front": [
-  12,
+  6,
   8,
   false
  ],
  "clinic/bed": [
-  22,
-  12,
+  17,
+  6,
   false
  ],
  "tea_house/behind": [
-  14,
-  4,
+  5,
+  5,
   false
  ],
  "tea_house/behind_r": [
-  18,
-  4,
+  7,
+  5,
   false
  ],
  "tea_house/front": [
-  12,
+  6,
   8,
   false
  ],
  "tea_house/table_a": [
-  11,
+  5,
   12,
   false
  ],
  "tea_house/table_b": [
-  18,
+  9,
   12,
   false
  ],
  "tackle_shop/behind": [
-  14,
-  4,
+  5,
+  5,
   false
  ],
  "tackle_shop/behind_l": [
-  11,
   4,
+  5,
   false
  ],
  "tackle_shop/front": [
-  12,
+  6,
   8,
   false
  ],
  "tackle_shop/table": [
-  20,
-  12,
+  6,
+  13,
   false
  ],
  "inn/counter": [
-  14,
+  6,
   5,
   false
  ],
  "inn/table_a": [
   5,
-  9,
+  13,
   false
  ],
  "inn/table_b": [
-  16,
-  9,
+  12,
+  13,
   false
  ],
  "inn/window": [
-  6,
-  12,
+  3,
+  15,
   false
  ],
  "workshop/bench": [
-  14,
-  9,
+  7,
+  12,
   false
  ],
  "workshop/loom": [
-  8,
-  11,
+  19,
+  7,
   false
  ],
  "workshop/table": [
+  8,
+  15,
+  false
+ ],
+ "inn/behind": [
+  5,
+  5,
+  false
+ ],
+ "inn/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "inn/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "inn/front": [
+  6,
+  8,
+  false
+ ],
+ "inn/shelf": [
+  3,
+  8,
+  false
+ ],
+ "inn/table": [
+  6,
+  17,
+  false
+ ],
+ "workshop/behind": [
+  5,
+  5,
+  false
+ ],
+ "workshop/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "workshop/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "workshop/front": [
+  6,
+  8,
+  false
+ ],
+ "workshop/shelf": [
+  3,
+  8,
+  false
+ ],
+ "general_store/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "blacksmith/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "blacksmith/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "blacksmith/shelf": [
+  3,
+  8,
+  false
+ ],
+ "clinic/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "clinic/shelf": [
+  3,
+  8,
+  false
+ ],
+ "clinic/table": [
+  6,
   16,
+  false
+ ],
+ "tea_house/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "tea_house/shelf": [
+  3,
+  8,
+  false
+ ],
+ "tea_house/table": [
+  6,
+  14,
+  false
+ ],
+ "tackle_shop/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "tackle_shop/shelf": [
+  3,
+  8,
+  false
+ ],
+ "school/behind": [
+  5,
+  5,
+  false
+ ],
+ "school/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "school/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "school/front": [
+  6,
+  8,
+  false
+ ],
+ "school/shelf": [
+  3,
+  8,
+  false
+ ],
+ "school/table": [
+  6,
+  15,
+  false
+ ],
+ "school/teacher": [
+  6,
+  5,
+  false
+ ],
+ "town_hall/behind": [
+  5,
+  5,
+  false
+ ],
+ "town_hall/behind_r": [
+  7,
+  5,
+  false
+ ],
+ "town_hall/behind_l": [
+  4,
+  5,
+  false
+ ],
+ "town_hall/front": [
+  6,
+  8,
+  false
+ ],
+ "town_hall/shelf": [
+  3,
+  8,
+  false
+ ],
+ "town_hall/table": [
+  6,
+  17,
+  false
+ ],
+ "town_hall/records": [
+  20,
+  6,
+  false
+ ],
+ "hazel_home/bed_hazel": [
+  3,
+  6,
+  false
+ ],
+ "hazel_home/living": [
+  5,
+  15,
+  false
+ ],
+ "hawk_home/bed_gregor": [
+  3,
+  6,
+  false
+ ],
+ "hawk_home/bed_dolly": [
+  14,
+  6,
+  false
+ ],
+ "hawk_home/bed_ezra": [
+  3,
+  14,
+  false
+ ],
+ "hawk_home/bed_poppy": [
+  14,
+  14,
+  false
+ ],
+ "hawk_home/living": [
+  5,
+  22,
+  false
+ ],
+ "pemberton_home/bed_augustus": [
+  3,
+  6,
+  false
+ ],
+ "pemberton_home/bed_clara": [
   12,
+  6,
+  false
+ ],
+ "pemberton_home/living": [
+  5,
+  15,
+  false
+ ],
+ "felix_home/bed_felix": [
+  3,
+  6,
+  false
+ ],
+ "felix_home/living": [
+  5,
+  15,
+  false
+ ],
+ "quill_home/bed_odette": [
+  3,
+  6,
+  false
+ ],
+ "quill_home/bed_barnaby": [
+  14,
+  6,
+  false
+ ],
+ "quill_home/bed_colette": [
+  3,
+  14,
+  false
+ ],
+ "quill_home/living": [
+  5,
+  22,
+  false
+ ],
+ "amara_home/bed_amara": [
+  3,
+  6,
+  false
+ ],
+ "amara_home/living": [
+  5,
+  15,
+  false
+ ],
+ "theo_home/bed_theo": [
+  3,
+  6,
+  false
+ ],
+ "theo_home/living": [
+  5,
+  15,
+  false
+ ],
+ "ranch_home/bed_rosa": [
+  3,
+  6,
+  false
+ ],
+ "ranch_home/bed_nora": [
+  12,
+  6,
+  false
+ ],
+ "ranch_home/living": [
+  5,
+  15,
+  false
+ ],
+ "ranger_home/bed_jonas": [
+  3,
+  6,
+  false
+ ],
+ "ranger_home/living": [
+  5,
+  15,
+  false
+ ],
+ "wren_home/bed_wren": [
+  3,
+  6,
+  false
+ ],
+ "wren_home/living": [
+  5,
+  15,
+  false
+ ],
+ "ferry_home/bed_maeve": [
+  3,
+  6,
+  false
+ ],
+ "ferry_home/bed_toby": [
+  12,
+  6,
+  false
+ ],
+ "ferry_home/living": [
+  5,
+  15,
+  false
+ ],
+ "carver_loft/bed_eleanor": [
+  3,
+  6,
+  false
+ ],
+ "carver_loft/bed_silas": [
+  14,
+  6,
+  false
+ ],
+ "carver_loft/bed_roz": [
+  3,
+  14,
+  false
+ ],
+ "carver_loft/living": [
+  5,
+  22,
+  false
+ ],
+ "inn_lodging/bed_margot": [
+  3,
+  6,
+  false
+ ],
+ "inn_lodging/bed_milo": [
+  14,
+  6,
+  false
+ ],
+ "inn_lodging/bed_leo": [
+  3,
+  14,
+  false
+ ],
+ "inn_lodging/bed_veronica": [
+  14,
+  14,
+  false
+ ],
+ "inn_lodging/living": [
+  5,
+  22,
+  false
+ ],
+ "smith_home/bed_magnus": [
+  3,
+  6,
+  false
+ ],
+ "smith_home/bed_declan": [
+  12,
+  6,
+  false
+ ],
+ "smith_home/living": [
+  5,
+  15,
+  false
+ ],
+ "clinic_home/bed_ambrose": [
+  3,
+  6,
+  false
+ ],
+ "clinic_home/bed_juniper": [
+  12,
+  6,
+  false
+ ],
+ "clinic_home/living": [
+  5,
+  15,
   false
  ]
 }

@@ -6,14 +6,6 @@ signal closed
 signal cutscene_sound(name: String)
 
 const WIDE = Rect2(130, 50, 1020, 700)
-const CHAPTER_NAMES = [
-	"第一章 · 灯夜重燃",
-	"第二章 · 留下的人",
-	"第三章 · 水从哪里来",
-	"第四章 · 写给明年的信",
-	"终章 · 新的河灯",
-]
-
 var state: FarmState
 var stories: StoryRules
 var shop_rules: ShopRules
@@ -214,77 +206,11 @@ func show_settings(current: GameSettings) -> void:
 
 
 func show_journal() -> void:
-	open_modal("journal", "故事手记", "", Rect2(150, 70, 980, 660))
-	var current = stories.quest(state)
-	var chapter = int(current.chapter)
-	_label(CHAPTER_NAMES[chapter - 1], Rect2(300, 24, 620, 40), 22, GOLD, false, modal_panel)
-	_panel(Rect2(392, 84, 2, 470), Color("cba365"), modal_panel)
-	var row = 0
-	for i in range(catalog.story.quests.size()):
-		var q = catalog.story.quests[i]
-		if int(q.chapter) != chapter:
-			continue
-		var mark = (
-			"✓" if i < state.narrative.stage else ("›" if i == state.narrative.stage else "·")
-		)
-		_label(
-			"%s  %s" % [mark, q.title],
-			Rect2(36, 90 + row * 42, 350, 34),
-			18,
-			INK if i <= state.narrative.stage else MUTED,
-			false,
-			modal_panel
-		)
-		row += 1
-	_label(current.title, Rect2(430, 90, 500, 44), 28, INK, false, modal_panel)
-	_label(current.where, Rect2(430, 140, 500, 32), 17, GOLD, false, modal_panel)
-	_label(current.hint, Rect2(430, 180, 500, 110), 20, INK, true, modal_panel)
-	var y = 300
-	if state.day < int(current.available_day):
-		_label(
-			"%s起可以进行" % catalog.calendar.label(int(current.available_day)),
-			Rect2(430, y, 500, 30),
-			17,
-			MUTED,
-			false,
-			modal_panel
-		)
-		y += 36
-	for id in current.friendship:
-		_label(
-			(
-				"%s 好感 %d / %d"
-				% [catalog.story.npcs[id].name, state.relationships[id], current.friendship[id]]
-			),
-			Rect2(430, y, 500, 32),
-			19,
-			INK,
-			false,
-			modal_panel
-		)
-		y += 38
-	for id in current.needs:
-		icon(catalog.items[id].icon, Rect2(430, y, 38, 38), modal_panel)
-		_label(
-			"%s   %d / %d" % [catalog.items[id].name, state.inventory[id], current.needs[id]],
-			Rect2(480, y, 440, 38),
-			20,
-			INK,
-			false,
-			modal_panel
-		)
-		y += 44
-	_label("灯", Rect2(430, 520, 40, 30), 18, MUTED, false, modal_panel)
-	for i in range(6):
-		var lit = stories.lamp_lit(state, i + 1)
-		_panel(
-			Rect2(466 + i * 34, 524, 22, 22),
-			Color("f6d890") if lit else Color("5a4a3a"),
-			modal_panel
-		)
-	_button(
-		"合上手记", Rect2(640, 580, 280, 48), func(): action_requested.emit("close", {}), modal_panel
-	)
+	open_modal("journal", "", "", Rect2(150, 70, 980, 660))
+	var panel = JournalPanel.new()
+	modal_panel.add_child(panel)
+	panel.open(catalog, state, stories, Vector2(980, 660))
+	_forward(panel)
 
 
 func show_map(places: Array) -> void:
@@ -311,7 +237,7 @@ func show_map(places: Array) -> void:
 
 func show_npc(id: String, line: String, event: String, activity: String) -> void:
 	var npc = catalog.story.npcs[id]
-	open_modal("npc", "", "", Rect2(110, 360, 1060, 410))
+	open_modal("npc", "", "", Rect2(110, 330, 1060, 440))
 	_frame(Rect2(24, 30, 142, 172), "inset", modal_panel)
 	icon(npc.portrait, Rect2(35, 40, 120, 146), modal_panel)
 	_label(npc.name, Rect2(192, 20, 300, 42), 27, INK, false, modal_panel)
@@ -366,7 +292,7 @@ func show_npc(id: String, line: String, event: String, activity: String) -> void
 			button.disabled = true
 			button.tooltip_text = choice[2].blocker
 	if not blocker.is_empty() and stage in ["", "dating"]:
-		_label(blocker, Rect2(192, 360, 824, 30), 15, MUTED, false, modal_panel)
+		_label(blocker, Rect2(192, 386, 824, 30), 15, MUTED, false, modal_panel)
 
 
 func show_gifts(id: String, page: int = 0) -> void:

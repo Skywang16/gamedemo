@@ -49,9 +49,12 @@ test: import
 	$(GODOT) --headless --script res://tests/rules_tests.gd
 	$(GODOT) --headless --script res://tests/story_tests.gd
 	$(GODOT) --headless --script res://tests/combat_tests.gd
+	$(GODOT) --headless --audio-driver Dummy --script res://tests/interior_tests.gd -- --save-dir=user://interior-test-$$(uuidgen)
+	$(GODOT) --headless --audio-driver Dummy --script res://tests/scale_smoke.gd -- --save-dir=user://ui-test-scale-$$(uuidgen)
 
 test-ui: import
 	$(GODOT) --script res://tests/ui_smoke.gd -- --save-dir=user://ui-test-$$(uuidgen)
+	$(GODOT) --script res://tests/ui_regressions.gd -- --save-dir=user://ui-test-regression-$$(uuidgen)
 	$(GODOT) --script res://tests/animation_smoke.gd -- --save-dir=user://ui-test-animation-$$(uuidgen)
 	$(GODOT) --script res://tests/weather_smoke.gd -- --save-dir=user://ui-test-weather-$$(uuidgen)
 	$(GODOT) --script res://tests/story_smoke.gd -- --save-dir=user://ui-test-story-$$(uuidgen)

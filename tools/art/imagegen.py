@@ -44,42 +44,12 @@ REFERENCE_NOTE = (
     " The attached reference image is the STYLE BOARD of this game. Copy its art style exactly: the same outline weight, "
     "pixel size, colour saturation, cel shading and cheerful daylight look. Do not copy its objects, only its style."
 )
-BOARD = [
-    "house",
-    "inn",
-    "home_05",
-    "home_09",
-    "shop_tea",
-    "tree_0",
-    "tree_1",
-    "rock_0",
-    "ground_grass_a",
-    "ground_cobble",
-]
 
 
 def style_board() -> str:
-    """One data-URL picture of approved game art, sent with every request so all assets share one look."""
-    art = Path(__file__).resolve().parents[2] / "assets/art"
-    width = 1600
-    board = Image.new("RGB", (width, 1400), (110, 160, 80))
-    x = y = 8
-    row_h = 0
-    for name in BOARD:
-        im = Image.open(art / (name + ".png")).convert("RGBA")
-        scale = 2
-        im = im.resize((im.width * scale, im.height * scale), Image.NEAREST)
-        if x + im.width > width:
-            x, y, row_h = 8, y + row_h + 8, 0
-        board.paste(im, (x, y), im)
-        x += im.width + 8
-        row_h = max(row_h, im.height)
-    board = board.crop((0, 0, width, y + row_h + 8))
-    RAW.mkdir(parents=True, exist_ok=True)
-    board.save(RAW / "style_board.png")
-    buf = io.BytesIO()
-    board.save(buf, "PNG", optimize=True)
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+    """Read a versioned, immutable reference; never silently derive a new look mid-batch."""
+    fixed = Path(__file__).resolve().parents[2] / "assets/reference/interior_style_v1.png"
+    return "data:image/png;base64," + base64.b64encode(fixed.read_bytes()).decode()
 
 
 def key() -> str:
@@ -144,9 +114,33 @@ def generate(
             time.sleep(8 * (attempt + 1))
             continue
         task = sub["data"][0]["task_id"]
-        while True:
+        RAW.mkdir(parents=True, exist_ok=True)
+        (RAW / (task + ".request.json")).write_text(
+            json.dumps(
+                {
+                    "task_id": task,
+                    "model": model,
+                    "quality": quality,
+                    "size": size,
+                    "prompt": body["prompt"],
+                },
+                ensure_ascii=False,
+            )
+        )
+        print("Image task submitted:", task, flush=True)
+        deadline = time.monotonic() + 900
+        while time.monotonic() < deadline:
             time.sleep(6)
-            info = call("GET", "/v1/tasks/" + task)["data"]
+            try:
+                response = call("GET", "/v1/tasks/" + task)
+            except (urllib.error.URLError, TimeoutError):
+                continue  # Query the same accepted job; never resubmit after a polling timeout.
+            if "data" not in response:
+                last = response
+                if response.get("http") not in {429, 500, 502, 503, 504}:
+                    raise RuntimeError(f"Unable to query accepted image task {task}: {response}")
+                continue
+            info = response["data"]
             if info["status"] == "done":
                 RAW.mkdir(parents=True, exist_ok=True)
                 (RAW / (task + ".json")).write_text(json.dumps(info, ensure_ascii=False))
@@ -156,6 +150,10 @@ def generate(
             if info["status"] == "error":
                 last = info["error"]
                 break
+        else:
+            raise TimeoutError(
+                f"Generation task {task} is still pending; inspect it before retrying"
+            )
         time.sleep(8 * (attempt + 1))
     raise RuntimeError(f"generation failed after {attempts} tries: {last}")
 

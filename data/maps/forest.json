@@ -13,27 +13,27 @@
   "path_style": "dirt",
   "paths": [
     [
-      37,
+      38,
       3,
-      4,
+      2,
       58
     ],
     [
       18,
-      20,
+      21,
       44,
-      3
+      2
     ],
     [
       18,
-      39,
+      40,
       46,
-      3
+      2
     ],
     [
-      56,
+      57,
       21,
-      3,
+      2,
       21
     ],
     [
@@ -495,6 +495,20 @@
         1040,
         1456
       ]
+    },
+    {
+      "id": "to_ranger_home",
+      "name": "进入约纳斯的林间小屋",
+      "kind": "exit",
+      "cell": [
+        46,
+        50
+      ],
+      "destination": "ranger_home",
+      "arrival": [
+        304,
+        496
+      ]
     }
   ],
   "trees": [
@@ -931,6 +945,10 @@
       26
     ],
     [
+      28,
+      52
+    ],
+    [
       29,
       8
     ],
@@ -1033,10 +1051,6 @@
     [
       44,
       15
-    ],
-    [
-      44,
-      54
     ],
     [
       45,
@@ -1656,12 +1670,20 @@
       "id": "forage1",
       "table": "forest",
       "cell": [
+        56,
+        32
+      ]
+    },
+    {
+      "id": "forage2",
+      "table": "forest",
+      "cell": [
         11,
         42
       ]
     },
     {
-      "id": "forage2",
+      "id": "forage3",
       "table": "forest",
       "cell": [
         27,
@@ -1669,7 +1691,7 @@
       ]
     },
     {
-      "id": "forage3",
+      "id": "forage4",
       "table": "forest",
       "cell": [
         26,
@@ -1677,7 +1699,7 @@
       ]
     },
     {
-      "id": "forage4",
+      "id": "forage5",
       "table": "forest",
       "cell": [
         43,
@@ -1685,7 +1707,7 @@
       ]
     },
     {
-      "id": "forage5",
+      "id": "forage6",
       "table": "forest",
       "cell": [
         53,
@@ -1693,7 +1715,7 @@
       ]
     },
     {
-      "id": "forage6",
+      "id": "forage7",
       "table": "forest",
       "cell": [
         59,
@@ -1701,7 +1723,7 @@
       ]
     },
     {
-      "id": "forage7",
+      "id": "forage8",
       "table": "forest",
       "cell": [
         29,
@@ -1709,7 +1731,7 @@
       ]
     },
     {
-      "id": "forage8",
+      "id": "forage9",
       "table": "forest",
       "cell": [
         69,
@@ -1717,7 +1739,7 @@
       ]
     },
     {
-      "id": "forage9",
+      "id": "forage10",
       "table": "forest",
       "cell": [
         29,
@@ -1725,7 +1747,7 @@
       ]
     },
     {
-      "id": "forage10",
+      "id": "forage11",
       "table": "forest",
       "cell": [
         43,
@@ -1733,19 +1755,11 @@
       ]
     },
     {
-      "id": "forage11",
-      "table": "forest",
-      "cell": [
-        36,
-        18
-      ]
-    },
-    {
       "id": "forage12",
       "table": "forest",
       "cell": [
-        61,
-        46
+        56,
+        39
       ]
     },
     {
@@ -1753,50 +1767,50 @@
       "table": "forest",
       "cell": [
         36,
-        27
+        18
       ]
     },
     {
       "id": "forage14",
       "table": "forest",
       "cell": [
-        35,
-        45
+        61,
+        46
       ]
     },
     {
       "id": "forage15",
       "table": "forest",
       "cell": [
-        9,
-        13
+        36,
+        27
       ]
     }
   ],
   "debris": [],
   "no_plant": [
     [
-      37,
+      38,
       3,
-      4,
+      2,
       58
     ],
     [
       18,
-      20,
+      21,
       44,
-      3
+      2
     ],
     [
       18,
-      39,
+      40,
       46,
-      3
+      2
     ],
     [
-      56,
+      57,
       21,
-      3,
+      2,
       21
     ],
     [
@@ -1922,5 +1936,6 @@
       "h": 1
     }
   ],
-  "fences": []
+  "fences": [],
+  "environment": "exterior"
 }

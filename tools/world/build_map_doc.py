@@ -36,15 +36,11 @@ BIOMES = {"meadow": "草地", "beach": "沙滩", "cave": "洞窟"}
 OUTDOOR = ["home_farm", "town", "market", "ranch", "seaside", "forest", "lake", "far_shore"]
 MINES = ["mine_1", "mine_2", "mine_3"]
 INDOOR = [
-    "cottage",
-    "inn",
-    "workshop",
-    "general_store",
-    "blacksmith",
-    "clinic",
-    "tea_house",
-    "tackle_shop",
+    name
+    for name in json.loads((MAPS / "index.json").read_text())["maps"]
+    if json.loads((MAPS / (name + ".json")).read_text())["environment"] == "interior"
 ]
+
 SPOT = {
     "pond": "池塘",
     "stream": "溪流",
@@ -145,7 +141,7 @@ def main():
                 lines.append("| %s | %s | %s |" % (maps[name]["name"], st["name"], st["kind"]))
     lines += [
         "",
-        "站点类型：`bed` 床（休息）、`letter` 祖母的信、`storage` 储物箱、`kitchen` 灶台、`shop` 柜台或摊位、"
+        "站点类型：`inspect` 个人物件（查看）、`bed` 床（休息）、`letter` 祖母的信、`storage` 储物箱、`kitchen` 灶台、`shop` 柜台或摊位、"
         "`shipping` 收货箱、`board` 告示板、`bridge` 东桥、`lantern` 灯台、`ferry` 摆渡船（灯四亮后开放）、`story` 剧情地点（旧灯龛）。村民、采集点、鸡舍 / 谷仓门口"
         "是运行时加入的站点。",
         "",
@@ -165,8 +161,8 @@ def main():
         "",
         "## 6. 室内",
         "",
-        "每个室内地图都是 30×19 格的独立房间；商店的柜台在中部，店主站在柜台后（柜台前一格是交互点）。"
-        "进出靠房门站点，门口返回上一张地图的同一扇门。",
+        "25 张室内按用途采用不同尺寸。住宅包含个人卧室、走廊和共享起居室；营业场所包含前厅、营业区和后间。"
+        "房门和楼梯双向连接；30 位村民回到真实房间，个人物件可按 E 查看。家具以独立精灵排序，地板和墙体由同一份平面图生成；大房间镜头跟随玩家。",
         "",
         "## 7. 钓鱼水域",
         "",

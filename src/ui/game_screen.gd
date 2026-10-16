@@ -7,6 +7,8 @@ const INK = Color("59391f")
 const MUTED = Color("8b6845")
 const GOLD = Color("a7652c")
 const LIGHT = Color("fff0c3")
+const PANEL_MARGIN = 36.0
+const FOOTER_HEIGHT = 46.0
 
 var catalog: ContentCatalog
 var font: Font
@@ -54,10 +56,10 @@ func ui_icon(id: String, rect: Rect2, parent: Node) -> TextureRect:
 
 func _picture(path: String, rect: Rect2, parent: Node) -> TextureRect:
 	var picture = TextureRect.new()
+	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	picture.texture = load(path)
 	picture.position = rect.position
 	picture.size = rect.size
-	picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	picture.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -114,6 +116,8 @@ func _label(
 func _button(text: String, rect: Rect2, action: Callable, parent: Node = self) -> Button:
 	var button = Button.new()
 	button.text = text
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.position = rect.position
 	button.size = rect.size
 	button.focus_mode = Control.FOCUS_NONE
@@ -143,11 +147,13 @@ func _slot(rect: Rect2, action: Callable, parent: Node = self) -> Button:
 func add_pager(
 	parent: Node, at: Vector2, width: float, page: int, pages: int, on_page: Callable
 ) -> void:
-	var prev = _button("‹ 上一页", Rect2(at, Vector2(150, 40)), func(): on_page.call(page - 1), parent)
+	var prev = _button(
+		"‹ 上一页", Rect2(at, Vector2(140, FOOTER_HEIGHT)), func(): on_page.call(page - 1), parent
+	)
 	prev.disabled = page <= 0
 	var label = _label(
 		"第 %d / %d 页" % [page + 1, maxi(1, pages)],
-		Rect2(at + Vector2(width / 2.0 - 70.0, 0), Vector2(140, 40)),
+		Rect2(at + Vector2(width / 2.0 - 70.0, 0), Vector2(140, FOOTER_HEIGHT)),
 		18,
 		MUTED,
 		false,
@@ -156,7 +162,7 @@ func add_pager(
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	var next = _button(
 		"下一页 ›",
-		Rect2(at + Vector2(width - 150.0, 0), Vector2(150, 40)),
+		Rect2(at + Vector2(width - 140.0, 0), Vector2(140, FOOTER_HEIGHT)),
 		func(): on_page.call(page + 1),
 		parent
 	)
@@ -186,3 +192,20 @@ func add_tabs(
 		button.add_theme_color_override("font_color", INK if raised else LIGHT)
 		button.add_theme_color_override("font_hover_color", INK if raised else Color("fff8db"))
 		x += width + 8.0
+
+
+static func footer_y(panel_size: Vector2) -> float:
+	return panel_size.y - PANEL_MARGIN - FOOTER_HEIGHT
+
+
+## A bounded, vertically scrollable column for variable-length journal content.
+func scroll_column(rect: Rect2, content_height: float, parent: Node) -> Control:
+	var scroll = ScrollContainer.new()
+	scroll.position = rect.position
+	scroll.size = rect.size
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	parent.add_child(scroll)
+	var content = Control.new()
+	content.custom_minimum_size = Vector2(rect.size.x - 18, content_height)
+	scroll.add_child(content)
+	return content

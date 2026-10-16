@@ -63,7 +63,11 @@ func _build() -> void:
 	var from = page * PER_PAGE
 	for i in range(from, mini(items.size(), from + PER_PAGE)):
 		var id: String = items[i]
-		var at = Vector2(36 + (i - from) % COLUMNS * 100, 126 + int((i - from) / COLUMNS) * 84)
+		var step_x = (panel_size.x - PANEL_MARGIN * 2) / COLUMNS
+		var at = Vector2(
+			PANEL_MARGIN + (i - from) % COLUMNS * step_x + (step_x - 88) / 2,
+			126 + int((i - from) / COLUMNS) * 94
+		)
 		var slot = _frame(Rect2(at, Vector2(88, 76)), "slot")
 		var known = state.collected.has(id)
 		var picture = icon(
@@ -73,10 +77,10 @@ func _build() -> void:
 			picture.modulate = Color(0.12, 0.09, 0.07, 0.85)
 		slot.tooltip_text = catalog.items[id].name if known else "？？？"
 		slot.mouse_filter = Control.MOUSE_FILTER_STOP
-	add_pager(self, Vector2(36, panel_size.y - 62), panel_size.x - 300, page, pages, _turn)
+	add_pager(self, Vector2(36, footer_y(panel_size)), panel_size.x - 300, page, pages, _turn)
 	_button(
 		"关闭",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
 

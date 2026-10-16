@@ -34,12 +34,16 @@ BIOMES = {
         "shore": "#5a7a80",
     },
 }
+# Texture pixels have their own material scale; one stone must not be as wide as a person.
+MATERIAL_SIZE = {"cobble": (80, 80), "plank": (80, 80)}
 PATH_TILES = {"dirt": "dirt", "cobble": "cobble", "boardwalk": "plank"}
 
 
 def tiled(name, w, h, rng, dim=1.0):
     """The seamless tile repeated over a w x h picture, shifted by a random offset."""
     tile = Image.open(ART / f"ground_{name}.png").convert("RGB")
+    if name in MATERIAL_SIZE:
+        tile = tile.resize(MATERIAL_SIZE[name], Image.Resampling.NEAREST)
     if dim != 1.0:
         tile = ImageEnhance.Brightness(tile).enhance(dim)
     out = Image.new("RGB", (w, h))

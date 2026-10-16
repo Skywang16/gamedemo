@@ -797,5 +797,6 @@
       "h": 1
     }
   ],
-  "fences": []
+  "fences": [],
+  "environment": "cave"
 }

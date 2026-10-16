@@ -9,7 +9,7 @@ var calm: bool = false
 
 
 func configure(region: Dictionary) -> void:
-	outdoors = region.width > 30
+	outdoors = region.environment == "exterior"
 	for polygon in region.get("water", []):
 		var points = PackedVector2Array()
 		for p in polygon:

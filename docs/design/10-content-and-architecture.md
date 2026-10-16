@@ -7,7 +7,7 @@
 | 物品 | 695 | `data/items.json` |
 | 作物 | 63（春 25、夏 30、秋 24、冬 16） | `data/crops.json` |
 | 鱼 | 65（春 39、夏 45、秋 41、冬 22） | `data/fish.json` |
-| 食谱 | 411 | `data/recipes.json` |
+| 食谱 | 414 | `data/recipes.json` |
 | 采集表 | 6 张（林地、湖畔、海滩、矿洞三层） | `data/gather_tables.json` |
 | 商店、鱼竿、工具档位、熔炼 | 8 家 / 4 档鱼竿 / 4 档工具 | `data/shops.json` |
 | 动物、建筑 | 9 种 / 2 座 | `data/animals.json`、`data/buildings.json` |
@@ -27,9 +27,9 @@
 
 ```text
 tools/world/places.py        日程用的命名地点（地图/名称 → 格坐标）
-tools/world/build_maps.py    18 张地图 + places.json（带出口、站点、碰撞、装饰）
+tools/world/build_maps.py    36 张地图 + places.json（带出口、站点、碰撞、装饰）
 tools/content/specs.py       作物、鱼、采集物、矿物、动物产物、杂项、手工食物的数据表
-tools/content/dishes.py      食谱模板（把食材套进菜式，生成 411 个食谱）
+tools/content/dishes.py      食谱模板（把食材套进菜式，生成 411 个菜式，另有 3 个畜产品加工配方）
 tools/content/economy.py     商店、鱼竿、工具档位、熔炼、动物、建筑、采集表、小事
 tools/content/build_content.py 校验并写出物品 / 作物 / 鱼 / 食谱 / 商店 / 动物 / 建筑 / 采集表 / 小事
 tools/content/scene_kit.py    写剧情的工具：对白、导演提示、步骤定义
@@ -42,7 +42,8 @@ tools/content/calendar_data.py 季节、星期、天气表、节日
 tools/content/reach.py       地图可达性（日程里的每个相邻停靠点必须走得通）
 tools/content/build_story.py 写出 story.json 与 calendar.json（校验：物品存在、地点存在、喜好有效、日程可达、导演提示合法、六盏灯顺序、三种结局的场景齐全）
 tools/content/build_cast_doc.py / build_routines_doc.py / build_story_doc.py / tools/world/build_map_doc.py   生成 02、13、14、09 号文档
-tools/world/shop_layouts.py   五家商店室内家具的碰撞（对应画好的室内背景）
+tools/world/interior_layouts.py 室内楼层、房间、走廊、家具、站点的共同几何来源
+tools/world/residences.py     住户、入口、个人物件与环境叙事
 tools/audio/build_audio.py   合成音效
 tools/art/ai_*.py            图像模型绘制的建筑、地面、树石、装饰、室内
 tools/build_art.py           代码绘制的像素美术（不动图像模型的 PNG）

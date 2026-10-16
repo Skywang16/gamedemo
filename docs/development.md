@@ -20,7 +20,7 @@ make editor
 
 ## 内容与素材
 
-`data/` 下的所有文件、`docs/design/` 中带“由数据生成”标记的文档、`assets/` 下的全部 PNG 都是**生成结果**，不要手改；改生成器，重新运行。每个生成器每次都从头写出完整结果。
+`data/` 下的所有文件、`docs/design/` 中带“由数据生成”标记的文档、`assets/art/`、`assets/ui/` 下的 PNG 都是**生成结果**，不要手改；改生成器，重新运行。每个生成器每次都从头写出完整结果。
 
 ```sh
 make maps        # tools/world/build_maps.py → data/maps/*.json、data/places.json
@@ -32,7 +32,7 @@ make import      # 更新 Godot 导入缓存
 
 | 生成器 | 产出 |
 | --- | --- |
-| `tools/world/build_maps.py` | 18 张地图、地点表 |
+| `tools/world/build_maps.py` | 36 张地图、地点表 |
 | `tools/content/build_content.py` | 物品、作物、鱼、食谱、商店、动物、建筑、采集表、小事 |
 | `tools/content/build_story.py` | 故事（村民、日程、场景）、日历；同时校验物品、地点、日程可达性 |
 | `tools/content/build_cast_doc.py` | `docs/design/02-cast.md` |
@@ -52,13 +52,13 @@ make import      # 更新 Godot 导入缓存
 ```sh
 make check
 make test
-make test-ui
+make test-ui     # 会启动窗口；仅在明确允许桌面交互时运行
 ```
 
 | 测试入口 | 覆盖范围 |
 | --- | --- |
 | `tests/test_runner.gd` | 内容载入、工具与体力、树木、清荒、作物生长与重复收获、换季枯萎、买卖、存档位读写与校验、农场可达性 |
-| `tests/chapter_tests.gd` | 30 位村民资料、第一章完整流程、交谈送礼、心事件、节日、采集、存档往返、18 张地图与全部地点的可达性 |
+| `tests/chapter_tests.gd` | 30 位村民资料、第一章完整流程、交谈送礼、心事件、节日、采集、存档往返、36 张地图与全部地点的可达性 |
 | `tests/calendar_tests.gd` | 日历换算、节日与生日、确定性天气、雨雪浇灌、换季枯萎、存档 schema 7、季节与大气着色 |
 | `tests/rules_tests.gd` | 内容规模与素材存在、商店营业时间与库存、熔炼与升级、诊所与鱼竿、烹饪、钓鱼、动物、清晨小事、告示板、采集表 |
 | `tests/story_tests.gd` | 主线 36 步从头到尾、日期与好感门槛、六盏灯与它们的效果、三种结局的算法、回应场景、心意灯 → 求婚 → 婚礼 → 婚后事件 |
@@ -67,10 +67,13 @@ make test-ui
 | `tests/settings_tests.gd` | 设置校验与持久化、改键冲突与保留键、音频总线与输入映射 |
 | `tests/motion_tests.gd` | 界面缓动的单调性、收敛、减弱动效时即时到位 |
 | `tests/ui_smoke.gd` | 标题、设置页、创建角色与存档位、键鼠输入、各个面板与商店、钓鱼小游戏、剧情动画与村民、跨地图旅行、睡觉与日卡、读取与删除存档 |
+| `tests/ui_regressions.gd` | 拥挤面板边界、出售翻页无副作用、快捷物品、设置退出同步、时间插值、场景重建位置、长任务滚动 |
 | `tests/animation_smoke.gd` | 动作接触帧、菜单暂停、粒子、倒树与树桩碰撞、重载后恢复 |
 | `tests/story_smoke.gd` | 全部 240 个场景在剧情动画里完整播放；主要场景截图；章节卡与逐字显示；矿洞里挥剑、受伤、被抬出洞口；求婚与婚礼的完整流程 |
-| `tests/map_tour.gd` | 视觉巡检：相机走遍 18 张地图并截图（人工查看 `build/test-results/`），只要求每张地图都能建成并渲染 |
+| `tests/map_tour.gd` | 视觉巡检：相机走遍 36 张地图并截图（人工查看 `build/test-results/`），只要求每张地图都能建成并渲染 |
 | `tests/weather_smoke.gd` | 六种天气与四季在真实画面上的渲染、季节着色器像素断言、室内无天气 |
+
+`make check` 和 `make test` 不打开游戏窗口。`make test-ui` 会打开窗口并移动系统鼠标，只应在专用测试桌面或独立显示环境运行，不能在用户正在操作的桌面上自动执行。
 
 窗口测试串行运行，每次自动使用唯一的 `user://ui-test-<UUID>` 存档目录，截图写入 `build/test-results/<测试目录名>/`，不修改正常存档。无显示器的服务器上用 `xvfb-run -a -s "-screen 0 1280x800x24"` 并加 `--rendering-driver opengl3`。诊断失败时可单独执行：
 
@@ -107,3 +110,19 @@ open "build/macos/Sprout Valley.app"
 ```sh
 make clean       # 删除 build/、Godot 导入缓存和 Ruff 缓存
 ```
+
+## 室内素材与布局
+
+固定参考 `assets/reference/interior_style_v1.png` 是人工选择并锁定的输入，不能随构建重画。更换风格需另建版本，并同步缓存版本；当前 34 个室内素材均用这张参考调用 image2free 的 GPT Image 2.5 Sunburst 生成。
+
+```sh
+.venv/bin/python tools/art/ai_room_assets.py bed desk     # 有原图缓存则只重新处理
+.venv/bin/python tools/art/ai_room_assets.py bed --force # 显式重新请求模型，有费用
+make content
+.venv/bin/python tools/art/room_backgrounds.py --collisions
+make test
+```
+
+平面图改 `tools/world/interior_layouts.py`；住户、房门和个人物件改 `tools/world/residences.py`；家具提示词与占地改 `tools/art/room_assets.py`。不要只改 PNG 尺寸而不更新共享占地契约。
+
+`tests/interior_tests.gd` 作为 `make test` 的一部分，以无窗口、独立存档运行实际场景：进出全部 25 张室内、查看个人物件、重复交互无状态副作用、NPC 回家、镜头与天气分类、室内存读档和休息后的出生点。不调用系统输入，也不播放声音。

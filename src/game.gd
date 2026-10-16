@@ -249,11 +249,11 @@ func _process(delta: float) -> void:
 	if hud.is_modal():
 		return
 	clock_accumulator += delta
-	world.clock_fraction = clock_accumulator / TICK_SECONDS * float(FarmState.TICK_MINUTES)
-	if clock_accumulator >= TICK_SECONDS:
+	while clock_accumulator >= TICK_SECONDS:
 		clock_accumulator -= TICK_SECONDS
 		state.minute += FarmState.TICK_MINUTES
 		_on_tick()
+	world.clock_fraction = clock_accumulator / TICK_SECONDS * float(FarmState.TICK_MINUTES)
 	autosave_accumulator += delta
 	if autosave_accumulator >= 30 and settings.get_value("autosave"):
 		autosave_accumulator = 0
@@ -311,7 +311,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("menu"):
 		if hud.modal_kind == "fishing":
 			return
-		if hud.is_modal():
+		if hud.modal_kind == "settings":
+			_on_action("settings_closed", {})
+		elif hud.is_modal():
 			hud.close_modal()
 		else:
 			hud.dialogs.show_pause()
@@ -430,6 +432,8 @@ func _interact() -> void:
 				_travel(station.destination, Vector2(station.arrival[0], station.arrival[1]))
 			else:
 				hud.toast("渡口的老船还搁浅在泥滩上。")
+		"inspect":
+			hud.toast(station.description, 5)
 		"letter":
 			if state.narrative.intro_seen:
 				_start_scene("letter", "letter")
@@ -569,6 +573,7 @@ func _finish_scene(choice: String) -> void:
 		state.narrative.page = 0
 	hud.close_modal()
 	if int(state.narrative.stage) != before or scene_kind == "wedding":
+		state.player_position = world.player.position
 		# The bridge, a lamp or a marriage changes where people are and what can be done.
 		_plan_day()
 		_build_world()
@@ -708,8 +713,6 @@ func _on_panel_action(action: String, payload: Dictionary) -> void:
 			_reopen_shop(payload)
 		"build":
 			response = animals.build(state, payload.id)
-			if response.ok:
-				_build_world()
 			_reopen_shop(payload)
 		"eat":
 			response = rules.eat(state, payload.item)
@@ -781,7 +784,8 @@ func _next_day() -> void:
 	clock_accumulator = 0
 	defeated_today.clear()
 	player_hp = combat.hero_hp()
-	stories.enter(state, "cottage", Vector2(464, 464))
+	var spawn = catalog.region("cottage").spawn
+	stories.enter(state, "cottage", Vector2(spawn[0], spawn[1]))
 	_plan_day()
 	_build_world()
 	world.modulate = Color.WHITE
@@ -869,9 +873,9 @@ func _apply_settings() -> void:
 ## Autosaves are skipped when the player turned them off; manual saves, returning to the title
 ## and quitting always write (`force`).
 func _save(show_toast: bool, force: bool = false) -> String:
+	state.player_position = world.player.position
 	if not force and not show_toast and not settings.get_value("autosave"):
 		return ""
-	state.player_position = world.player.position
 	var error = store.save_game(state, active_slot)
 	hud.notify_saved(error)
 	if show_toast and error.is_empty():

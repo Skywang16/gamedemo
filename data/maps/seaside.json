@@ -21,7 +21,7 @@
     [
       46,
       1,
-      4,
+      3,
       11
     ],
     [
@@ -1089,8 +1089,22 @@
       ],
       "destination": "tackle_shop",
       "arrival": [
-        464,
-        464
+        176,
+        432
+      ]
+    },
+    {
+      "id": "to_ferry_home",
+      "name": "进入弗林家的海边住宅",
+      "kind": "exit",
+      "cell": [
+        70,
+        11
+      ],
+      "destination": "ferry_home",
+      "arrival": [
+        336,
+        560
       ]
     }
   ],
@@ -1381,7 +1395,7 @@
     [
       46,
       1,
-      4,
+      3,
       11
     ],
     [
@@ -1625,5 +1639,6 @@
       64,
       23
     ]
-  ]
+  ],
+  "environment": "exterior"
 }

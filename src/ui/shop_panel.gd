@@ -6,7 +6,7 @@ extends GameScreen
 ## through ShopRules / AnimalRules and reopens this panel on the same tab and page.
 
 const PER_PAGE = 6
-const ROW_HEIGHT = 84
+const ROW_HEIGHT = 76
 
 var state: FarmState
 var rules: ShopRules
@@ -102,7 +102,7 @@ func _build() -> void:
 			_build_build(y)
 	_button(
 		"离开",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
 
@@ -126,19 +126,20 @@ func _act(action: String, extra: Dictionary = {}) -> void:
 
 func _row(y: float, item_id: String, title: String, detail: String) -> void:
 	_frame(Rect2(30, y, panel_size.x - 60, ROW_HEIGHT - 8), "inset")
-	icon(catalog.items[item_id].icon, Rect2(46, y + 10, 56, 56), self)
-	_label(title, Rect2(118, y + 6, 420, 32), 21)
-	_label(detail, Rect2(118, y + 38, 470, 30), 15, MUTED)
+	icon(catalog.items[item_id].icon, Rect2(52, y + 12, 44, 44), self)
+	_label(title, Rect2(118, y + 4, 420, 28), 20)
+	_label(detail, Rect2(118, y + 32, 470, 26), 15, MUTED)
 
 
 func _paged(total: int, y: float, rows: Callable) -> void:
+	page = clampi(page, 0, page_count(total, PER_PAGE) - 1)
 	var from = page * PER_PAGE
 	for i in range(from, mini(total, from + PER_PAGE)):
 		rows.call(i, y + float(i - from) * ROW_HEIGHT)
 	add_pager(
 		self,
-		Vector2(36, panel_size.y - 62),
-		panel_size.x - 300,
+		Vector2(36, footer_y(panel_size)),
+		440.0 if tab == "sell" else panel_size.x - 300,
 		page,
 		page_count(total, PER_PAGE),
 		_turn
@@ -205,7 +206,7 @@ func _build_sell(y: float) -> void:
 	)
 	_button(
 		"全部出售 / +%d G" % quote.gold,
-		Rect2(panel_size.x - 520, panel_size.y - 62, 280, 46),
+		Rect2(panel_size.x - 520, footer_y(panel_size), 280, 46),
 		func(): _act("sell_all")
 	)
 
@@ -235,7 +236,7 @@ func _build_smelt(y: float) -> void:
 
 
 func _build_upgrade(y: float) -> void:
-	_label("每升一级，这件工具的体力消耗就少 1；长剑每升一级伤害更高。", Rect2(36, y, 800, 30), 17, MUTED)
+	_label("锄斧镐降低体力消耗，水壶扩大浇水范围，长剑提升伤害。", Rect2(36, y, 800, 30), 17, MUTED)
 	var names = {
 		"hoe": "锄头", "axe": "斧头", "pickaxe": "镐", "scythe": "镰刀", "water": "水壶", "sword": "长剑"
 	}
@@ -251,7 +252,7 @@ func _build_upgrade(y: float) -> void:
 	for tool in FarmState.TOOLS:
 		var row_y = y + 36.0 + float(i) * 72.0
 		_frame(Rect2(30, row_y, panel_size.x - 60, 64), "inset")
-		icon(icons[tool], Rect2(46, row_y + 4, 56, 56), self)
+		icon(icons[tool], Rect2(52, row_y + 10, 44, 44), self)
 		var level = int(state.development.tools[tool])
 		var tier = rules.tool_upgrade_cost(state, tool)
 		_label(
@@ -259,18 +260,18 @@ func _build_upgrade(y: float) -> void:
 				"%s · %s"
 				% [names[tool], "初始" if level == 0 else catalog.tool_tiers[level - 1].name + "级"]
 			),
-			Rect2(118, row_y + 2, 420, 32),
-			21
+			Rect2(118, row_y + 4, 420, 26),
+			19
 		)
 		var need = (
-			"已是最高等级"
+			"当前工具已无需升级"
 			if tier.is_empty()
 			else (
 				"需要 %s ×5 与 %d 金币（有 %d 块）"
 				% [catalog.items[tier.bar].name, tier.gold, state.inventory[tier.bar]]
 			)
 		)
-		_label(need, Rect2(118, row_y + 34, 560, 28), 15, MUTED)
+		_label(need, Rect2(118, row_y + 30, 560, 24), 14, MUTED)
 		var button = _button(
 			"升级",
 			Rect2(panel_size.x - 200, row_y + 10, 130, 44),
@@ -341,8 +342,8 @@ func _build_build(y: float) -> void:
 	for i in ids.size():
 		var id: String = ids[i]
 		var spec = catalog.buildings[id]
-		var row_y = y + float(i) * 96.0
-		_frame(Rect2(30, row_y, panel_size.x - 60, 88), "inset")
+		var row_y = y + float(i) * 116.0
+		_frame(Rect2(30, row_y, panel_size.x - 60, 108), "inset")
 		icon(id, Rect2(46, row_y + 6, 76, 76), self)
 		var parts: Array[String] = []
 		for material in spec.materials:
@@ -359,9 +360,10 @@ func _build_build(y: float) -> void:
 		_label("%s · %d G" % [spec.name, spec.price], Rect2(138, row_y + 6, 460, 34), 22)
 		_label(
 			"%s  材料：%s  工期 %d 天" % [spec.hint, "、".join(parts), spec.days],
-			Rect2(138, row_y + 44, 700, 34),
+			Rect2(138, row_y + 42, panel_size.x - 354, 54),
 			15,
-			MUTED
+			MUTED,
+			true
 		)
 		var label = "建造"
 		if animal_rules.built(state, id):

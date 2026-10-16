@@ -73,7 +73,7 @@ func _build() -> void:
 				"、".join(parts)
 				+ ("" if int(recipe.level) == 0 else "    需要烹饪 Lv.%d" % int(recipe.level))
 			),
-			Rect2(118, y + 40, 700, 30),
+			Rect2(118, y + 40, panel_size.x - 334, 30),
 			15,
 			MUTED
 		)
@@ -83,10 +83,10 @@ func _build() -> void:
 			func(): action_requested.emit("cook", {"recipe": recipe.id, "page": page})
 		)
 		go.disabled = not cooking.can_cook(state, recipe.id)
-	add_pager(self, Vector2(36, panel_size.y - 62), panel_size.x - 300, page, pages, _turn)
+	add_pager(self, Vector2(36, footer_y(panel_size)), panel_size.x - 300, page, pages, _turn)
 	_button(
 		"离开灶台",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
 

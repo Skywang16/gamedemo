@@ -40,6 +40,7 @@ func run() -> void:
 		test_content_shape()
 		test_shop_hours()
 		test_shop_stock()
+		test_economy_regressions()
 		test_smithing()
 		test_clinic_and_rods()
 		test_cooking()
@@ -575,3 +576,37 @@ func test_gathering_tables() -> void:
 		s.day = day
 		variety[GatherRules.item_for(catalog, s, {"id": "wild", "table": "forest"})] = true
 	check(variety.size() >= 4, "the forest floor changes from day to day (%d)" % variety.size())
+
+
+func test_economy_regressions() -> void:
+	var s = at(2, 600)
+	for shop_id in catalog.shops:
+		for entry in shops.stock(shop_id, s):
+			check(
+				(
+					catalog.items[entry.item].kind not in ContentCatalog.SELLABLE
+					or entry.price > catalog.items[entry.item].sell_price
+				),
+				"stock cannot be resold for profit: " + entry.item
+			)
+	for tool in ["hoe", "axe", "pickaxe", "scythe"]:
+		s.development.tools[tool] = {"hoe": 1, "axe": 2, "pickaxe": 2, "scythe": 0}[tool]
+		s.gold = 10000
+		for bar in ["copper_bar", "iron_bar", "silver_bar", "gold_bar"]:
+			s.inventory[bar] = 50
+		var before = s.snapshot(catalog)
+		check(
+			not shops.upgrade_tool(s, tool).ok and s.snapshot(catalog) == before,
+			"ineffective upgrade cannot charge: " + tool
+		)
+	for id in ["cheese", "goat_cheese", "mayonnaise"]:
+		var recipe = catalog.recipes[id]
+		for item in recipe.needs:
+			s.inventory[item] = recipe.needs[item]
+		s.development.cooking_xp = 80
+		check(
+			cooking.cook(s, id).ok and s.inventory[id] == 1,
+			"animal product can be processed: " + id
+		)
+		farm.record_collection(s)
+		check(s.collected.has(id), "processed product enters collection: " + id)

@@ -333,7 +333,8 @@ func test_persistence() -> void:
 	s.festival_done = ["1:plow_rite"]
 	s.stats.earned = 120
 	s.board = {"week": 1, "done": [0, 2]}
-	story.enter(s, "cottage", Vector2(464, 464))
+	var spawn: Array = catalog.region("cottage").spawn
+	check(story.enter(s, "cottage", Vector2(spawn[0], spawn[1])).ok, "enter before save")
 	check(store.save_game(s, 1).is_empty(), "the current save is written")
 	var copy = SaveStore.new(catalog, folder).load_slot(1).state
 	check(
@@ -377,7 +378,7 @@ func reach(id: String, start: Vector2i) -> Dictionary:
 
 
 func test_maps() -> void:
-	check(catalog.regions.size() == 19, "nineteen maps")
+	check(catalog.regions.size() == 36, "outdoors, businesses and connected homes")
 	for id in catalog.regions:
 		var area = catalog.region(id)
 		var start = Vector2i(int(area.spawn[0] / 32), int(area.spawn[1] / 32))

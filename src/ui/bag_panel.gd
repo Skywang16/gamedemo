@@ -47,6 +47,9 @@ func open(
 	size = size_px
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	setup_theme(18)
+	var items = _items()
+	if items.has(selected):
+		page = int(items.find(selected) / PER_PAGE)
 	_build()
 
 
@@ -92,13 +95,13 @@ func _build() -> void:
 	_build_detail()
 	_button(
 		"关闭",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
 	if not storage_mode:
 		_button(
 			"图志",
-			Rect2(panel_size.x - 436, panel_size.y - 62, 190, 46),
+			Rect2(panel_size.x - 436, footer_y(panel_size), 190, 46),
 			func(): action_requested.emit("collection", {})
 		)
 
@@ -108,12 +111,11 @@ func _build_detail() -> void:
 	if selected != "":
 		var item = catalog.items[selected]
 		icon(item.icon, Rect2(548, 142, 64, 64), self)
-		_label(item.name, Rect2(630, 148, 360, 44), 25)
+		_label(item.name, Rect2(630, 148, panel_size.x - 694, 44), 25)
 		_label(item.description, Rect2(548, 214, panel_size.x - 612, 80), 19, INK, true)
-		var line = "持有 %d" % state.inventory[selected]
+		_label("持有 %d" % state.inventory[selected], Rect2(548, 302, 180, 32), 19, MUTED)
 		if storage_mode:
-			line += "    箱内 %d" % state.storage[selected]
-		_label(line, Rect2(548, 302, 340, 32), 19, MUTED)
+			_label("箱内 %d" % state.storage[selected], Rect2(548, 338, 360, 32), 19, MUTED)
 		if int(item.sell_price) > 0:
 			_label("售价 %d G" % item.sell_price, Rect2(panel_size.x - 280, 302, 200, 32), 19, GOLD)
 		if int(item.energy) > 0 and not storage_mode:

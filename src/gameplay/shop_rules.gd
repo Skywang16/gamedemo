@@ -1,6 +1,8 @@
 class_name ShopRules
 extends RefCounted
 
+const TOOL_LIMITS = {"hoe": 1, "axe": 2, "pickaxe": 2, "scythe": 0, "water": 4, "sword": 4}
+
 var catalog: ContentCatalog
 var stories: StoryRules
 
@@ -141,7 +143,7 @@ func smelt(s: FarmState, ore: String) -> Dictionary:
 
 func tool_upgrade_cost(s: FarmState, tool: String) -> Dictionary:
 	var level = int(s.development.tools[tool])
-	if level >= catalog.tool_tiers.size():
+	if level >= TOOL_LIMITS[tool]:
 		return {}
 	return catalog.tool_tiers[level]
 

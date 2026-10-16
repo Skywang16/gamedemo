@@ -12,13 +12,12 @@ func open(content: ContentCatalog, s: FarmState, rules: BoardRules, size_px: Vec
 	catalog = content
 	state = s
 	board = rules
-	board.refresh(state)
 	panel_size = size_px
 	size = size_px
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	setup_theme(18)
 	_label("告示栏", Rect2(36, 16, 400, 44), 28)
-	_label("每周一更新。送到委托人手上，换金币和好感。", Rect2(36, 58, 700, 28), 17, MUTED)
+	_label("每周一更新。在这里交付物品，领取金币和好感。", Rect2(36, 58, 700, 28), 17, MUTED)
 	var list = board.requests(state)
 	for i in list.size():
 		var r: Dictionary = list[i]
@@ -43,6 +42,6 @@ func open(content: ContentCatalog, s: FarmState, rules: BoardRules, size_px: Vec
 		button.disabled = done or state.inventory[r.item] < int(r.count)
 	_button(
 		"关闭",
-		Rect2(panel_size.x - 226, panel_size.y - 62, 190, 46),
+		Rect2(panel_size.x - 226, footer_y(panel_size), 190, 46),
 		func(): action_requested.emit("close", {})
 	)
